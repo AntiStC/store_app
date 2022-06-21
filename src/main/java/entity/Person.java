@@ -48,4 +48,30 @@ public class Person {
     public void removeCargo(Cargo cargo) {
         cargos.remove(cargo);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Person person)) return false;
+
+        if (!id.equals(person.id)) return false;
+        if (!details.equals(person.details)) return false;
+        return cargos.equals(person.cargos);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + details.hashCode();
+        result = 31 * result + cargos.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", details=" + details +
+                '}';
+    }
 }

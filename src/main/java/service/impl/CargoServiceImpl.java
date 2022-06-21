@@ -5,8 +5,6 @@ import entity.dto.CargoDTO;
 import service.CargoService;
 
 public class CargoServiceImpl implements CargoService {
-
-
     @Override
     public CargoDTO create(Cargo cargo) {
         return null;

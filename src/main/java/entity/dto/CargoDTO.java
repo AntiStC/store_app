@@ -103,38 +103,6 @@ public class CargoDTO {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CargoDTO cargoDTO)) return false;
-
-        if (!id.equals(cargoDTO.id)) return false;
-        if (!name.equals(cargoDTO.name)) return false;
-        if (!description.equals(cargoDTO.description)) return false;
-        if (type != cargoDTO.type) return false;
-        if (state != cargoDTO.state) return false;
-        if (!weight.equals(cargoDTO.weight)) return false;
-        if (!volume.equals(cargoDTO.volume)) return false;
-        if (!createdAt.equals(cargoDTO.createdAt)) return false;
-        if (!modifiedAt.equals(cargoDTO.modifiedAt)) return false;
-        return owner.equals(cargoDTO.owner);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + description.hashCode();
-        result = 31 * result + type.hashCode();
-        result = 31 * result + state.hashCode();
-        result = 31 * result + weight.hashCode();
-        result = 31 * result + volume.hashCode();
-        result = 31 * result + createdAt.hashCode();
-        result = 31 * result + modifiedAt.hashCode();
-        result = 31 * result + owner.hashCode();
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "CargoDTO{" +
                 "id=" + id +

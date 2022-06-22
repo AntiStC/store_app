@@ -40,24 +40,6 @@ public class PersonDTO {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PersonDTO personDTO)) return false;
-
-        if (!id.equals(personDTO.id)) return false;
-        if (!details.equals(personDTO.details)) return false;
-        return cargos.equals(personDTO.cargos);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + details.hashCode();
-        result = 31 * result + cargos.hashCode();
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "PersonDTO{" +
                 "id=" + id +

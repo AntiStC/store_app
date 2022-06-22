@@ -53,28 +53,6 @@ public class PersonDetailsDTO {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PersonDetailsDTO that)) return false;
-
-        if (!id.equals(that.id)) return false;
-        if (!firstName.equals(that.firstName)) return false;
-        if (!lastName.equals(that.lastName)) return false;
-        if (!passportNum.equals(that.passportNum)) return false;
-        return address.equals(that.address);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + firstName.hashCode();
-        result = 31 * result + lastName.hashCode();
-        result = 31 * result + passportNum.hashCode();
-        result = 31 * result + address.hashCode();
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "PersonDetailsDTO{" +
                 "id=" + id +

@@ -104,11 +104,14 @@ public class Cargo {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        if (o == null || !getClass().equals(o.getClass())) {
+            return false;
+        }
+
         Cargo cargo = (Cargo) o;
 
-        return this.getId() == cargo.getId() &&
-                this.getOwner().getId().equals(cargo.getOwner().getId());
+        return getId() == cargo.getId()
+                && getOwner().getId() == cargo.getOwner().getId();
     }
 
     @Override

@@ -8,98 +8,68 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class CargoDTO {
-    private UUID id;
-    private String name;
-    private String description;
-    private CargoType type;
-    private CargoState state;
-    private Double weight;
-    private Double volume;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
-    private Person owner;
+    private final UUID id;
+    private final String name;
+    private final String description;
+    private final CargoType type;
+    private final CargoState state;
+    private final Double weight;
+    private final Double volume;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime modifiedAt;
+    private final Person owner;
 
-    public CargoDTO() {
+    public CargoDTO(UUID id, String name, String description, CargoType type, CargoState state, Double weight, Double volume, LocalDateTime createdAt, LocalDateTime modifiedAt, Person owner) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.type = type;
+        this.state = state;
+        this.weight = weight;
+        this.volume = volume;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+        this.owner = owner;
     }
 
     public UUID getId() {
         return id;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public CargoType getType() {
         return type;
-    }
-
-    public void setType(CargoType type) {
-        this.type = type;
     }
 
     public CargoState getState() {
         return state;
     }
 
-    public void setState(CargoState state) {
-        this.state = state;
-    }
-
     public Double getWeight() {
         return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
     }
 
     public Double getVolume() {
         return volume;
     }
 
-    public void setVolume(Double volume) {
-        this.volume = volume;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 
     public LocalDateTime getModifiedAt() {
         return modifiedAt;
     }
 
-    public void setModifiedAt(LocalDateTime modifiedAt) {
-        this.modifiedAt = modifiedAt;
-    }
-
     public Person getOwner() {
         return owner;
-    }
-
-    public void setOwner(Person owner) {
-        this.owner = owner;
     }
 
     @Override

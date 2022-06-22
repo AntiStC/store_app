@@ -6,9 +6,9 @@ import java.util.UUID;
 
 public class Person {
     private UUID id;
-    //1..1
+
     private PersonDetails details;
-    //1..*
+
     private List<Cargo> cargoList = new ArrayList<>();
 
     public Person(long id) {

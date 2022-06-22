@@ -11,7 +11,7 @@ public class Person {
     //1..*
     private List<Cargo> cargos;
 
-    public Person() {
+    public Person(long id) {
     }
 
     public UUID getId() {

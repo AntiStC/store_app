@@ -55,10 +55,14 @@ public class PersonDetails {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        if (o == null || !getClass().equals(o.getClass())) {
+            return false;
+        }
+
         PersonDetails personDetails = (PersonDetails) o;
-        return this.getId() == personDetails.getId()
-                && Objects.equals(this.getPassportNum(), personDetails.getPassportNum());
+
+        return getId() == personDetails.getId()
+                && Objects.equals(getPassportNum(), personDetails.getPassportNum());
     }
 
     @Override

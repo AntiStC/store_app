@@ -48,9 +48,13 @@ public class Person {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        if (o == null || !getClass().equals(o.getClass())) {
+            return false;
+        }
+
         Person person = (Person) o;
-        return this.getId() == person.getId();
+
+        return getId() == person.getId();
     }
 
     @Override

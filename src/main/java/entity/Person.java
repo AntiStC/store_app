@@ -9,7 +9,7 @@ public class Person {
     //1..1
     private PersonDetails details;
     //1..*
-    private List<Cargo> cargos;
+    private List<Cargo> cargoList = new ArrayList<>();
 
     public Person(long id) {
     }
@@ -30,41 +30,32 @@ public class Person {
         this.details = details;
     }
 
-    public List<Cargo> getCargos() {
-        return cargos;
+    public List<Cargo> getCargoList() {
+        return cargoList;
     }
 
-    public void setCargos(List<Cargo> cargos) {
-        this.cargos = cargos;
+    public void setCargoList(List<Cargo> cargoList) {
+        this.cargoList = cargoList;
     }
 
     public void addCargo(Cargo cargo) {
-        if (cargos == null) {
-            cargos = new ArrayList<>();
-        }
-        cargos.add(cargo);
+        cargoList.add(cargo);
     }
 
     public void removeCargo(Cargo cargo) {
-        cargos.remove(cargo);
+        cargoList.remove(cargo);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Person person)) return false;
-
-        if (!id.equals(person.id)) return false;
-        if (!details.equals(person.details)) return false;
-        return cargos.equals(person.cargos);
+        Person person = (Person) o;
+        return this.getId() == person.getId();
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + details.hashCode();
-        result = 31 * result + cargos.hashCode();
-        return result;
+        return id.hashCode();
     }
 
     @Override

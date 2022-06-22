@@ -10,35 +10,32 @@ import entity.dto.PersonDetailsDTO;
 public class CustomMapper {
 
     public static CargoDTO toDTO(Cargo cargo) {
-        CargoDTO cargoDTO = new CargoDTO();
-        cargoDTO.setId(cargo.getId());
-        cargoDTO.setName(cargo.getName());
-        cargoDTO.setDescription(cargo.getDescription());
-        cargoDTO.setType(cargo.getType());
-        cargoDTO.setState(cargo.getState());
-        cargoDTO.setWeight(cargo.getWeight());
-        cargoDTO.setVolume(cargo.getVolume());
-        cargoDTO.setCreatedAt(cargo.getCreatedAt());
-        cargoDTO.setModifiedAt(cargo.getModifiedAt());
-        cargoDTO.setOwner(cargo.getOwner());
-        return cargoDTO;
+        return new CargoDTO(
+                cargo.getId(),
+                cargo.getName(),
+                cargo.getDescription(),
+                cargo.getType(),
+                cargo.getState(),
+                cargo.getWeight(),
+                cargo.getVolume(),
+                cargo.getCreatedAt(),
+                cargo.getModifiedAt(),
+                cargo.getOwner());
     }
 
     public static PersonDTO toDTO(Person person) {
-        PersonDTO personDTO = new PersonDTO();
-        personDTO.setId(person.getId());
-        personDTO.setDetails(person.getDetails());
-        personDTO.setCargos(person.getCargos());
-        return personDTO;
+        return new PersonDTO(
+                person.getId(),
+                person.getDetails(),
+                person.getCargoList());
     }
 
     public static PersonDetailsDTO toDTO(PersonDetails personDetails) {
-        PersonDetailsDTO personDetailsDTO = new PersonDetailsDTO();
-        personDetailsDTO.setId(personDetails.getId());
-        personDetailsDTO.setFirstName(personDetails.getFirstName());
-        personDetailsDTO.setLastName(personDetails.getLastName());
-        personDetailsDTO.setPassportNum(personDetails.getPassportNum());
-        personDetailsDTO.setAddress(personDetails.getAddress());
-        return personDetailsDTO;
+        return new PersonDetailsDTO(
+                personDetails.getId(),
+                personDetails.getFirstName(),
+                personDetails.getLastName(),
+                personDetails.getPassportNum(),
+                personDetails.getAddress());
     }
 }

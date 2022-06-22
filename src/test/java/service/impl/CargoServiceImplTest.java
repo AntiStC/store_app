@@ -1,19 +1,18 @@
 package service.impl;
 
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import service.CargoService;
 import service.PersonDetailsService;
 import service.PersonService;
 
 class CargoServiceImplTest {
-    private CargoService cargoService;
-    private PersonService personService;
-    private PersonDetailsService personDetailsService;
+    private static CargoService cargoService;
+    private static PersonService personService;
+    private static PersonDetailsService personDetailsService;
 
-    @Before
-    public void setUp(){
+    @BeforeAll
+    static void setUp(){
         personDetailsService = new PersonDetailsServiceImpl();
         personService =new PersonServiceImpl(personDetailsService);
         cargoService = new CargoServiceImpl(personService);

@@ -28,7 +28,7 @@ public class CustomMapper {
         PersonDTO personDTO = new PersonDTO();
         personDTO.setId(person.getId());
         personDTO.setDetails(person.getDetails());
-        personDTO.setCargos(person.getCargos());
+        personDTO.setCargos(person.getCargoList());
         return personDTO;
     }
 

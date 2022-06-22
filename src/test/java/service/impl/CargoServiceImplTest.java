@@ -12,9 +12,9 @@ class CargoServiceImplTest {
     private static PersonDetailsService personDetailsService;
 
     @BeforeAll
-    static void setUp(){
+    static void setUp() {
         personDetailsService = new PersonDetailsServiceImpl();
-        personService =new PersonServiceImpl(personDetailsService);
+        personService = new PersonServiceImpl(personDetailsService);
         cargoService = new CargoServiceImpl(personService);
     }
 

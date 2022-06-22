@@ -105,33 +105,15 @@ public class Cargo {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Cargo)) return false;
-
         Cargo cargo = (Cargo) o;
 
-        if (!id.equals(cargo.id)) return false;
-        if (!name.equals(cargo.name)) return false;
-        if (!description.equals(cargo.description)) return false;
-        if (type != cargo.type) return false;
-        if (state != cargo.state) return false;
-        if (!weight.equals(cargo.weight)) return false;
-        if (!volume.equals(cargo.volume)) return false;
-        if (!createdAt.equals(cargo.createdAt)) return false;
-        if (!modifiedAt.equals(cargo.modifiedAt)) return false;
-        return owner.equals(cargo.owner);
+        return this.getId() == cargo.getId() &&
+                this.getOwner().getId().equals(cargo.getOwner().getId());
     }
 
     @Override
     public int hashCode() {
         int result = id.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + description.hashCode();
-        result = 31 * result + type.hashCode();
-        result = 31 * result + state.hashCode();
-        result = 31 * result + weight.hashCode();
-        result = 31 * result + volume.hashCode();
-        result = 31 * result + createdAt.hashCode();
-        result = 31 * result + modifiedAt.hashCode();
         result = 31 * result + owner.hashCode();
         return result;
     }

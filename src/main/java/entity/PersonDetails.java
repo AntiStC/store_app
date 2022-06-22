@@ -1,5 +1,6 @@
 package entity;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class PersonDetails {
@@ -55,22 +56,15 @@ public class PersonDetails {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof PersonDetails that)) return false;
-
-        if (!id.equals(that.id)) return false;
-        if (!firstName.equals(that.firstName)) return false;
-        if (!lastName.equals(that.lastName)) return false;
-        if (!passportNum.equals(that.passportNum)) return false;
-        return address.equals(that.address);
+        PersonDetails personDetails = (PersonDetails) o;
+        return this.getId() == personDetails.getId()
+                && Objects.equals(this.getPassportNum(), personDetails.getPassportNum());
     }
 
     @Override
     public int hashCode() {
         int result = id.hashCode();
-        result = 31 * result + firstName.hashCode();
-        result = 31 * result + lastName.hashCode();
         result = 31 * result + passportNum.hashCode();
-        result = 31 * result + address.hashCode();
         return result;
     }
 

@@ -10,6 +10,7 @@ import service.PersonDetailsService;
 import service.PersonService;
 
 class CargoServiceImplTest {
+    //todo tests
     private static CargoService cargoService;
     private static PersonDAO personDAO;
     private static CargoDAO cargoDAO;

@@ -4,7 +4,7 @@ import dao.CargoDAO;
 
 import java.util.List;
 import java.util.UUID;
-
+//raw use of parametrized
 public class CargoDAOImpl implements CargoDAO {
     @Override
     public List findByAll() {

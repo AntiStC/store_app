@@ -3,7 +3,7 @@ package dao.impl;
 import dao.PersonDAO;
 
 import java.util.List;
-
+//raw use of parametrized
 public class PersonDAOImpl implements PersonDAO {
     @Override
     public List findByAll() {

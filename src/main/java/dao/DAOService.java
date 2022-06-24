@@ -1,8 +1,7 @@
 package dao;
 
 import java.util.List;
-import java.util.UUID;
-//can use: public interface DAOService<Entity, ID>
+
 public interface DAOService <Entity, ID> {
 
     Entity create(Entity entity);
@@ -13,7 +12,7 @@ public interface DAOService <Entity, ID> {
 
     List<Entity> findAll();
 
-    boolean delete(Entity entity);
+    void delete(ID id);
 
     void deleteAll();
 }

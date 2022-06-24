@@ -28,7 +28,7 @@ public class PersonDAOImpl implements PersonDAO {
              PreparedStatement statement = connection.prepareStatement
                      (PersonSQL.INSERT.QUERY, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setObject(1, person.getId());
-            statement.setObject(2, (person.getDetails()));
+            statement.setObject(2, person.getDetails());
             statement.setObject(3, person.getCargoList());
             statement.execute();
 

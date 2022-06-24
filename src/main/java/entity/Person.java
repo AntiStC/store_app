@@ -3,6 +3,7 @@ package entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class Person {
     private UUID id;
@@ -49,6 +50,11 @@ public class Person {
             cargo.setOwner(this);
         }
         cargoList.add(cargo);
+    }
+
+    public void addCargos(List<Cargo> cargos) {
+        cargos.forEach(cargo -> cargo.setOwner(this));
+        cargoList.addAll(cargos);
     }
 
     public void removeCargo(Cargo cargo) {

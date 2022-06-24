@@ -1,16 +1,10 @@
 package dao;
 
+import entity.Person;
+
 import java.util.List;
+import java.util.UUID;
 
-public interface PersonDAO <UUID, Person> extends DAOService<Person>{
+public interface PersonDAO extends DAOService<Person, UUID>{
 
-    List<Person> findByAll();
-
-    Person findEntityById(UUID id);
-
-    boolean delete (Person person);
-
-    Person create (Person person);
-
-    Person update (Person person);
 }

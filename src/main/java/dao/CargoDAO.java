@@ -1,15 +1,11 @@
 package dao;
 
+import entity.Cargo;
+
 import java.util.List;
+import java.util.UUID;
+
 //can use: public interface CargoDAO extends DAOService<Cargo, UUID>
-public interface CargoDAO <UUID, Cargo> extends DAOService<Cargo>{
-    List<Cargo> findByAll();
+public interface CargoDAO extends DAOService<Cargo, UUID> {
 
-    Cargo findEntityById(UUID id);
-
-    boolean delete (Cargo cargo);
-
-    Cargo create (Cargo cargo);
-
-    Cargo update (Cargo cargo);
 }

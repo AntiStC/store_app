@@ -24,7 +24,9 @@ public class CargoDAOImpl implements CargoDAO {
 
     @Override
     public Cargo create(Cargo cargo) {
-        try (Connection connection = ConnectorDB.getConnection(); PreparedStatement statement = connection.prepareStatement(CargoSQL.INSERT.QUERY, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = ConnectorDB.getConnection();
+             PreparedStatement statement = connection.prepareStatement
+                     (CargoSQL.INSERT.QUERY, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setObject(1, cargo.getId());
             statement.setString(2, cargo.getDescription());
             statement.setString(3, cargo.getDescription());
@@ -54,7 +56,8 @@ public class CargoDAOImpl implements CargoDAO {
     @Override
     public Cargo findById(UUID id) {
         Cargo cargo = null;
-        try (Connection connection = ConnectorDB.getConnection(); PreparedStatement statement = connection.prepareStatement(CargoSQL.GET.QUERY)) {
+        try (Connection connection = ConnectorDB.getConnection();
+             PreparedStatement statement = connection.prepareStatement(CargoSQL.GET.QUERY)) {
             statement.setObject(1, id);
             ResultSet rs = statement.executeQuery();
 
@@ -81,7 +84,8 @@ public class CargoDAOImpl implements CargoDAO {
 
     @Override
     public Cargo update(Cargo cargo) {
-        try (Connection connection = ConnectorDB.getConnection(); PreparedStatement statement = connection.prepareStatement(CargoSQL.UPDATE.QUERY)) {
+        try (Connection connection = ConnectorDB.getConnection();
+             PreparedStatement statement = connection.prepareStatement(CargoSQL.UPDATE.QUERY)) {
             statement.setObject(1, cargo.getId());
             statement.setString(2, cargo.getDescription());
             statement.setString(3, cargo.getDescription());
@@ -94,7 +98,6 @@ public class CargoDAOImpl implements CargoDAO {
             statement.setObject(10, cargo.getOwner());
             statement.execute();
 
-            ResultSet rs = statement.getGeneratedKeys();
 
             Cargo fromBase = findById(cargo.getId());
             fromBase.setOwner(personDAO.update(cargo.getOwner()));
@@ -109,7 +112,8 @@ public class CargoDAOImpl implements CargoDAO {
     @Override
     public List<Cargo> findAll() {
         List<Cargo> cargoList = null;
-        try (Connection connection = ConnectorDB.getConnection(); PreparedStatement statement = connection.prepareStatement(CargoSQL.GET_ALL.QUERY)) {
+        try (Connection connection = ConnectorDB.getConnection();
+             PreparedStatement statement = connection.prepareStatement(CargoSQL.GET_ALL.QUERY)) {
 
             ResultSet rs = statement.executeQuery();
 
@@ -142,7 +146,8 @@ public class CargoDAOImpl implements CargoDAO {
     @Override
     public void delete(UUID id) {
         if (findById(id) != null) {
-            try (Connection connection = ConnectorDB.getConnection(); PreparedStatement statement = connection.prepareStatement(CargoSQL.DELETE.QUERY)) {
+            try (Connection connection = ConnectorDB.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(CargoSQL.DELETE.QUERY)) {
                 statement.setObject(1, id);
                 statement.execute();
             } catch (SQLException e) {
@@ -155,7 +160,8 @@ public class CargoDAOImpl implements CargoDAO {
 
     @Override
     public void deleteAll() {
-        try (Connection connection = ConnectorDB.getConnection(); PreparedStatement statement = connection.prepareStatement(CargoSQL.DELETE_ALL.QUERY)) {
+        try (Connection connection = ConnectorDB.getConnection();
+             PreparedStatement statement = connection.prepareStatement(CargoSQL.DELETE_ALL.QUERY)) {
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();

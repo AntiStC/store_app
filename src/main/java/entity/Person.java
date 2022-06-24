@@ -14,6 +14,10 @@ public class Person {
     public Person(long id) {
     }
 
+    public Person() {
+
+    }
+
     public UUID getId() {
         return id;
     }

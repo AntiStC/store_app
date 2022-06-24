@@ -7,7 +7,7 @@ public enum CargoSQL {
             " volume, createAt, modifiedAt, owner)" +
             " VALUES(uuid_generate_v4(),(?),(?),(?)) RETURNING id"),
     DELETE("DELETE FROM cargos WHERE id = (?)"),
-    DELETE_ALL("TRUNCATE cargo CASCADE;"),
+    DELETE_ALL("TRUNCATE cargos CASCADE;"),
     UPDATE("UPDATE cargos SET name = (?), description = (?), type = (?)," +
             " state = (?), weight = (?), volume = (?), createAt = (?), modifiedAt = (?)," +
             " owner = (?) WHERE id = (?) RETURNING id");

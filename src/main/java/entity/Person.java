@@ -51,6 +51,11 @@ public class Person {
         cargoList.add(cargo);
     }
 
+    public void addCargos(List<Cargo> cargos) {
+        cargos.forEach(cargo -> cargo.setOwner(this));
+        cargoList.addAll(cargos);
+    }
+
     public void removeCargo(Cargo cargo) {
         cargoList.remove(cargo);
     }

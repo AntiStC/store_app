@@ -16,7 +16,7 @@ public class Cargo {
     private Double volume;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    //*..1
+
     private Person owner;
 
     public Cargo() {

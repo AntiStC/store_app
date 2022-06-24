@@ -42,7 +42,7 @@ public class PersonDetailsServiceImpl implements PersonDetailsService {
     }
 
     @Override
-    public void delete(PersonDetails personDetails) {
+    public void deleteAll() {
 
     }
 }

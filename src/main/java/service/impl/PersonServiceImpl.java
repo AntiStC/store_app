@@ -30,7 +30,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public PersonDTO read(UUID id) {
-        return CustomMapper.toDTO(personDAO.findEntityById(id));
+        return CustomMapper.toDTO(personDAO.findById(id));
     }
 
     @Override
@@ -52,7 +52,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void delete(Person person) {
-        personDAO.delete(person);
+    public void deleteAll() {
+        personDAO.deleteAll();
     }
 }

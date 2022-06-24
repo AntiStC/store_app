@@ -15,5 +15,5 @@ public interface CRUDService<Entity, DTO> {
 
     void delete(UUID id);
 
-    void delete(Entity entity);
+    void deleteAll();
 }

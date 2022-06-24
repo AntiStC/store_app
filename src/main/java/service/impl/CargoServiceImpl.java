@@ -44,7 +44,7 @@ public class CargoServiceImpl implements CargoService {
     }
 
     @Override
-    public void delete(Cargo cargo) {
+    public void deleteAll() {
 
     }
 }

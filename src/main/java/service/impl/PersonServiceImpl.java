@@ -4,6 +4,7 @@ import dao.PersonDAO;
 import entity.Person;
 import entity.dto.PersonDTO;
 import mapper.CustomMapper;
+import service.CargoService;
 import service.PersonDetailsService;
 import service.PersonService;
 
@@ -12,19 +13,22 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class PersonServiceImpl implements PersonService {
-    //TODO use interface instead
     private final PersonDAO personDAO;
     private final PersonDetailsService personDetailsService;
 
-    public PersonServiceImpl(PersonDAO personDAO, PersonDetailsService personDetailsService) {
+    private final CargoService cargoService;
+
+    public PersonServiceImpl(PersonDAO personDAO, PersonDetailsService personDetailsService, CargoService cargoService) {
         this.personDAO = personDAO;
         this.personDetailsService = personDetailsService;
+        this.cargoService = cargoService;
     }
 
     @Override
     public PersonDTO create(Person person) {
         personDAO.create(person);
         personDetailsService.create(person.getDetails());
+        person.getCargoList().forEach(cargoService::create);
         return CustomMapper.toDTO(person);
     }
 

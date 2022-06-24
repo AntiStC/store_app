@@ -9,6 +9,7 @@ public class Person {
 
     private PersonDetails details;
 
+    //todo make final
     private List<Cargo> cargoList = new ArrayList<>();
 
     public Person(long id) {
@@ -38,6 +39,7 @@ public class Person {
         return cargoList;
     }
 
+    //todo remove
     public void setCargoList(List<Cargo> cargoList) {
         this.cargoList = cargoList;
     }

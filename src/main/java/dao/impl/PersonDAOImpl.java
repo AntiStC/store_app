@@ -28,6 +28,7 @@ public class PersonDAOImpl implements PersonDAO {
              PreparedStatement statement = connection.prepareStatement
                      (PersonSQL.INSERT.QUERY, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setObject(1, person.getId());
+            //todo why string value?
             statement.setObject(2, String.valueOf(person.getDetails()));
             statement.setObject(3, person.getCargoList());
             statement.execute();
@@ -57,6 +58,7 @@ public class PersonDAOImpl implements PersonDAO {
                 person = new Person();
                 person.setId(rs.getObject("id", UUID.class));
                 person.setDetails(personDetailsDAO.findById(rs.getObject("id", UUID.class)));
+                //todo use loop or stream
                 person.setCargoList((List<Cargo>) cargoDAO.findById(rs.getObject("id", UUID.class)));
             }
         } catch (SQLException e) {
@@ -78,6 +80,7 @@ public class PersonDAOImpl implements PersonDAO {
 
 
             Person fromBase = findById(person.getId());
+            //todo use loop or stream
             fromBase.setCargoList((List<Cargo>) cargoDAO.update((Cargo) person.getCargoList()));
             fromBase.setDetails(personDetailsDAO.update(person.getDetails()));
         } catch (SQLException e) {
@@ -101,6 +104,7 @@ public class PersonDAOImpl implements PersonDAO {
                 Person person = new Person();
                 person.setId(rs.getObject("id", UUID.class));
                 person.setDetails(personDetailsDAO.findById(rs.getObject("id", UUID.class)));
+                //todo use loop or stream
                 person.setCargoList((List<Cargo>) cargoDAO.findById(rs.getObject("id", UUID.class)));
 
                 personList.add(person);

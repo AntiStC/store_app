@@ -39,7 +39,7 @@ public class Person {
         return cargoList;
     }
 
-    //todo remove
+    //todo will be removed
     public void setCargoList(List<Cargo> cargoList) {
         this.cargoList = cargoList;
     }

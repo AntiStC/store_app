@@ -50,6 +50,7 @@ public class CargoDAOImpl implements CargoDAO {
         } finally {
             ConnectorDB.closeConnection();
         }
+        //todo if in row 44 false, cargo id == null
         return cargo;
     }
 

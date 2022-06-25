@@ -3,24 +3,25 @@ package mapper;
 import entity.Cargo;
 import entity.Person;
 import entity.PersonDetails;
-import entity.dto.CargoDTO;
-import entity.dto.PersonDTO;
-import entity.dto.PersonDetailsDTO;
+import dto.CargoDto;
+import dto.PersonDTO;
+import dto.PersonDetailsDTO;
 
 public class CustomMapper {
 
-    public static CargoDTO toDTO(Cargo cargo) {
-        return new CargoDTO(
-                cargo.getId(),
-                cargo.getName(),
-                cargo.getDescription(),
-                cargo.getType(),
-                cargo.getState(),
-                cargo.getWeight(),
-                cargo.getVolume(),
-                cargo.getCreatedAt(),
-                cargo.getModifiedAt(),
-                cargo.getOwner());
+    public static CargoDto toDTO(Cargo cargo) {
+        return new CargoDto.Builder()
+                .setId(cargo.getId())
+                .setName(cargo.getName())
+                .setDescription(cargo.getDescription())
+                .setType(cargo.getType())
+                .setState(cargo.getState())
+                .setWeight(cargo.getWeight())
+                .setVolume(cargo.getVolume())
+                .setCreatedAt(cargo.getCreatedAt())
+                .setModifiedAt(cargo.getModifiedAt())
+                .setOwner(cargo.getOwner())
+                .build();
     }
 
     public static PersonDTO toDTO(Person person) {

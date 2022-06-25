@@ -18,7 +18,7 @@ public class CargoDto {
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
 
-    private Person owner;
+    private final Person owner;
 
     private CargoDto(
             UUID id,
@@ -41,6 +41,46 @@ public class CargoDto {
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
         this.owner = owner;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public CargoType getType() {
+        return type;
+    }
+
+    public CargoState getState() {
+        return state;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public Double getVolume() {
+        return volume;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getModifiedAt() {
+        return modifiedAt;
+    }
+
+    public Person getOwner() {
+        return owner;
     }
 
     @Override

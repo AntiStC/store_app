@@ -4,8 +4,9 @@ import entity.Cargo;
 import entity.Person;
 import entity.PersonDetails;
 import dto.CargoDto;
-import dto.PersonDTO;
-import dto.PersonDetailsDto;
+import dto.PersonDto;
+
+import java.util.stream.Collectors;
 
 public class CustomMapper {
 
@@ -24,20 +25,24 @@ public class CustomMapper {
                 .build();
     }
 
-    public static PersonDTO toDTO(Person person) {
-        return new PersonDTO(
+    public static PersonDto toDTO(Person person) {
+        PersonDto personDto = new PersonDto(
                 person.getId(),
-                person.getDetails(),
-                person.getCargoList());
+                CustomMapper.toDTO(person.getDetails()));
+
+        personDto.addCargos(person.getCargoList().stream()
+                .map(CustomMapper::toDTO)
+                .collect(Collectors.toList()));
+        return personDto;
     }
 
-    public static PersonDetailsDto toDTO(PersonDetails personDetails) {
-        return new PersonDetailsDto.Builder()
-                .setId(personDetails.getId())
-                .setFirstName(personDetails.getFirstName())
-                .setLastName(personDetails.getLastName())
-                .setPassportNum(personDetails.getPassportNum())
-                .setAddress(personDetails.getAddress())
+    public static dto.PersonDetailsDto toDTO(PersonDetails personDetailsDto) {
+        return new dto.PersonDetailsDto.Builder()
+                .setId(personDetailsDto.getId())
+                .setFirstName(personDetailsDto.getFirstName())
+                .setLastName(personDetailsDto.getLastName())
+                .setPassportNum(personDetailsDto.getPassportNum())
+                .setAddress(personDetailsDto.getAddress())
                 .build();
     }
 }

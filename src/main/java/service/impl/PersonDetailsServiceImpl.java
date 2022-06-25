@@ -2,7 +2,6 @@ package service.impl;
 
 import dao.PersonDetailsDAO;
 import entity.PersonDetails;
-import entity.dto.PersonDetailsDTO;
 import mapper.CustomMapper;
 import service.PersonDetailsService;
 
@@ -18,25 +17,25 @@ public class PersonDetailsServiceImpl implements PersonDetailsService {
     }
 
     @Override
-    public PersonDetailsDTO create(PersonDetails personDetails) {
-        return CustomMapper.toDTO(personDetailsDAO.create(personDetails));
+    public dto.PersonDetailsDto create(PersonDetails personDetailsDto) {
+        return CustomMapper.toDTO(personDetailsDAO.create(personDetailsDto));
     }
 
     @Override
-    public PersonDetailsDTO read(UUID id) {
+    public dto.PersonDetailsDto read(UUID id) {
         return CustomMapper.toDTO(personDetailsDAO.findById(id));
     }
 
     @Override
-    public List<PersonDetailsDTO> getAll() {
+    public List<dto.PersonDetailsDto> getAll() {
         return personDetailsDAO.findAll().stream()
                 .map(CustomMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public PersonDetailsDTO update(PersonDetails personDetails) {
-        return CustomMapper.toDTO(personDetailsDAO.update(personDetails));
+    public dto.PersonDetailsDto update(PersonDetails personDetailsDto) {
+        return CustomMapper.toDTO(personDetailsDAO.update(personDetailsDto));
     }
 
     @Override

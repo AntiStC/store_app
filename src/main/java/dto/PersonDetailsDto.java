@@ -1,8 +1,6 @@
 package dto;
 
 
-import entity.PersonDetails;
-
 import java.util.UUID;
 
 public class PersonDetailsDto {
@@ -24,6 +22,26 @@ public class PersonDetailsDto {
         this.lastName = lastName;
         this.passportNum = passportNum;
         this.address = address;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public Integer getPassportNum() {
+        return passportNum;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     @Override

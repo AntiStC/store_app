@@ -1,9 +1,8 @@
 package service;
 
 import entity.PersonDetails;
-import entity.dto.PersonDetailsDTO;
 
-public interface PersonDetailsService extends CRUDService<PersonDetails, PersonDetailsDTO>{
+public interface PersonDetailsService extends CRUDService<PersonDetails, dto.PersonDetailsDto>{
     //read
 
     //update

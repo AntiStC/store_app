@@ -1,6 +1,6 @@
 package dao;
 
-import entity.Cargo;
+import model.entity.Cargo;
 
 import java.util.UUID;
 

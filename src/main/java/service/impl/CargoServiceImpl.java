@@ -1,8 +1,8 @@
 package service.impl;
 
 import dao.CargoDAO;
-import entity.Cargo;
-import dto.CargoDto;
+import model.entity.Cargo;
+import model.dto.CargoDto;
 import mapper.CustomMapper;
 import service.CargoService;
 

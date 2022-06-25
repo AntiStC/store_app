@@ -1,10 +1,11 @@
 package mapper;
 
-import entity.Cargo;
-import entity.Person;
-import entity.PersonDetails;
-import dto.CargoDto;
-import dto.PersonDto;
+import model.dto.PersonDetailsDto;
+import model.entity.Cargo;
+import model.entity.Person;
+import model.entity.PersonDetails;
+import model.dto.CargoDto;
+import model.dto.PersonDto;
 
 import java.util.stream.Collectors;
 
@@ -36,8 +37,8 @@ public class CustomMapper {
         return personDto;
     }
 
-    public static dto.PersonDetailsDto toDTO(PersonDetails personDetailsDto) {
-        return new dto.PersonDetailsDto.Builder()
+    public static PersonDetailsDto toDTO(PersonDetails personDetailsDto) {
+        return new PersonDetailsDto.Builder()
                 .setId(personDetailsDto.getId())
                 .setFirstName(personDetailsDto.getFirstName())
                 .setLastName(personDetailsDto.getLastName())

@@ -3,7 +3,7 @@ package dao.impl;
 import config.database.ConnectorDB;
 import config.database.PersonDetailsSQL;
 import dao.PersonDetailsDAO;
-import entity.PersonDetails;
+import model.entity.PersonDetails;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

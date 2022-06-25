@@ -1,19 +1,22 @@
-package entity;
+package model.dto;
 
-import java.util.Objects;
+
 import java.util.UUID;
 
-public class PersonDetails {
-    private UUID id;
-    private String firstName;
-    private String lastName;
-    private Integer passportNum;
-    private String address;
+public class PersonDetailsDto {
 
-    public PersonDetails() {
-    }
+    private final UUID id;
+    private final String firstName;
+    private final String lastName;
+    private final Integer passportNum;
+    private final String address;
 
-    private PersonDetails(UUID id, String firstName, String lastName, Integer passportNum, String address) {
+    private PersonDetailsDto(
+            UUID id,
+            String firstName,
+            String lastName,
+            Integer passportNum,
+            String address) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -25,64 +28,25 @@ public class PersonDetails {
         return id;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
     public String getFirstName() {
         return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public Integer getPassportNum() {
         return passportNum;
-    }
-
-    public void setPassportNum(Integer passportNum) {
-        this.passportNum = passportNum;
     }
 
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || !getClass().equals(o.getClass())) {
-            return false;
-        }
-
-        PersonDetails personDetails = (PersonDetails) o;
-
-        return getId() == personDetails.getId()
-                && Objects.equals(getPassportNum(), personDetails.getPassportNum());
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + passportNum.hashCode();
-        return result;
-    }
-
     @Override
     public String toString() {
-        return "PersonDetails{" +
+        return "PersonDetailsDTO{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
@@ -90,6 +54,7 @@ public class PersonDetails {
                 ", address='" + address + '\'' +
                 '}';
     }
+
 
     public static class Builder {
         private UUID id;
@@ -123,8 +88,8 @@ public class PersonDetails {
             return this;
         }
 
-        public PersonDetails build() {
-            return new PersonDetails(
+        public PersonDetailsDto build() {
+            return new PersonDetailsDto(
                     id,
                     firstName,
                     lastName,

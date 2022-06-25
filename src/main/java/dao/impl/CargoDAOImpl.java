@@ -4,9 +4,9 @@ import config.database.ConnectorDB;
 import config.database.CargoSQL;
 import dao.CargoDAO;
 import dao.PersonDAO;
-import entity.Cargo;
-import entity.enums.CargoState;
-import entity.enums.CargoType;
+import model.entity.Cargo;
+import model.entity.enums.CargoState;
+import model.entity.enums.CargoType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

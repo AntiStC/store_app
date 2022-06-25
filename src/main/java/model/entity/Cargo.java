@@ -1,7 +1,7 @@
-package entity;
+package model.entity;
 
-import entity.enums.CargoState;
-import entity.enums.CargoType;
+import model.entity.enums.CargoState;
+import model.entity.enums.CargoType;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

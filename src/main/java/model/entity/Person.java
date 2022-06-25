@@ -1,4 +1,4 @@
-package entity;
+package model.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,15 +9,7 @@ public class Person {
 
     private PersonDetails details;
 
-    //todo make final
-    private List<Cargo> cargoList = new ArrayList<>();
-
-    public Person(long id) {
-    }
-
-    public Person() {
-
-    }
+    private final List<Cargo> cargoList = new ArrayList<>();
 
     public UUID getId() {
         return id;
@@ -37,11 +29,6 @@ public class Person {
 
     public List<Cargo> getCargoList() {
         return cargoList;
-    }
-
-    //todo will be removed
-    public void setCargoList(List<Cargo> cargoList) {
-        this.cargoList = cargoList;
     }
 
     public void addCargo(Cargo cargo) {

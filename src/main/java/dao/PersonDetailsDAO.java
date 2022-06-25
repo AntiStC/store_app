@@ -1,6 +1,6 @@
 package dao;
 
-import entity.PersonDetails;
+import model.entity.PersonDetails;
 
 import java.util.UUID;
 

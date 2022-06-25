@@ -1,9 +1,9 @@
 package service;
 
-import entity.Cargo;
-import entity.dto.CargoDTO;
+import model.entity.Cargo;
+import model.dto.CargoDto;
 
-public interface CargoService extends CRUDService<Cargo, CargoDTO>{
+public interface CargoService extends CRUDService<Cargo, CargoDto>{
     //read
 
     //update

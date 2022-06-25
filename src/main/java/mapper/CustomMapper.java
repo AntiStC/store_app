@@ -5,7 +5,7 @@ import entity.Person;
 import entity.PersonDetails;
 import dto.CargoDto;
 import dto.PersonDTO;
-import dto.PersonDetailsDTO;
+import dto.PersonDetailsDto;
 
 public class CustomMapper {
 
@@ -31,12 +31,13 @@ public class CustomMapper {
                 person.getCargoList());
     }
 
-    public static PersonDetailsDTO toDTO(PersonDetails personDetails) {
-        return new PersonDetailsDTO(
-                personDetails.getId(),
-                personDetails.getFirstName(),
-                personDetails.getLastName(),
-                personDetails.getPassportNum(),
-                personDetails.getAddress());
+    public static PersonDetailsDto toDTO(PersonDetails personDetails) {
+        return new PersonDetailsDto.Builder()
+                .setId(personDetails.getId())
+                .setFirstName(personDetails.getFirstName())
+                .setLastName(personDetails.getLastName())
+                .setPassportNum(personDetails.getPassportNum())
+                .setAddress(personDetails.getAddress())
+                .build();
     }
 }

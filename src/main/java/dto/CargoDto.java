@@ -20,7 +20,17 @@ public class CargoDto {
 
     private Person owner;
 
-    private CargoDto(UUID id, String name, String description, CargoType type, CargoState state, Double weight, Double volume, LocalDateTime createdAt, LocalDateTime modifiedAt, Person owner) {
+    private CargoDto(
+            UUID id,
+            String name,
+            String description,
+            CargoType type,
+            CargoState state,
+            Double weight,
+            Double volume,
+            LocalDateTime createdAt,
+            LocalDateTime modifiedAt,
+            Person owner) {
         this.id = id;
         this.name = name;
         this.description = description;

@@ -5,8 +5,8 @@ import config.database.PersonSQL;
 import dao.CargoDAO;
 import dao.PersonDAO;
 import dao.PersonDetailsDAO;
-import entity.Cargo;
-import entity.Person;
+import model.entity.Cargo;
+import model.entity.Person;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -58,7 +58,7 @@ public class PersonDAOImpl implements PersonDAO {
                 person.setId(rs.getObject("id", UUID.class));
                 person.setDetails(personDetailsDAO.findById(rs.getObject("id", UUID.class)));
                 //todo use loop or stream
-                person.setCargoList((List<Cargo>) cargoDAO.findById(rs.getObject("id", UUID.class)));
+                person.addCargos((List<Cargo>) cargoDAO.findById(rs.getObject("id", UUID.class)));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,7 +80,7 @@ public class PersonDAOImpl implements PersonDAO {
 
             Person fromBase = findById(person.getId());
             //todo use loop or stream
-            fromBase.setCargoList((List<Cargo>) cargoDAO.update((Cargo) person.getCargoList()));
+            fromBase.addCargos((List<Cargo>) cargoDAO.update((Cargo) person.getCargoList()));
             fromBase.setDetails(personDetailsDAO.update(person.getDetails()));
         } catch (SQLException e) {
             e.printStackTrace();
@@ -104,7 +104,7 @@ public class PersonDAOImpl implements PersonDAO {
                 person.setId(rs.getObject("id", UUID.class));
                 person.setDetails(personDetailsDAO.findById(rs.getObject("id", UUID.class)));
                 //todo use loop or stream
-                person.setCargoList((List<Cargo>) cargoDAO.findById(rs.getObject("id", UUID.class)));
+                person.addCargos((List<Cargo>) cargoDAO.findById(rs.getObject("id", UUID.class)));
 
                 personList.add(person);
             }

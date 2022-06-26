@@ -3,15 +3,15 @@ package service;
 import java.util.List;
 import java.util.UUID;
 
-public interface CRUDService<Entity, DTO> {
+public interface CRUDService<DTO> {
 
-    DTO create(Entity entity);
+    DTO create(DTO dto);
 
     DTO read(UUID id);
 
     List<DTO> getAll();
 
-    DTO update(Entity entity);
+    DTO update(DTO dto);
 
     void delete(UUID id);
 

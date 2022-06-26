@@ -1,7 +1,6 @@
 package service.impl;
 
 import dao.CargoDAO;
-import model.entity.Cargo;
 import model.dto.CargoDto;
 import mapper.CustomMapper;
 import service.CargoService;
@@ -18,8 +17,8 @@ public class CargoServiceImpl implements CargoService {
     }
 
     @Override
-    public CargoDto create(Cargo cargo) {
-        return CustomMapper.toDTO(cargoDAO.create(cargo));
+    public CargoDto create(CargoDto cargoDto) {
+        return CustomMapper.toDTO(cargoDAO.create(CustomMapper.toEntity(cargoDto)));
     }
 
     @Override
@@ -35,8 +34,8 @@ public class CargoServiceImpl implements CargoService {
     }
 
     @Override
-    public CargoDto update(Cargo cargo) {
-        return CustomMapper.toDTO(cargoDAO.update(cargo));
+    public CargoDto update(CargoDto cargoDto) {
+        return CustomMapper.toDTO(cargoDAO.update(CustomMapper.toEntity(cargoDto)));
     }
 
     @Override

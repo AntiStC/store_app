@@ -1,7 +1,6 @@
 package service.impl;
 
 import dao.PersonDAO;
-import model.entity.Person;
 import model.dto.PersonDto;
 import mapper.CustomMapper;
 import service.CargoService;
@@ -25,11 +24,11 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public PersonDto create(Person person) {
-        personDAO.create(person);
-        personDetailsService.create(person.getDetails());
-        person.getCargoList().forEach(cargoService::create);
-        return CustomMapper.toDTO(person);
+    public PersonDto create(PersonDto personDto) {
+        personDetailsService.create(personDto.getDetails());
+        personDto.getCargoList().forEach(cargoService::create);
+
+        return CustomMapper.toDTO(personDAO.create(CustomMapper.toEntity(personDto)));
     }
 
     @Override
@@ -45,9 +44,9 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public PersonDto update(Person person) {
+    public PersonDto update(PersonDto person) {
         personDetailsService.update(person.getDetails());
-        return CustomMapper.toDTO(personDAO.update(person));
+        return CustomMapper.toDTO(personDAO.update(CustomMapper.toEntity(person)));
     }
 
     @Override

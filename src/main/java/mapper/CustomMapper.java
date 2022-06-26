@@ -26,6 +26,21 @@ public class CustomMapper {
                 .build();
     }
 
+    public static Cargo toEntity(CargoDto cargoDto) {
+        return new Cargo.Builder()
+                .setId(cargoDto.getId())
+                .setName(cargoDto.getName())
+                .setDescription(cargoDto.getDescription())
+                .setType(cargoDto.getType())
+                .setState(cargoDto.getState())
+                .setWeight(cargoDto.getWeight())
+                .setVolume(cargoDto.getVolume())
+                .setCreatedAt(cargoDto.getCreatedAt())
+                .setModifiedAt(cargoDto.getModifiedAt())
+                .setOwner(cargoDto.getOwner())
+                .build();
+    }
+
     public static PersonDto toDTO(Person person) {
         PersonDto personDto = new PersonDto(
                 person.getId(),
@@ -37,8 +52,29 @@ public class CustomMapper {
         return personDto;
     }
 
-    public static PersonDetailsDto toDTO(PersonDetails personDetailsDto) {
+    public static Person toEntity(PersonDto personDto) {
+        Person person = new Person();
+        person.setId(personDto.getId());
+        person.setDetails(toEntity(personDto.getDetails()));
+        person.addCargos(personDto.getCargoList().stream()
+                .map(CustomMapper::toEntity)
+                .collect(Collectors.toList()));
+
+        return person;
+    }
+
+    public static PersonDetailsDto toDTO(PersonDetails personDetails) {
         return new PersonDetailsDto.Builder()
+                .setId(personDetails.getId())
+                .setFirstName(personDetails.getFirstName())
+                .setLastName(personDetails.getLastName())
+                .setPassportNum(personDetails.getPassportNum())
+                .setAddress(personDetails.getAddress())
+                .build();
+    }
+
+    public static PersonDetails toEntity(PersonDetailsDto personDetailsDto) {
+        return new PersonDetails.Builder()
                 .setId(personDetailsDto.getId())
                 .setFirstName(personDetailsDto.getFirstName())
                 .setLastName(personDetailsDto.getLastName())

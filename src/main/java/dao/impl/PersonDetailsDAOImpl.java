@@ -18,53 +18,53 @@ public class PersonDetailsDAOImpl implements PersonDetailsDAO {
 
 
     @Override
-    public PersonDetails create(PersonDetails personDetailsDto) {
+    public PersonDetails create(PersonDetails personDetails) {
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonDetailsSQL.INSERT.QUERY, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            statement.setObject(1, personDetailsDto.getId());
-            statement.setString(2, personDetailsDto.getFirstName());
-            statement.setString(3, personDetailsDto.getLastName());
-            statement.setInt(4, personDetailsDto.getPassportNum());
-            statement.setString(5, personDetailsDto.getAddress());
+            statement.setObject(1, personDetails.getId());
+            statement.setString(2, personDetails.getFirstName());
+            statement.setString(3, personDetails.getLastName());
+            statement.setInt(4, personDetails.getPassportNum());
+            statement.setString(5, personDetails.getAddress());
             statement.execute();
 
             ResultSet rs = statement.getGeneratedKeys();
 
             if (rs.next()) {
-                personDetailsDto.setId(rs.getObject("id", UUID.class));
-                return personDetailsDto;
+                personDetails.setId(rs.getObject("id", UUID.class));
+                return personDetails;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             ConnectorDB.closeConnection();
         }
-        return personDetailsDto;
+        return personDetails;
     }
 
     @Override
     public PersonDetails findById(UUID id) {
-        PersonDetails personDetailsDto = null;
+        PersonDetails personDetails = null;
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement(PersonDetailsSQL.GET.QUERY)) {
             statement.setObject(1, id);
             ResultSet rs = statement.executeQuery();
 
             if (rs.next()) {
-                personDetailsDto = new PersonDetails();
-                personDetailsDto.setId(rs.getObject("id", UUID.class));
-                personDetailsDto.setFirstName(rs.getString("first_name"));
-                personDetailsDto.setLastName(rs.getString("last_name"));
-                personDetailsDto.setPassportNum(rs.getInt("passportNum"));
-                personDetailsDto.setAddress(rs.getString("address"));
+                personDetails = new PersonDetails();
+                personDetails.setId(rs.getObject("id", UUID.class));
+                personDetails.setFirstName(rs.getString("first_name"));
+                personDetails.setLastName(rs.getString("last_name"));
+                personDetails.setPassportNum(rs.getInt("passportNum"));
+                personDetails.setAddress(rs.getString("address"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             ConnectorDB.closeConnection();
         }
-        return personDetailsDto;
+        return personDetails;
     }
 
     @Override
@@ -88,13 +88,13 @@ public class PersonDetailsDAOImpl implements PersonDetailsDAO {
 
     @Override
     public List<PersonDetails> findAll() {
-        List<PersonDetails> personDetailsDtoList = null;
+        List<PersonDetails> personDetailsList = null;
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement(PersonDetailsSQL.GET_ALL.QUERY)) {
 
             ResultSet rs = statement.executeQuery();
 
-            personDetailsDtoList = new ArrayList<>();
+            personDetailsList = new ArrayList<>();
 
             while (rs.next()) {
                 PersonDetails personDetailsDto = new PersonDetails();
@@ -104,14 +104,14 @@ public class PersonDetailsDAOImpl implements PersonDetailsDAO {
                 personDetailsDto.setPassportNum(rs.getInt("type"));
                 personDetailsDto.setAddress(rs.getString("state"));
 
-                personDetailsDtoList.add(personDetailsDto);
+                personDetailsList.add(personDetailsDto);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             ConnectorDB.closeConnection();
         }
-        return personDetailsDtoList;
+        return personDetailsList;
     }
 
 

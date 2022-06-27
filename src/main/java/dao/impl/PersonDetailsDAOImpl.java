@@ -56,7 +56,7 @@ public class PersonDetailsDAOImpl implements PersonDetailsDAO {
                 personDetails.setId(rs.getObject("id", UUID.class));
                 personDetails.setFirstName(rs.getString("first_name"));
                 personDetails.setLastName(rs.getString("last_name"));
-                personDetails.setPassportNum(rs.getInt("passportNum"));
+                personDetails.setPassportNum(rs.getInt("passport_num"));
                 personDetails.setAddress(rs.getString("address"));
             }
         } catch (SQLException e) {

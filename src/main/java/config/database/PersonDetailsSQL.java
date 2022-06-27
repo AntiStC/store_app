@@ -3,12 +3,12 @@ package config.database;
 public enum PersonDetailsSQL {
     GET("SELECT * FROM person_details WHERE id = (?)"),
     GET_ALL("SELECT * FROM person_details"),
-    INSERT("INSERT INTO person_details(id, first_name, last_name, passportNum, address)" +
+    INSERT("INSERT INTO person_details(id, first_name, last_name, passport_num, address)" +
             " VALUES(uuid_generate_v4(),(?),(?),(?)) RETURNING id"),
     DELETE("DELETE FROM person_details WHERE id = (?)"),
     DELETE_ALL("TRUNCATE person_details CASCADE;"),
     UPDATE("UPDATE person_details SET first_name = (?), last_name = (?) " +
-            "passportNum = (?), address = (?) WHERE id = (?) RETURNING id");
+            "passport_num = (?), address = (?) WHERE id = (?) RETURNING id");
 
     public final String QUERY;
 

@@ -71,8 +71,8 @@ public class CargoDAOImpl implements CargoDAO {
                 cargo.setState(CargoState.valueOf(rs.getString("state")));
                 cargo.setWeight(rs.getDouble("weight"));
                 cargo.setVolume(rs.getDouble("volume"));
-                cargo.setCreatedAt((LocalDateTime) rs.getObject("createAt"));
-                cargo.setModifiedAt((LocalDateTime) rs.getObject("modifiedAt"));
+                cargo.setCreatedAt((LocalDateTime) rs.getObject("create_at"));
+                cargo.setModifiedAt((LocalDateTime) rs.getObject("modified_at"));
                 cargo.setOwner(personDAO.findById(rs.getObject("id", UUID.class)));
             }
         } catch (SQLException e) {
@@ -129,8 +129,8 @@ public class CargoDAOImpl implements CargoDAO {
                 cargo.setState(CargoState.valueOf(rs.getString("state")));
                 cargo.setWeight(rs.getDouble("weight"));
                 cargo.setVolume(rs.getDouble("volume"));
-                cargo.setCreatedAt((LocalDateTime) rs.getObject("createAt"));
-                cargo.setModifiedAt((LocalDateTime) rs.getObject("modifiedAt"));
+                cargo.setCreatedAt((LocalDateTime) rs.getObject("create_at"));
+                cargo.setModifiedAt((LocalDateTime) rs.getObject("modified_at"));
                 cargo.setOwner(personDAO.findById(rs.getObject("id", UUID.class)));
 
                 cargoList.add(cargo);

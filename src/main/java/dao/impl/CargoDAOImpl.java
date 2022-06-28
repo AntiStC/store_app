@@ -19,7 +19,7 @@ import java.util.UUID;
 
 
 public class CargoDAOImpl implements CargoDAO {
-
+    //todo ???
     PersonDAO personDAO;
 
     @Override

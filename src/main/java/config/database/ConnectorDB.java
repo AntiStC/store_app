@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ConnectorDB {
+    //todo ???
     public static Connection getConnection() throws SQLException {
         ResourceBundle resource = ResourceBundle.getBundle("store_app");
         String url = resource.getString("jdbc:postgresql://localhost:5432/store_app");
@@ -17,6 +18,7 @@ public class ConnectorDB {
     }
 
     public static void closeConnection() {
+        //todo ???
         Connection connection = null;
         if (connection != null) {
             try {

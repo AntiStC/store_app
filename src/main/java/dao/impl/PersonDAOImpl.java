@@ -17,9 +17,10 @@ import java.util.UUID;
 
 
 public class PersonDAOImpl implements PersonDAO {
-    private static final String get = "SELECT * FROM persons WHERE id = (?)";
-    private static final String getAll = "SELECT * FROM persons";
-    public static final String insert = "INSERT INTO persons(id, details_id, cargos_id) " +
+    private static final String get = "SELECT id, details_id, cargos_id " +
+            "FROM persons WHERE id = (?)";
+    private static final String getAll = "SELECT id, details_id, cargos_id FROM persons";
+    public static final String insert = "INSERT INTO persons (id, details_id, cargos_id) " +
             "VALUES(uuid_generate_v4(),(?),(?),(?)) RETURNING id";
     public static final String delete = "DELETE FROM persons WHERE id = (?)";
     public static final String deleteAll = "TRUNCATE persons CASCADE";

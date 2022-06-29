@@ -18,8 +18,9 @@ import java.util.UUID;
 
 
 public class CargoDAOImpl implements CargoDAO {
-    private static final String get = "SELECT * FROM cargos WHERE id = (?)";
-    private static final String getAll = "SELECT * FROM cargos";
+    private static final String get = "SELECT id, name, description, type, state, weight, " +
+            "volume, create_at, modified_at, owner_id FROM cargos WHERE id = (?)";
+    private static final String getAll = "SELECT  FROM cargos";
     private static final String insert = "INSERT INTO cargos(id, name, description, type," +
             " state, weight, volume, create_at, modified_at, owner_id)" +
             " VALUES(uuid_generate_v4(),(?),(?),(?)) RETURNING id";

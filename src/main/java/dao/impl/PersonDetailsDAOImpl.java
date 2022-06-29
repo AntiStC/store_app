@@ -14,8 +14,10 @@ import java.util.UUID;
 
 
 public class PersonDetailsDAOImpl implements PersonDetailsDAO {
-    public static final String get = "SELECT * FROM person_details WHERE id = (?)";
-    public static final String getAll = "SELECT * FROM person_details";
+    public static final String get = "SELECT id, first_name, last_name, " +
+            "passport_num, address FROM person_details WHERE id = (?)";
+    public static final String getAll = "SELECT id, first_name, last_name, " +
+            "passport_num, address FROM person_details";
     public static final String insert = "INSERT INTO person_details(id, first_name, " +
             "last_name, passport_num, address)" +
             " VALUES(uuid_generate_v4(),(?),(?),(?)) RETURNING id";

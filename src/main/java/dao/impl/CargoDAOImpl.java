@@ -19,14 +19,23 @@ import java.util.UUID;
 
 
 public class CargoDAOImpl implements CargoDAO {
-    //todo ???
+    private static final String get = "SELECT * FROM cargos WHERE id = (?)";
+    private static final String getAll = "SELECT * FROM cargos";
+    private static final String insert = "INSERT INTO cargos(id, name, description, type," +
+            " state, weight, volume, create_at, modified_at, owner)" +
+            " VALUES(uuid_generate_v4(),(?),(?),(?)) RETURNING id";
+    private static final String delete = "DELETE FROM cargos WHERE id = (?)";
+    private static final String deleteAll = "TRUNCATE cargos CASCADE";
+    private static final String update = "UPDATE cargos SET name = (?), description = (?), type = (?)," +
+            " state = (?), weight = (?), volume = (?), create_at = (?), modified_at = (?)," +
+            " owner = (?) WHERE id = (?) RETURNING id";
     PersonDAO personDAO;
 
     @Override
     public Cargo create(Cargo cargo) {
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
-                     (CargoSQL.INSERT.QUERY, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                     (insert, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setObject(1, cargo.getId());
             statement.setString(2, cargo.getDescription());
             statement.setString(3, cargo.getDescription());
@@ -58,7 +67,7 @@ public class CargoDAOImpl implements CargoDAO {
     public Cargo findById(UUID id) {
         Cargo cargo = null;
         try (Connection connection = ConnectorDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement(CargoSQL.GET.QUERY)) {
+             PreparedStatement statement = connection.prepareStatement(get)) {
             statement.setObject(1, id);
             ResultSet rs = statement.executeQuery();
 
@@ -86,7 +95,7 @@ public class CargoDAOImpl implements CargoDAO {
     @Override
     public Cargo update(Cargo cargo) {
         try (Connection connection = ConnectorDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement(CargoSQL.UPDATE.QUERY)) {
+             PreparedStatement statement = connection.prepareStatement(update)) {
             statement.setObject(1, cargo.getId());
             statement.setString(2, cargo.getDescription());
             statement.setString(3, cargo.getDescription());
@@ -114,7 +123,7 @@ public class CargoDAOImpl implements CargoDAO {
     public List<Cargo> findAll() {
         List<Cargo> cargoList = null;
         try (Connection connection = ConnectorDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement(CargoSQL.GET_ALL.QUERY)) {
+             PreparedStatement statement = connection.prepareStatement(getAll)) {
 
             ResultSet rs = statement.executeQuery();
 
@@ -148,7 +157,7 @@ public class CargoDAOImpl implements CargoDAO {
     public void delete(UUID id) {
         if (findById(id) != null) {
             try (Connection connection = ConnectorDB.getConnection();
-                 PreparedStatement statement = connection.prepareStatement(CargoSQL.DELETE.QUERY)) {
+                 PreparedStatement statement = connection.prepareStatement(delete)) {
                 statement.setObject(1, id);
                 statement.execute();
             } catch (SQLException e) {
@@ -162,7 +171,7 @@ public class CargoDAOImpl implements CargoDAO {
     @Override
     public void deleteAll() {
         try (Connection connection = ConnectorDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement(CargoSQL.DELETE_ALL.QUERY)) {
+             PreparedStatement statement = connection.prepareStatement(deleteAll)) {
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();

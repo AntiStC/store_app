@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS cargos
 
 CREATE TABLE IF NOT EXISTS persons
 (
-    id       UUID PRIMARY KEY,
+    id          UUID PRIMARY KEY,
     details_id  UUID NOT NULL,
     cargos_id   UUID NOT NULL,
     UNIQUE (details_id),

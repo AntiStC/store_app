@@ -1,7 +1,6 @@
 package dao.impl;
 
 import config.database.ConnectorDB;
-import config.database.PersonSQL;
 import dao.CargoDAO;
 import dao.PersonDAO;
 import dao.PersonDetailsDAO;
@@ -18,7 +17,15 @@ import java.util.UUID;
 
 
 public class PersonDAOImpl implements PersonDAO {
-    //todo ???
+    private static final String get = "SELECT * FROM persons WHERE id = (?)";
+    private static final String getAll = "SELECT * FROM persons";
+    public static final String insert = "INSERT INTO persons(id, details_id, cargos_id) " +
+            "VALUES(uuid_generate_v4(),(?),(?),(?)) RETURNING id";
+    public static final String delete = "DELETE FROM persons WHERE id = (?)";
+    public static final String deleteAll = "TRUNCATE persons CASCADE";
+    public static final String update = "UPDATE persons SET details_id = (?), cargos_id = (?)" +
+            " WHERE id = (?) RETURNING id";
+
     CargoDAO cargoDAO;
     PersonDetailsDAO personDetailsDAO;
 
@@ -26,7 +33,7 @@ public class PersonDAOImpl implements PersonDAO {
     public Person create(Person person) {
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
-                     (PersonSQL.INSERT.QUERY, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                     (insert, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setObject(1, person.getId());
             statement.setObject(2, person.getDetails());
             statement.setObject(3, person.getCargoList());
@@ -49,7 +56,8 @@ public class PersonDAOImpl implements PersonDAO {
     @Override
     public Person findById(UUID id) {
         Person person = null;
-        try (Connection connection = ConnectorDB.getConnection(); PreparedStatement statement = connection.prepareStatement(PersonSQL.GET.QUERY)) {
+        try (Connection connection = ConnectorDB.getConnection();
+             PreparedStatement statement = connection.prepareStatement(get)) {
             statement.setObject(1, id);
             ResultSet rs = statement.executeQuery();
 
@@ -58,7 +66,8 @@ public class PersonDAOImpl implements PersonDAO {
                 person.setId(rs.getObject("id", UUID.class));
                 person.setDetails(personDetailsDAO.findById(rs.getObject("id", UUID.class)));
                 //todo use loop or stream
-                person.addCargos((List<Cargo>) cargoDAO.findById(rs.getObject("id", UUID.class)));
+                person.addCargos((List<Cargo>) cargoDAO.findById
+                        (rs.getObject("id", UUID.class)));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -71,7 +80,7 @@ public class PersonDAOImpl implements PersonDAO {
     @Override
     public Person update(Person person) {
         try (Connection connection = ConnectorDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement(PersonSQL.UPDATE.QUERY)) {
+             PreparedStatement statement = connection.prepareStatement(update)) {
             statement.setObject(1, person.getId());
             statement.setObject(2, person.getDetails());
             statement.setObject(3, person.getCargoList());
@@ -93,7 +102,8 @@ public class PersonDAOImpl implements PersonDAO {
     @Override
     public List<Person> findAll() {
         List<Person> personList = null;
-        try (Connection connection = ConnectorDB.getConnection(); PreparedStatement statement = connection.prepareStatement(PersonSQL.GET_ALL.QUERY)) {
+        try (Connection connection = ConnectorDB.getConnection();
+             PreparedStatement statement = connection.prepareStatement(getAll)) {
 
             ResultSet rs = statement.executeQuery();
 
@@ -104,7 +114,8 @@ public class PersonDAOImpl implements PersonDAO {
                 person.setId(rs.getObject("id", UUID.class));
                 person.setDetails(personDetailsDAO.findById(rs.getObject("id", UUID.class)));
                 //todo use loop or stream
-                person.addCargos((List<Cargo>) cargoDAO.findById(rs.getObject("id", UUID.class)));
+                person.addCargos((List<Cargo>) cargoDAO.findById(rs.getObject
+                        ("id", UUID.class)));
 
                 personList.add(person);
             }
@@ -120,7 +131,8 @@ public class PersonDAOImpl implements PersonDAO {
     @Override
     public void delete(UUID id) {
         if (findById(id) != null) {
-            try (Connection connection = ConnectorDB.getConnection(); PreparedStatement statement = connection.prepareStatement(PersonSQL.DELETE.QUERY)) {
+            try (Connection connection = ConnectorDB.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(delete)) {
                 statement.setObject(1, id);
                 statement.execute();
             } catch (SQLException e) {
@@ -133,7 +145,8 @@ public class PersonDAOImpl implements PersonDAO {
 
     @Override
     public void deleteAll() {
-        try (Connection connection = ConnectorDB.getConnection(); PreparedStatement statement = connection.prepareStatement(PersonSQL.DELETE_ALL.QUERY)) {
+        try (Connection connection = ConnectorDB.getConnection();
+             PreparedStatement statement = connection.prepareStatement(deleteAll)) {
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();

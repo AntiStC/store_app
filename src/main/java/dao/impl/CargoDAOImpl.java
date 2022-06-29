@@ -1,7 +1,6 @@
 package dao.impl;
 
 import config.database.ConnectorDB;
-import config.database.CargoSQL;
 import dao.CargoDAO;
 import dao.PersonDAO;
 import model.entity.Cargo;
@@ -22,13 +21,13 @@ public class CargoDAOImpl implements CargoDAO {
     private static final String get = "SELECT * FROM cargos WHERE id = (?)";
     private static final String getAll = "SELECT * FROM cargos";
     private static final String insert = "INSERT INTO cargos(id, name, description, type," +
-            " state, weight, volume, create_at, modified_at, owner)" +
+            " state, weight, volume, create_at, modified_at, owner_id)" +
             " VALUES(uuid_generate_v4(),(?),(?),(?)) RETURNING id";
     private static final String delete = "DELETE FROM cargos WHERE id = (?)";
     private static final String deleteAll = "TRUNCATE cargos CASCADE";
     private static final String update = "UPDATE cargos SET name = (?), description = (?), type = (?)," +
             " state = (?), weight = (?), volume = (?), create_at = (?), modified_at = (?)," +
-            " owner = (?) WHERE id = (?) RETURNING id";
+            " owner_id = (?) WHERE id = (?) RETURNING id";
     PersonDAO personDAO;
 
     @Override

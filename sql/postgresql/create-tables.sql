@@ -14,7 +14,9 @@ CREATE TABLE IF NOT EXISTS cargo
 
 CREATE TABLE IF NOT EXISTS person
 (
-    id          UUID PRIMARY KEY
+    id          UUID PRIMARY KEY,
+    login       VARCHAR NOT NULL,
+    password    VARCHAR NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS person_detail

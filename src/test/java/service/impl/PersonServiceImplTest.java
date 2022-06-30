@@ -2,10 +2,10 @@ package service.impl;
 
 import dao.CargoDAO;
 import dao.PersonDAO;
-import dao.PersonDetailsDAO;
+import dao.PersonDetailDAO;
 import dao.impl.CargoDAOImpl;
 import dao.impl.PersonDAOImpl;
-import dao.impl.PersonDetailsDAOImpl;
+import dao.impl.PersonDetailDAOImpl;
 import model.entity.Cargo;
 import model.entity.Person;
 import model.entity.PersonDetails;
@@ -23,7 +23,7 @@ import java.util.UUID;
 class PersonServiceImplTest {
 
     private static PersonDAO personDAO;
-    private static PersonDetailsDAO personDetailsDAO;
+    private static PersonDetailDAO personDetailDAO;
 
     private static CargoDAO cargoDAO;
 
@@ -37,10 +37,10 @@ class PersonServiceImplTest {
     @BeforeAll
     static void setUp() {
         personDAO = new PersonDAOImpl();
-        personDetailsDAO = new PersonDetailsDAOImpl();
+        personDetailDAO = new PersonDetailDAOImpl();
         cargoDAO = new CargoDAOImpl();
 
-        personDetailsService = new PersonDetailsServiceImpl(personDetailsDAO);
+        personDetailsService = new PersonDetailsServiceImpl(personDetailDAO);
         cargoService = new CargoServiceImpl(cargoDAO);
         personService = new PersonServiceImpl(personDAO, personDetailsService, cargoService);
 

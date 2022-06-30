@@ -12,7 +12,7 @@ public final class CargoSql {
                     volume,
                     create_at,
                     modified_at,
-                    owner_id FROM
+                    person_fk FROM
                     cargo WHERE id = (?)
                     """;
     public static final String SQL_QUERY_CARGO_GET_ALL =

@@ -1,12 +1,12 @@
 package config.database;
 
-public class PersonSql{
+public class PersonSql {
     public static final String SQL_QUERY_PERSON_GET =
             """
                     SELECT id,
                     login,
                     password
-                    FROM persons WHERE id = (?)
+                    FROM person WHERE id = (?)
                     """;
     public static final String SQL_QUERY_PERSON_GET_ALL =
             """

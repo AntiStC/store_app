@@ -1,33 +1,28 @@
-CREATE TABLE IF NOT EXISTS cargos
+CREATE TABLE IF NOT EXISTS cargo
 (
     id           UUID PRIMARY KEY,
-    name         VARCHAR NOT NULL,
-    description  VARCHAR NOT NULL,
+    name         VARCHAR,
+    description  VARCHAR,
     type         VARCHAR NOT NULL,
     state        VARCHAR NOT NULL,
     weight       DOUBLE PRECISION NOT NULL,
     volume       DOUBLE PRECISION NOT NULL,
-    create_at     DATE,
-    modified_at   DATE,
-    owner_id        UUID NOT NULL,
-    UNIQUE (owner_id)
+    create_at    TIMESTAMP,
+    modified_at  TIMESTAMP,
+    person_fk     UUID
 );
 
-CREATE TABLE IF NOT EXISTS persons
+CREATE TABLE IF NOT EXISTS person
 (
-    id          UUID PRIMARY KEY,
-    details_id  UUID NOT NULL,
-    cargos_id   UUID NOT NULL,
-    UNIQUE (details_id),
-    UNIQUE (cargos_id)
+    id          UUID PRIMARY KEY
 );
 
-CREATE TABLE IF NOT EXISTS person_details
+CREATE TABLE IF NOT EXISTS person_detail
 (
-    id          UUID PRIMARY KEY,
-    first_name  VARCHAR NOT NULL,
-    last_name   VARCHAR NOT NULL,
-    passport_num BIGINT NOT NULL,
-    address     VARCHAR NOT NULL,
-    UNIQUE (passport_num)
+    id           UUID PRIMARY KEY,
+    first_name   VARCHAR,
+    last_name    VARCHAR,
+    passport_num BIGINT,
+    address      VARCHAR,
+    person_fk    UUID
 );

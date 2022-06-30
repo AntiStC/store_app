@@ -1,5 +1,5 @@
-DROP TABLE cargos;
+DROP TABLE cargo;
 
-DROP TABLE persons;
+DROP TABLE person;
 
-DROP TABLE person_details;
+DROP TABLE person_detail;

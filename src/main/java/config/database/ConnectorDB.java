@@ -8,9 +8,9 @@ import java.util.ResourceBundle;
 public class ConnectorDB {
     //todo ???
     public static Connection getConnection() throws SQLException {
-        ResourceBundle resource = ResourceBundle.getBundle("store_app");
-        String url = resource.getString("jdbc:postgresql://localhost:5432/store_app");
-        String user = resource.getString("postgres");
+        ResourceBundle resource = ResourceBundle.getBundle("database");
+        String url = resource.getString("db.url");
+        String user = resource.getString("db.user");
         String pass = resource.getString("db.password");
         String dbName = resource.getString("db.name");
 

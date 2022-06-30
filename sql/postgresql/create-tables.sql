@@ -1,3 +1,10 @@
+CREATE TABLE IF NOT EXISTS person
+(
+    id          UUID PRIMARY KEY,
+    login       VARCHAR NOT NULL,
+    password    VARCHAR NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS cargo
 (
     id           UUID PRIMARY KEY,
@@ -9,12 +16,8 @@ CREATE TABLE IF NOT EXISTS cargo
     volume       DOUBLE PRECISION NOT NULL,
     create_at    TIMESTAMP,
     modified_at  TIMESTAMP,
-    person_fk     UUID
-);
-
-CREATE TABLE IF NOT EXISTS person
-(
-    id          UUID PRIMARY KEY
+    person_fk    UUID,
+    FOREIGN KEY (person_fk) REFERENCES person (id)
 );
 
 CREATE TABLE IF NOT EXISTS person_detail
@@ -24,5 +27,6 @@ CREATE TABLE IF NOT EXISTS person_detail
     last_name    VARCHAR,
     passport_num BIGINT,
     address      VARCHAR,
-    person_fk    UUID
+    person_fk    UUID,
+    FOREIGN KEY (person_fk) REFERENCES person (id)
 );

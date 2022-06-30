@@ -1,5 +1,4 @@
-ALTER TABLE cargos ADD FOREIGN KEY (owner_id) REFERENCES persons (id);
+ALTER TABLE cargo ADD FOREIGN KEY (person_fk) REFERENCES person (id);
 
-ALTER TABLE persons ADD FOREIGN KEY (details_id) REFERENCES person_details (id);
+ALTER TABLE person_detail ADD FOREIGN KEY (person_fk) REFERENCES person (id);
 
-ALTER TABLE persons ADD FOREIGN KEY (cargos_id) REFERENCES cargos(id);

@@ -1,1 +1,1 @@
-# store_app
+# Warehouse Management App

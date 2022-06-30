@@ -1,8 +1,8 @@
 package service.impl;
 
 import dao.CargoDAO;
+import mapper.CargoMapper;
 import model.dto.CargoDto;
-import mapper.CustomMapper;
 import service.CargoService;
 
 import java.util.List;
@@ -18,24 +18,24 @@ public class CargoServiceImpl implements CargoService {
 
     @Override
     public CargoDto create(CargoDto cargoDto) {
-        return CustomMapper.toDTO(cargoDAO.create(CustomMapper.toEntity(cargoDto)));
+        return CargoMapper.toDTO(cargoDAO.create(CargoMapper.toEntity(cargoDto)));
     }
 
     @Override
     public CargoDto read(UUID id) {
-        return CustomMapper.toDTO(cargoDAO.findById(id));
+        return CargoMapper.toDTO(cargoDAO.findById(id));
     }
 
     @Override
     public List<CargoDto> getAll() {
         return cargoDAO.findAll().stream()
-                .map(CustomMapper::toDTO)
+                .map(CargoMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public CargoDto update(CargoDto cargoDto) {
-        return CustomMapper.toDTO(cargoDAO.update(CustomMapper.toEntity(cargoDto)));
+        return CargoMapper.toDTO(cargoDAO.update(CargoMapper.toEntity(cargoDto)));
     }
 
     @Override

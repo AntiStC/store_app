@@ -1,7 +1,8 @@
 package dao.impl;
 
 import config.database.ConnectorDB;
-import dao.PersonDetailsDAO;
+import config.database.PersonDetailSql;
+import dao.PersonDetailDAO;
 import model.entity.PersonDetails;
 
 import java.sql.Connection;
@@ -13,30 +14,25 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class PersonDetailsDAOImpl implements PersonDetailsDAO {
-    public static final String get = "SELECT id, first_name, last_name, " +
-            "passport_num, address FROM person_details WHERE id = (?)";
-    public static final String getAll = "SELECT id, first_name, last_name, " +
-            "passport_num, address FROM person_details";
-    public static final String insert = "INSERT INTO person_details(id, first_name, " +
-            "last_name, passport_num, address)" +
-            " VALUES(uuid_generate_v4(),(?),(?),(?)) RETURNING id";
-    public static final String delete = "DELETE FROM person_details WHERE id = (?)";
-    public static final String deleteAll = "TRUNCATE person_details CASCADE";
-    public static final String update = "UPDATE person_details SET first_name = (?), " +
-            "last_name = (?), passport_num = (?), address = (?) WHERE id = (?) RETURNING id";
+public class PersonDetailDAOImpl implements PersonDetailDAO {
+
+    private void statement(PersonDetails personDetails, PreparedStatement statement)
+            throws SQLException {
+        statement.setObject(1, personDetails.getId());
+        statement.setString(2, personDetails.getFirstName());
+        statement.setString(3, personDetails.getLastName());
+        statement.setInt(4, personDetails.getPassportNum());
+        statement.setString(5, personDetails.getAddress());
+        statement.execute();
+    }
 
     @Override
     public PersonDetails create(PersonDetails personDetails) {
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
-                     (insert, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            statement.setObject(1, personDetails.getId());
-            statement.setString(2, personDetails.getFirstName());
-            statement.setString(3, personDetails.getLastName());
-            statement.setInt(4, personDetails.getPassportNum());
-            statement.setString(5, personDetails.getAddress());
-            statement.execute();
+                     (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_INSERT,
+                             PreparedStatement.RETURN_GENERATED_KEYS)) {
+            statement(personDetails, statement);
 
             ResultSet rs = statement.getGeneratedKeys();
 
@@ -52,11 +48,13 @@ public class PersonDetailsDAOImpl implements PersonDetailsDAO {
         return personDetails;
     }
 
+
     @Override
     public PersonDetails findById(UUID id) {
         PersonDetails personDetails = null;
         try (Connection connection = ConnectorDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement(get)) {
+             PreparedStatement statement = connection.prepareStatement
+                     (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_GET)) {
             statement.setObject(1, id);
             ResultSet rs = statement.executeQuery();
 
@@ -79,13 +77,9 @@ public class PersonDetailsDAOImpl implements PersonDetailsDAO {
     @Override
     public PersonDetails update(PersonDetails personDetailsDto) {
         try (Connection connection = ConnectorDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement(update)) {
-            statement.setObject(1, personDetailsDto.getId());
-            statement.setString(2, personDetailsDto.getFirstName());
-            statement.setString(3, personDetailsDto.getLastName());
-            statement.setInt(4, personDetailsDto.getPassportNum());
-            statement.setString(5, personDetailsDto.getAddress());
-            statement.execute();
+             PreparedStatement statement = connection.prepareStatement
+                     (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_UPDATE)) {
+            statement(personDetailsDto, statement);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -99,7 +93,8 @@ public class PersonDetailsDAOImpl implements PersonDetailsDAO {
     public List<PersonDetails> findAll() {
         List<PersonDetails> personDetailsList = null;
         try (Connection connection = ConnectorDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement(getAll)) {
+             PreparedStatement statement = connection.prepareStatement
+                     (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_GET_ALL)) {
 
             ResultSet rs = statement.executeQuery();
 
@@ -128,7 +123,8 @@ public class PersonDetailsDAOImpl implements PersonDetailsDAO {
     public void delete(UUID id) {
         if (findById(id) != null) {
             try (Connection connection = ConnectorDB.getConnection();
-                 PreparedStatement statement = connection.prepareStatement(delete)) {
+                 PreparedStatement statement = connection.prepareStatement
+                         (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_DELETE)) {
                 statement.setObject(1, id);
                 statement.execute();
             } catch (SQLException e) {
@@ -142,7 +138,8 @@ public class PersonDetailsDAOImpl implements PersonDetailsDAO {
     @Override
     public void deleteAll() {
         try (Connection connection = ConnectorDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement(deleteAll)) {
+             PreparedStatement statement = connection.prepareStatement
+                     (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_DELETE_ALL)) {
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();

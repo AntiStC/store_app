@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ConnectorDB {
-    //todo ???
     public static Connection getConnection() throws SQLException {
         ResourceBundle resource = ResourceBundle.getBundle("database");
         String url = resource.getString("db.url");

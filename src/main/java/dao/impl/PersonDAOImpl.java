@@ -41,9 +41,8 @@ public class PersonDAOImpl implements PersonDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
+
         return person;
     }
 
@@ -118,15 +117,13 @@ public class PersonDAOImpl implements PersonDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
         return personList;
     }
 
 
     @Override
-    public void delete(UUID id) {
+    public boolean delete(UUID id) {
         if (findById(id) != null) {
             try (Connection connection = ConnectorDB.getConnection();
                  PreparedStatement statement = connection.prepareStatement
@@ -135,22 +132,20 @@ public class PersonDAOImpl implements PersonDAO {
                 statement.execute();
             } catch (SQLException e) {
                 e.printStackTrace();
-            } finally {
-                ConnectorDB.closeConnection();
             }
         }
+        return true;
     }
 
     @Override
-    public void deleteAll() {
+    public boolean deleteAll() {
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonSql.SQL_QUERY_PERSON_DELETE_ALL)) {
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
+        return true;
     }
 }

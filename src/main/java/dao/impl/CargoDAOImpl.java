@@ -66,9 +66,8 @@ public class CargoDAOImpl implements CargoDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
+
         //todo if in row 44 false, cargo id == null
         return cargo;
     }
@@ -89,9 +88,8 @@ public class CargoDAOImpl implements CargoDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
+
         return cargo;
     }
 
@@ -108,9 +106,8 @@ public class CargoDAOImpl implements CargoDAO {
             fromBase.setOwner(personDAO.update(cargo.getOwner()));
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
+
         return cargo;
     }
 
@@ -133,15 +130,14 @@ public class CargoDAOImpl implements CargoDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
+
         return cargoList;
     }
 
 
     @Override
-    public void delete(UUID id) {
+    public boolean delete(UUID id) {
         if (findById(id) != null) {
             try (Connection connection = ConnectorDB.getConnection();
                  PreparedStatement statement = connection.prepareStatement
@@ -150,22 +146,21 @@ public class CargoDAOImpl implements CargoDAO {
                 statement.execute();
             } catch (SQLException e) {
                 e.printStackTrace();
-            } finally {
-                ConnectorDB.closeConnection();
             }
         }
+        return true;
     }
 
     @Override
-    public void deleteAll() {
+    public boolean deleteAll() {
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (CargoSql.SQL_QUERY_CARGO_DELETE_ALL)) {
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
+
+        return true;
     }
 }

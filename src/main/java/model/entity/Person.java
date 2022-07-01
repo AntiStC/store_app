@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class Person {
+    // todo добавить поля логин пароль
     private UUID id;
 
     private PersonDetails details;

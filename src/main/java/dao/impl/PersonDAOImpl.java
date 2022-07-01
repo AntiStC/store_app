@@ -1,7 +1,7 @@
 package dao.impl;
 
 import config.database.ConnectorDB;
-import config.database.PersonSql;
+import util.query.PersonSql;
 import dao.CargoDAO;
 import dao.PersonDAO;
 import dao.PersonDetailDAO;

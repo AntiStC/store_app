@@ -1,6 +1,6 @@
 package dao.impl;
 
-import config.database.CargoSql;
+import util.query.CargoSql;
 import config.database.ConnectorDB;
 import dao.CargoDAO;
 import dao.PersonDAO;

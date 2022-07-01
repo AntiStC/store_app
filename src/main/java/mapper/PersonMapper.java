@@ -6,15 +6,15 @@ import model.entity.Person;
 import java.util.stream.Collectors;
 
 public class PersonMapper {
-    public static PersonDto toDTO(Person person) {
+    public static PersonDto toDto(Person person) {
         PersonDto personDto = new PersonDto(
                 person.getId(),
                 person.getLogin(),
                 person.getPassword(),
-                PersonDetailsMapper.toDTO(person.getDetails()));
+                PersonDetailsMapper.toDto(person.getDetails()));
 
         personDto.addCargos(person.getCargoList().stream()
-                .map(CargoMapper::toDTO)
+                .map(CargoMapper::toDto)
                 .collect(Collectors.toList()));
         return personDto;
     }

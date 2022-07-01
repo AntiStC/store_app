@@ -4,7 +4,7 @@ import model.dto.CargoDto;
 import model.entity.Cargo;
 
 public class CargoMapper {
-    public static CargoDto toDTO(Cargo cargo) {
+    public static CargoDto toDto(Cargo cargo) {
         return new CargoDto.Builder()
                 .setId(cargo.getId())
                 .setName(cargo.getName())

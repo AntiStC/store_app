@@ -69,15 +69,12 @@ public class PersonDetails {
 
         PersonDetails personDetails = (PersonDetails) o;
 
-        return getId() == personDetails.getId()
-                && Objects.equals(getPassportNum(), personDetails.getPassportNum());
+        return Objects.equals(getPassportNum(), personDetails.getPassportNum());
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + passportNum.hashCode();
-        return result;
+        return passportNum.hashCode();
     }
 
     @Override

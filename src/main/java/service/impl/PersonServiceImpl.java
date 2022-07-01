@@ -28,25 +28,25 @@ public class PersonServiceImpl implements PersonService {
         personDetailsService.create(personDto.getDetails());
         personDto.getCargoList().forEach(cargoService::create);
 
-        return PersonMapper.toDTO(personDAO.create(PersonMapper.toEntity(personDto)));
+        return PersonMapper.toDto(personDAO.create(PersonMapper.toEntity(personDto)));
     }
 
     @Override
     public PersonDto read(UUID id) {
-        return PersonMapper.toDTO(personDAO.findById(id));
+        return PersonMapper.toDto(personDAO.findById(id));
     }
 
     @Override
     public List<PersonDto> getAll() {
         return personDAO.findAll().stream()
-                .map(PersonMapper::toDTO)
+                .map(PersonMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public PersonDto update(PersonDto person) {
         personDetailsService.update(person.getDetails());
-        return PersonMapper.toDTO(personDAO.update(PersonMapper.toEntity(person)));
+        return PersonMapper.toDto(personDAO.update(PersonMapper.toEntity(person)));
     }
 
     @Override

@@ -2,10 +2,6 @@ package service;
 
 import model.dto.PersonDetailsDto;
 
-public interface PersonDetailsService extends CRUDService<PersonDetailsDto>{
-    //read
+public interface PersonDetailsService extends CrudService<PersonDetailsDto> {
 
-    //update
-
-    //delete
 }

@@ -18,24 +18,24 @@ public class CargoServiceImpl implements CargoService {
 
     @Override
     public CargoDto create(CargoDto cargoDto) {
-        return CargoMapper.toDTO(cargoDAO.create(CargoMapper.toEntity(cargoDto)));
+        return CargoMapper.toDto(cargoDAO.create(CargoMapper.toEntity(cargoDto)));
     }
 
     @Override
     public CargoDto read(UUID id) {
-        return CargoMapper.toDTO(cargoDAO.findById(id));
+        return CargoMapper.toDto(cargoDAO.findById(id));
     }
 
     @Override
     public List<CargoDto> getAll() {
         return cargoDAO.findAll().stream()
-                .map(CargoMapper::toDTO)
+                .map(CargoMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public CargoDto update(CargoDto cargoDto) {
-        return CargoMapper.toDTO(cargoDAO.update(CargoMapper.toEntity(cargoDto)));
+        return CargoMapper.toDto(cargoDAO.update(CargoMapper.toEntity(cargoDto)));
     }
 
     @Override

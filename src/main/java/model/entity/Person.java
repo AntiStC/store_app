@@ -52,7 +52,7 @@ public class Person {
     }
 
     public List<Cargo> getCargoList() {
-        return cargoList;
+        return new ArrayList<>(cargoList);
     }
 
     public void addCargo(Cargo cargo) {

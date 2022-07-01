@@ -18,24 +18,24 @@ public class PersonDetailsServiceImpl implements PersonDetailsService {
 
     @Override
     public PersonDetailsDto create(PersonDetailsDto personDetailsDto) {
-        return PersonDetailsMapper.toDTO(personDetailDAO.create(PersonDetailsMapper.toEntity(personDetailsDto)));
+        return PersonDetailsMapper.toDto(personDetailDAO.create(PersonDetailsMapper.toEntity(personDetailsDto)));
     }
 
     @Override
     public PersonDetailsDto read(UUID id) {
-        return PersonDetailsMapper.toDTO(personDetailDAO.findById(id));
+        return PersonDetailsMapper.toDto(personDetailDAO.findById(id));
     }
 
     @Override
     public List<PersonDetailsDto> getAll() {
         return personDetailDAO.findAll().stream()
-                .map(PersonDetailsMapper::toDTO)
+                .map(PersonDetailsMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public PersonDetailsDto update(PersonDetailsDto personDetailsDto) {
-        return PersonDetailsMapper.toDTO(personDetailDAO.update(PersonDetailsMapper.toEntity(personDetailsDto)));
+        return PersonDetailsMapper.toDto(personDetailDAO.update(PersonDetailsMapper.toEntity(personDetailsDto)));
     }
 
     @Override

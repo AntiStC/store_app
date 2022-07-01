@@ -1,4 +1,4 @@
-package config.database;
+package util.query;
 
 public final class CargoSql {
     public static final String SQL_QUERY_CARGO_GET =

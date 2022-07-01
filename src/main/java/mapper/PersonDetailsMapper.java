@@ -4,7 +4,7 @@ import model.dto.PersonDetailsDto;
 import model.entity.PersonDetails;
 
 public class PersonDetailsMapper {
-    public static PersonDetailsDto toDTO(PersonDetails personDetails) {
+    public static PersonDetailsDto toDto(PersonDetails personDetails) {
         return new PersonDetailsDto.Builder()
                 .setId(personDetails.getId())
                 .setFirstName(personDetails.getFirstName())

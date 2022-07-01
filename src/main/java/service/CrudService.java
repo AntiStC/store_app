@@ -3,7 +3,7 @@ package service;
 import java.util.List;
 import java.util.UUID;
 
-public interface CRUDService<DTO> {
+public interface CrudService<DTO> {
 
     DTO create(DTO dto);
 

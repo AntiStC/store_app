@@ -8,12 +8,17 @@ public class PersonDto {
 
     private final UUID id;
 
+    private final String login;
+    private final String password;
+
     private final PersonDetailsDto details;
 
     private final List<CargoDto> cargoList = new ArrayList<>();
 
-    public PersonDto(UUID id, PersonDetailsDto details) {
+    public PersonDto(UUID id, String login, String password, PersonDetailsDto details) {
         this.id = id;
+        this.login = login;
+        this.password = password;
         this.details = details;
     }
 
@@ -33,12 +38,20 @@ public class PersonDto {
         return id;
     }
 
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
     public PersonDetailsDto getDetails() {
         return details;
     }
 
     public List<CargoDto> getCargoList() {
-        return cargoList;
+        return new ArrayList<>(cargoList);
     }
 
     @Override

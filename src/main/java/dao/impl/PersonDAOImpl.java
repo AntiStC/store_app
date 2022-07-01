@@ -1,7 +1,7 @@
 package dao.impl;
 
 import config.database.ConnectorDB;
-import config.database.PersonSql;
+import util.query.PersonSql;
 import dao.CargoDAO;
 import dao.PersonDAO;
 import dao.PersonDetailDAO;
@@ -29,6 +29,7 @@ public class PersonDAOImpl implements PersonDAO {
                      (PersonSql.SQL_QUERY_PERSON_INSERT,
                              PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setObject(1, person.getId());
+            // TODO: 01.07.2022 add login & password fields
             statement.setObject(2, person.getDetails());
             statement.setObject(3, person.getCargoList());
             statement.execute();
@@ -59,6 +60,7 @@ public class PersonDAOImpl implements PersonDAO {
             if (rs.next()) {
                 person = new Person();
                 person.setId(rs.getObject("id", UUID.class));
+                // TODO: 01.07.2022 add login & password fields
                 person.setDetails(personDetailDAO.findById(rs.getObject("id", UUID.class)));
                 //todo use loop or stream
                 person.addCargos((List<Cargo>) cargoDAO.findById
@@ -109,6 +111,7 @@ public class PersonDAOImpl implements PersonDAO {
             while (rs.next()) {
                 Person person = new Person();
                 person.setId(rs.getObject("id", UUID.class));
+                // TODO: 01.07.2022 add login & password fields
                 person.setDetails(personDetailDAO.findById(rs.getObject("id", UUID.class)));
                 //todo use loop or stream
                 person.addCargos((List<Cargo>) cargoDAO.findById(rs.getObject

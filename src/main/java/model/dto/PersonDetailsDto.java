@@ -46,7 +46,7 @@ public class PersonDetailsDto {
 
     @Override
     public String toString() {
-        return "PersonDetailsDTO{" +
+        return "PersonDetailsDto{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
@@ -54,7 +54,6 @@ public class PersonDetailsDto {
                 ", address='" + address + '\'' +
                 '}';
     }
-
 
     public static class Builder {
         private UUID id;

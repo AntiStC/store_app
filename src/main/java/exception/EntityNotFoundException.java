@@ -1,5 +1,5 @@
 package exception;
 
 public class EntityNotFoundException {
-    //placeholder
+    //todo implement custom exception
 }

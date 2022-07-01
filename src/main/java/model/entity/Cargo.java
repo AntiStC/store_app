@@ -16,7 +16,6 @@ public class Cargo {
     private Double volume;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-
     private Person owner;
 
     public Cargo() {
@@ -132,14 +131,18 @@ public class Cargo {
 
         Cargo cargo = (Cargo) o;
 
-        return getId() == cargo.getId()
-                && getOwner().getId() == cargo.getOwner().getId();
+        return name.equals(cargo.getName())
+                && weight.equals(cargo.getWeight())
+                && type.equals(cargo.getType())
+                && (createdAt != null && createdAt.equals(cargo.getCreatedAt()));
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + owner.hashCode();
+        int result = name.hashCode();
+        result = 31 * result + weight.hashCode();
+        result = 31 * result + type.hashCode();
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         return result;
     }
 

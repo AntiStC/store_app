@@ -1,4 +1,4 @@
-package config.database;
+package util.query;
 
 public class PersonDetailSql {
     public static final String SQL_QUERY_PERSON_DETAIL_GET =

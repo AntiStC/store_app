@@ -6,9 +6,9 @@ import dao.PersonDetailDAO;
 import dao.impl.CargoDAOImpl;
 import dao.impl.PersonDAOImpl;
 import dao.impl.PersonDetailDAOImpl;
-import model.entity.Cargo;
-import model.entity.Person;
-import model.entity.PersonDetails;
+import model.dto.CargoDto;
+import model.dto.PersonDetailsDto;
+import model.dto.PersonDto;
 import model.entity.enums.CargoState;
 import model.entity.enums.CargoType;
 import org.junit.jupiter.api.Assertions;
@@ -32,7 +32,7 @@ class PersonServiceImplTest {
 
     private static CargoService cargoService;
 
-    private static Person person;
+    private static PersonDto person;
 
     @BeforeAll
     static void setUp() {
@@ -44,7 +44,7 @@ class PersonServiceImplTest {
         cargoService = new CargoServiceImpl(cargoDAO);
         personService = new PersonServiceImpl(personDAO, personDetailsService, cargoService);
 
-        PersonDetails personDetailsDto = new PersonDetails.Builder()
+        PersonDetailsDto personDetailsDto = new PersonDetailsDto.Builder()
                 .setFirstName("firstName")
                 .setLastName("lastName")
                 .setPassportNum(12345)
@@ -52,7 +52,7 @@ class PersonServiceImplTest {
                 .build();
 
 
-        Cargo cargo1 = new Cargo.Builder()
+        CargoDto cargo1 = new CargoDto.Builder()
                 .setName("firstCargo")
                 .setDescription("desc for first")
                 .setType(CargoType.ROUND)
@@ -62,7 +62,7 @@ class PersonServiceImplTest {
                 .build();
 
 
-        Cargo cargo2 =  new Cargo.Builder()
+        CargoDto cargo2 =  new CargoDto.Builder()
                 .setName("secondCargo")
                 .setDescription("desc for second")
                 .setType(CargoType.SQUARE)
@@ -71,8 +71,7 @@ class PersonServiceImplTest {
                 .setVolume(1.2)
                 .build();
 
-        person = new Person();
-        person.setDetails(personDetailsDto);
+        person = new PersonDto(null, "testLogin", "testPassword", personDetailsDto);
         person.addCargo(cargo1);
         person.addCargo(cargo2);
     }

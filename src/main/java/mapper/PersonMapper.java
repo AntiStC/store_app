@@ -9,6 +9,8 @@ public class PersonMapper {
     public static PersonDto toDTO(Person person) {
         PersonDto personDto = new PersonDto(
                 person.getId(),
+                person.getLogin(),
+                person.getPassword(),
                 PersonDetailsMapper.toDTO(person.getDetails()));
 
         personDto.addCargos(person.getCargoList().stream()

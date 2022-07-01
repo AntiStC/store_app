@@ -7,9 +7,17 @@ import java.util.UUID;
 public class Person {
     private UUID id;
 
+    private String login;
+
+    // TODO: 01.07.2022 encoding for password later
+    private String password;
+
     private PersonDetails details;
 
     private final List<Cargo> cargoList = new ArrayList<>();
+
+    public Person() {
+    }
 
     public UUID getId() {
         return id;
@@ -17,6 +25,22 @@ public class Person {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public PersonDetails getDetails() {
@@ -55,18 +79,20 @@ public class Person {
 
         Person person = (Person) o;
 
-        return getId() == person.getId();
+        return login.equals(person.getLogin());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return login.hashCode();
     }
 
     @Override
     public String toString() {
         return "Person{" +
                 "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
                 ", details=" + details +
                 '}';
     }

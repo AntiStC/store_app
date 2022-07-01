@@ -22,6 +22,8 @@ public class PersonMapper {
     public static Person toEntity(PersonDto personDto) {
         Person person = new Person();
         person.setId(personDto.getId());
+        person.setLogin(personDto.getLogin());
+        person.setPassword(personDto.getPassword());
         person.setDetails(PersonDetailsMapper.toEntity(personDto.getDetails()));
         person.addCargos(personDto.getCargoList().stream()
                 .map(CargoMapper::toEntity)

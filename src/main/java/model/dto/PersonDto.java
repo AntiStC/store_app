@@ -15,12 +15,12 @@ public class PersonDto {
 
     private final List<CargoDto> cargoList;
 
-    private PersonDto(UUID id, String login, String password, PersonDetailsDto details, List<CargoDto> cargoList) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
-        this.details = details;
-        this.cargoList = cargoList;
+    private PersonDto(Builder builder) {
+        this.id = builder.id;
+        this.login = builder.login;
+        this.password = builder.password;
+        this.details = builder.details;
+        this.cargoList = builder.cargoList;
     }
 
     public UUID getId() {
@@ -84,7 +84,7 @@ public class PersonDto {
         }
 
         public PersonDto build() {
-            return new PersonDto(id, login, password, details, cargoList);
+            return new PersonDto(this);
         }
     }
 }

@@ -11,17 +11,12 @@ public class PersonDetailsDto {
     private final Integer passportNum;
     private final String address;
 
-    private PersonDetailsDto(
-            UUID id,
-            String firstName,
-            String lastName,
-            Integer passportNum,
-            String address) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.passportNum = passportNum;
-        this.address = address;
+    private PersonDetailsDto(Builder builder) {
+        this.id = builder.id;
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.passportNum = builder.passportNum;
+        this.address = builder.address;
     }
 
     public UUID getId() {
@@ -88,12 +83,7 @@ public class PersonDetailsDto {
         }
 
         public PersonDetailsDto build() {
-            return new PersonDetailsDto(
-                    id,
-                    firstName,
-                    lastName,
-                    passportNum,
-                    address);
+            return new PersonDetailsDto(this);
         }
     }
 }

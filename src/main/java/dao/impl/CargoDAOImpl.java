@@ -5,8 +5,8 @@ import config.database.ConnectorDB;
 import dao.CargoDAO;
 import dao.PersonDAO;
 import model.entity.Cargo;
-import model.entity.enums.CargoState;
-import model.entity.enums.CargoType;
+import model.entity.CargoState;
+import model.entity.CargoType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

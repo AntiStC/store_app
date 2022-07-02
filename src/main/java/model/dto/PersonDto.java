@@ -23,18 +23,6 @@ public class PersonDto {
         this.cargoList = cargoList;
     }
 
-    public void addCargo(CargoDto cargo) {
-        cargoList.add(cargo);
-    }
-
-    public void addCargos(List<CargoDto> cargos) {
-        cargoList.addAll(cargos);
-    }
-
-    public void removeCargo(CargoDto cargo) {
-        cargoList.remove(cargo);
-    }
-
     public UUID getId() {
         return id;
     }

@@ -79,9 +79,6 @@ class PersonServiceImplTest {
                 .setDetails(personDetailsDto)
                 .setCargoList(Arrays.asList(cargo1, cargo2))
                 .build();
-
-        person.addCargo(cargo1);
-        person.addCargo(cargo2);
     }
 
     @Test

@@ -18,6 +18,7 @@ import service.CargoService;
 import service.PersonDetailsService;
 import service.PersonService;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 class PersonServiceImplTest {
@@ -62,7 +63,7 @@ class PersonServiceImplTest {
                 .build();
 
 
-        CargoDto cargo2 =  new CargoDto.Builder()
+        CargoDto cargo2 = new CargoDto.Builder()
                 .setName("secondCargo")
                 .setDescription("desc for second")
                 .setType(CargoType.SQUARE)
@@ -71,9 +72,13 @@ class PersonServiceImplTest {
                 .setVolume(1.2)
                 .build();
 
-        person = new PersonDto(null, "testLogin", "testPassword", personDetailsDto);
-        person.addCargo(cargo1);
-        person.addCargo(cargo2);
+        person = new PersonDto.Builder()
+                .setId(null)
+                .setLogin("testLogin")
+                .setPassword("testPassword")
+                .setDetails(personDetailsDto)
+                .setCargoList(Arrays.asList(cargo1, cargo2))
+                .build();
     }
 
     @Test

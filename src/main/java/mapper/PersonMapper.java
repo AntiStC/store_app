@@ -1,21 +1,24 @@
 package mapper;
 
+import model.dto.CargoDto;
 import model.dto.PersonDto;
 import model.entity.Person;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class PersonMapper {
     public static PersonDto toDto(Person person) {
-        PersonDto personDto = new PersonDto(
-                person.getId(),
-                person.getLogin(),
-                person.getPassword(),
-                PersonDetailsMapper.toDto(person.getDetails()));
+        List<CargoDto> cargoDtoList = person.getCargoList().stream()
+                .map(CargoMapper::toDto).toList();
+        PersonDto personDto = new PersonDto.Builder()
+                .setId(person.getId())
+                .setLogin(person.getLogin())
+                .setPassword(person.getPassword())
+                .setDetails(PersonDetailsMapper.toDto(person.getDetails()))
+                .setCargoList(cargoDtoList)
+                .build();
 
-        personDto.addCargos(person.getCargoList().stream()
-                .map(CargoMapper::toDto)
-                .collect(Collectors.toList()));
         return personDto;
     }
 

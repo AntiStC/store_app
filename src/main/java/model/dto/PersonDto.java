@@ -70,24 +70,29 @@ public class PersonDto {
         private PersonDetailsDto details;
         private List<CargoDto> cargoList = new ArrayList<>();
 
-        public void setId(UUID id) {
+        public Builder setId(UUID id) {
             this.id = id;
+            return this;
         }
 
-        public void setLogin(String login) {
+        public Builder setLogin(String login) {
             this.login = login;
+            return this;
         }
 
-        public void setPassword(String password) {
+        public Builder setPassword(String password) {
             this.password = password;
+            return this;
         }
 
-        public void setDetails(PersonDetailsDto details) {
+        public Builder setDetails(PersonDetailsDto details) {
             this.details = details;
+            return this;
         }
 
-        public void setCargoList(List<CargoDto> cargoList) {
+        public Builder setCargoList(List<CargoDto> cargoList) {
             this.cargoList = cargoList;
+            return this;
         }
 
         public PersonDto build() {

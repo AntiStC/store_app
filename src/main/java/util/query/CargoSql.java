@@ -17,7 +17,17 @@ public final class CargoSql {
                     """;
     public static final String SQL_QUERY_CARGO_GET_ALL =
             """
-                    SELECT  FROM cargo
+                    SELECT id,
+                    name,
+                    description,
+                    type,
+                    state,
+                    weight,
+                    volume,
+                    create_at,
+                    modified_at,
+                    person_fk FROM
+                    cargo
                     """;
     public static final String SQL_QUERY_CARGO_INSERT =
             """

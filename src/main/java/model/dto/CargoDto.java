@@ -1,8 +1,8 @@
 package model.dto;
 
 import model.entity.Person;
-import model.entity.enums.CargoState;
-import model.entity.enums.CargoType;
+import model.entity.CargoState;
+import model.entity.CargoType;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

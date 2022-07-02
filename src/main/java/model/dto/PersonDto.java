@@ -13,13 +13,14 @@ public class PersonDto {
 
     private final PersonDetailsDto details;
 
-    private final List<CargoDto> cargoList = new ArrayList<>();
+    private final List<CargoDto> cargoList;
 
-    public PersonDto(UUID id, String login, String password, PersonDetailsDto details) {
+    private PersonDto(UUID id, String login, String password, PersonDetailsDto details, List<CargoDto> cargoList) {
         this.id = id;
         this.login = login;
         this.password = password;
         this.details = details;
+        this.cargoList = cargoList;
     }
 
     public void addCargo(CargoDto cargo) {
@@ -60,5 +61,37 @@ public class PersonDto {
                 "id=" + id +
                 ", details=" + details +
                 '}';
+    }
+
+    public static class Builder {
+        private UUID id;
+        private String login;
+        private String password;
+        private PersonDetailsDto details;
+        private List<CargoDto> cargoList = new ArrayList<>();
+
+        public void setId(UUID id) {
+            this.id = id;
+        }
+
+        public void setLogin(String login) {
+            this.login = login;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public void setDetails(PersonDetailsDto details) {
+            this.details = details;
+        }
+
+        public void setCargoList(List<CargoDto> cargoList) {
+            this.cargoList = cargoList;
+        }
+
+        public PersonDto build() {
+            return new PersonDto(id, login, password, details, cargoList);
+        }
     }
 }

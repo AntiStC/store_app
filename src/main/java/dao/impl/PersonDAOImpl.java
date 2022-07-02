@@ -19,6 +19,7 @@ import java.util.UUID;
 
 public class PersonDAOImpl implements PersonDAO {
 
+    // TODO: 03.07.2022 init?
     CargoDAO cargoDAO;
     PersonDetailDAO personDetailDAO;
 

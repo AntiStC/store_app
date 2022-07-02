@@ -20,22 +20,25 @@ import java.util.UUID;
 
 public class CargoDAOImpl implements CargoDAO {
 
+    // TODO: 03.07.2022 init? 
     PersonDAO personDAO;
 
-    private void resultSet(Cargo cargo, ResultSet rs) throws SQLException {
-        cargo.setId(rs.getObject("id", UUID.class));
-        cargo.setName(rs.getString("name"));
-        cargo.setDescription(rs.getString("description"));
-        cargo.setType(CargoType.valueOf(rs.getString("type")));
-        cargo.setState(CargoState.valueOf(rs.getString("state")));
-        cargo.setWeight(rs.getDouble("weight"));
-        cargo.setVolume(rs.getDouble("volume"));
-        cargo.setCreatedAt((LocalDateTime) rs.getObject("create_at"));
-        cargo.setModifiedAt((LocalDateTime) rs.getObject("modified_at"));
-        cargo.setOwner(personDAO.findById(rs.getObject("id", UUID.class)));
+    private Cargo createCargo(ResultSet rs) throws SQLException {
+      return new Cargo.Builder()
+                .setId(rs.getObject("id", UUID.class))
+                .setName(rs.getString("name"))
+                .setDescription(rs.getString("description"))
+                .setType(CargoType.valueOf(rs.getString("type")))
+                .setState(CargoState.valueOf(rs.getString("state")))
+                .setWeight(rs.getDouble("weight"))
+                .setVolume(rs.getDouble("volume"))
+                .setCreatedAt((LocalDateTime) rs.getObject("create_at"))
+                .setModifiedAt((LocalDateTime) rs.getObject("modified_at"))
+                .setOwner(personDAO.findById(rs.getObject("id", UUID.class)))
+                .build();
     }
 
-    private void statement(Cargo cargo, PreparedStatement statement) throws SQLException {
+    private void executeStatement(Cargo cargo, PreparedStatement statement) throws SQLException {
         statement.setObject(1, cargo.getId());
         statement.setString(2, cargo.getDescription());
         statement.setString(3, cargo.getDescription());
@@ -56,7 +59,7 @@ public class CargoDAOImpl implements CargoDAO {
              PreparedStatement statement = connection.prepareStatement
                      (CargoSql.SQL_QUERY_CARGO_INSERT,
                              PreparedStatement.RETURN_GENERATED_KEYS)) {
-            statement(cargo, statement);
+            executeStatement(cargo, statement);
 
             ResultSet rs = statement.getGeneratedKeys();
 
@@ -69,7 +72,7 @@ public class CargoDAOImpl implements CargoDAO {
         } finally {
             ConnectorDB.closeConnection();
         }
-        //todo if in row 44 false, cargo id == null
+        // TODO: 03.07.2022 throw some exception instead?
         return cargo;
     }
 
@@ -84,14 +87,14 @@ public class CargoDAOImpl implements CargoDAO {
             ResultSet rs = statement.executeQuery();
 
             if (rs.next()) {
-                cargo = new Cargo();
-                resultSet(cargo, rs);
+                cargo = createCargo(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             ConnectorDB.closeConnection();
         }
+        // TODO: 03.07.2022 throw some exception instead?
         return cargo;
     }
 
@@ -101,7 +104,7 @@ public class CargoDAOImpl implements CargoDAO {
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (CargoSql.SQL_QUERY_CARGO_UPDATE)) {
-            statement(cargo, statement);
+            executeStatement(cargo, statement);
 
 
             Cargo fromBase = findById(cargo.getId());
@@ -111,6 +114,7 @@ public class CargoDAOImpl implements CargoDAO {
         } finally {
             ConnectorDB.closeConnection();
         }
+        // TODO: 03.07.2022 throw some exception instead?
         return cargo;
     }
 
@@ -126,8 +130,7 @@ public class CargoDAOImpl implements CargoDAO {
             cargoList = new ArrayList<>();
 
             while (rs.next()) {
-                Cargo cargo = new Cargo();
-                resultSet(cargo, rs);
+                Cargo cargo = createCargo( rs);
 
                 cargoList.add(cargo);
             }
@@ -136,6 +139,7 @@ public class CargoDAOImpl implements CargoDAO {
         } finally {
             ConnectorDB.closeConnection();
         }
+        // TODO: 03.07.2022 throw some exception instead?
         return cargoList;
     }
 

@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS cargo
     state        VARCHAR NOT NULL,
     weight       DOUBLE PRECISION NOT NULL,
     volume       DOUBLE PRECISION NOT NULL,
-    create_at    TIMESTAMP,
+    create_at    TIMESTAMP NOT NULL DEFAULT NOW(),
     modified_at  TIMESTAMP,
     person_fk    UUID,
     FOREIGN KEY (person_fk) REFERENCES person (id)

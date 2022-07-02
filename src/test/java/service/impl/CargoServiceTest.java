@@ -3,7 +3,7 @@ package service.impl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-class CargoServiceImplTest {
+class CargoServiceTest {
     //todo tests
 
 

@@ -21,7 +21,7 @@ import service.PersonService;
 import java.util.Arrays;
 import java.util.UUID;
 
-class PersonServiceImplTest {
+class PersonServiceTest {
 
     private static PersonDAO personDAO;
     private static PersonDetailDAO personDetailDAO;
@@ -41,9 +41,9 @@ class PersonServiceImplTest {
         personDetailDAO = new PersonDetailDAOImpl();
         cargoDAO = new CargoDAOImpl();
 
-        personDetailsService = new PersonDetailsServiceImpl(personDetailDAO);
-        cargoService = new CargoServiceImpl(cargoDAO);
-        personService = new PersonServiceImpl(personDAO, personDetailsService, cargoService);
+        personDetailsService = new PersonDetailsService(personDetailDAO);
+        cargoService = new CargoService(cargoDAO);
+        personService = new PersonService(personDAO, personDetailsService, cargoService);
 
         PersonDetailsDto personDetailsDto = new PersonDetailsDto.Builder()
                 .setFirstName("firstName")

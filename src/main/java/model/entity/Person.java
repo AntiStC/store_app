@@ -57,9 +57,7 @@ public class Person {
     }
 
     public void addCargo(Cargo cargo) {
-        if (cargo.getOwner() == null) {
-            cargo.setOwner(this);
-        }
+        cargo.setOwner(this);
         cargoList.add(cargo);
     }
 

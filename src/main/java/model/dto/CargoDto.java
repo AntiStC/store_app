@@ -20,27 +20,17 @@ public class CargoDto {
 
     private final Person owner;
 
-    private CargoDto(
-            UUID id,
-            String name,
-            String description,
-            CargoType type,
-            CargoState state,
-            Double weight,
-            Double volume,
-            LocalDateTime createdAt,
-            LocalDateTime modifiedAt,
-            Person owner) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.type = type;
-        this.state = state;
-        this.weight = weight;
-        this.volume = volume;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-        this.owner = owner;
+    private CargoDto(Builder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.description = builder.description;
+        this.type = builder.type;
+        this.state = builder.state;
+        this.weight = builder.weight;
+        this.volume = builder.volume;
+        this.createdAt = builder.createdAt;
+        this.modifiedAt = builder.modifiedAt;
+        this.owner = builder.owner;
     }
 
     public UUID getId() {
@@ -163,17 +153,7 @@ public class CargoDto {
         }
 
         public CargoDto build() {
-            return new CargoDto(
-                    id,
-                    name,
-                    description,
-                    type,
-                    state,
-                    weight,
-                    volume,
-                    createdAt,
-                    modifiedAt,
-                    owner);
+            return new CargoDto(this);
         }
     }
 }

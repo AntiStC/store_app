@@ -14,12 +14,12 @@ public class PersonDetails {
     public PersonDetails() {
     }
 
-    private PersonDetails(UUID id, String firstName, String lastName, Integer passportNum, String address) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.passportNum = passportNum;
-        this.address = address;
+    private PersonDetails(Builder builder) {
+        this.id = builder.id;
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.passportNum = builder.passportNum;
+        this.address = builder.address;
     }
 
     public UUID getId() {
@@ -122,12 +122,7 @@ public class PersonDetails {
         }
 
         public PersonDetails build() {
-            return new PersonDetails(
-                    id,
-                    firstName,
-                    lastName,
-                    passportNum,
-                    address);
+            return new PersonDetails(this);
         }
     }
 }

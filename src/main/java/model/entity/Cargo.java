@@ -8,12 +8,16 @@ import java.util.UUID;
 
 public class Cargo {
     private UUID id;
+    // TODO: 02.07.2022 add UNIQUE constraint in DB
     private String name;
     private String description;
+    // TODO: 02.07.2022 add UNIQUE constraint in DB
     private CargoType type;
     private CargoState state;
+    // TODO: 02.07.2022 add UNIQUE constraint in DB
     private Double weight;
     private Double volume;
+    // TODO: 02.07.2022 add UNIQUE constraint in DB
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private Person owner;

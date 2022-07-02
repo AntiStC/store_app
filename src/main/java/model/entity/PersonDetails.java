@@ -7,6 +7,7 @@ public class PersonDetails {
     private UUID id;
     private String firstName;
     private String lastName;
+    // TODO: 02.07.2022 add UNIQUE constraint in DB
     private Integer passportNum;
     private String address;
 

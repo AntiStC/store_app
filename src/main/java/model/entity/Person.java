@@ -7,6 +7,7 @@ import java.util.UUID;
 public class Person {
     private UUID id;
 
+    // TODO: 02.07.2022 add UNIQUE constraint in DB
     private String login;
 
     // TODO: 01.07.2022 encoding for password later

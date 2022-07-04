@@ -5,7 +5,6 @@ import util.query.PersonSql;
 import dao.CargoDAO;
 import dao.PersonDAO;
 import dao.PersonDetailDAO;
-import model.entity.Cargo;
 import model.entity.Person;
 
 import java.sql.Connection;
@@ -20,7 +19,6 @@ import java.util.UUID;
 public class PersonDAOImpl implements PersonDAO {
 
     // TODO: 03.07.2022 init?
-    CargoDAO cargoDAO;
     PersonDetailDAO personDetailDAO;
 
     @Override
@@ -30,9 +28,8 @@ public class PersonDAOImpl implements PersonDAO {
                      (PersonSql.SQL_QUERY_PERSON_INSERT,
                              PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setObject(1, person.getId());
-            // TODO: 01.07.2022 add login & password fields
-            statement.setObject(2, person.getDetails());
-            statement.setObject(3, person.getCargoList());
+            statement.setString(2, person.getLogin());
+            statement.setString(3, person.getPassword());
             statement.execute();
 
             ResultSet rs = statement.getGeneratedKeys();
@@ -41,10 +38,8 @@ public class PersonDAOImpl implements PersonDAO {
                 person.setId(rs.getObject("id", UUID.class));
                 return person;
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
         return person;
     }
@@ -61,16 +56,12 @@ public class PersonDAOImpl implements PersonDAO {
             if (rs.next()) {
                 person = new Person();
                 person.setId(rs.getObject("id", UUID.class));
-                // TODO: 01.07.2022 add login & password fields
+                person.setLogin(rs.getString("login"));
+                person.setPassword(rs.getString("password"));
                 person.setDetails(personDetailDAO.findById(rs.getObject("id", UUID.class)));
-                //todo use loop or stream
-                person.addCargos((List<Cargo>) cargoDAO.findById
-                        (rs.getObject("id", UUID.class)));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
         return person;
     }
@@ -85,15 +76,9 @@ public class PersonDAOImpl implements PersonDAO {
             statement.setObject(3, person.getCargoList());
             statement.execute();
 
-
-            Person fromBase = findById(person.getId());
             //todo use loop or stream
-            fromBase.addCargos((List<Cargo>) cargoDAO.update((Cargo) person.getCargoList()));
-            fromBase.setDetails(personDetailDAO.update(person.getDetails()));
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
         return person;
     }
@@ -112,18 +97,12 @@ public class PersonDAOImpl implements PersonDAO {
             while (rs.next()) {
                 Person person = new Person();
                 person.setId(rs.getObject("id", UUID.class));
-                // TODO: 01.07.2022 add login & password fields
                 person.setDetails(personDetailDAO.findById(rs.getObject("id", UUID.class)));
-                //todo use loop or stream
-                person.addCargos((List<Cargo>) cargoDAO.findById(rs.getObject
-                        ("id", UUID.class)));
 
                 personList.add(person);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
         return personList;
     }
@@ -137,10 +116,8 @@ public class PersonDAOImpl implements PersonDAO {
                          (PersonSql.SQL_QUERY_PERSON_DELETE)) {
                 statement.setObject(1, id);
                 statement.execute();
-            } catch (SQLException e) {
+            } catch (SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
-            } finally {
-                ConnectorDB.closeConnection();
             }
         }
     }
@@ -151,10 +128,8 @@ public class PersonDAOImpl implements PersonDAO {
              PreparedStatement statement = connection.prepareStatement
                      (PersonSql.SQL_QUERY_PERSON_DELETE_ALL)) {
             statement.execute();
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
     }
 }

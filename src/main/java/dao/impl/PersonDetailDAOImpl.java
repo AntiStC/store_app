@@ -50,10 +50,8 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
                 personDetails.setId(rs.getObject("id", UUID.class));
                 return personDetails;
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
         return personDetails;
     }
@@ -71,10 +69,8 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
             if (rs.next()) {
                 personDetails = createPersonDetails(rs);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
         return personDetails;
     }
@@ -86,10 +82,8 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
                      (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_UPDATE)) {
             executeStatement(personDetailsDto, statement);
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
         return personDetailsDto;
     }
@@ -108,10 +102,8 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
             while (rs.next()) {
                 personDetailsList.add(createPersonDetails(rs));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
         return personDetailsList;
     }
@@ -125,10 +117,8 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
                          (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_DELETE)) {
                 statement.setObject(1, id);
                 statement.execute();
-            } catch (SQLException e) {
+            } catch (SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
-            } finally {
-                ConnectorDB.closeConnection();
             }
         }
     }
@@ -139,10 +129,8 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
              PreparedStatement statement = connection.prepareStatement
                      (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_DELETE_ALL)) {
             statement.execute();
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
     }
 }

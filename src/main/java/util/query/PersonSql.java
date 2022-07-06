@@ -1,6 +1,11 @@
 package util.query;
 
 public class PersonSql {
+
+    private PersonSql() {
+        throw new AssertionError(String.format("Class %s cannot be instantiated", this.getClass().getSimpleName()));
+    }
+
     public static final String SQL_QUERY_PERSON_GET =
             """
                     SELECT id,

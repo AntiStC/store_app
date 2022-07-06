@@ -1,6 +1,11 @@
 package util.query;
 
-public final class CargoSql {
+public class CargoSql {
+
+    private CargoSql() {
+        throw new AssertionError(String.format("Class %s cannot be instantiated", this.getClass().getSimpleName()));
+    }
+
     public static final String SQL_QUERY_CARGO_GET =
             """
                     SELECT id,

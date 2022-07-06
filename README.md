@@ -20,38 +20,6 @@ Simple CRUD API application example.
 ## Configuration
 ## API request example 
 ### User
-'{
-  "login": "login_placeholder",
-  "password": "password_placeholder",
-  "user_details": {
-    "first_name": "first_name_placeholder",
-    "last_name": "last_name_placeholder",
-    "passport_no": "1234",
-    "address": "address_placeholder"
-  },
-  "cargo_list": [
-    {
-      "name": "name_placeholder_1",
-      "description": "description_placeholder_1",
-      "cargo_type": "cargo_type_1",
-      "cargo_state": "cargo_state_1",
-      "weight": 11.2,
-      "volume": 0.5,
-      "created_at": "01-01-1970:00:00:00",
-      "modified_at": "01-01-1970:00:00:00"
-    },
-    {
-      "name": "name_placeholder_2",
-      "description": "description_placeholder_2",
-      "cargo_type": "cargo_type_2",
-      "cargo_state": "cargo_state_2",
-      "weight": 0.5,
-      "volume": 0.1,
-      "created_at": "01-01-1970:00:00:00",
-      "modified_at": "01-01-1970:00:00:00"
-    }
-  ]
-}'
 ## Tests
 `todo: add examples`
 ## Database

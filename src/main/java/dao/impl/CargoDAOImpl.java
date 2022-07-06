@@ -67,12 +67,10 @@ public class CargoDAOImpl implements CargoDAO {
                 cargo.setId(rs.getObject("id", UUID.class));
                 return cargo;
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
-        // TODO: 03.07.2022 throw some exception instead?
+
         return cargo;
     }
 
@@ -89,12 +87,10 @@ public class CargoDAOImpl implements CargoDAO {
             if (rs.next()) {
                 cargo = createCargo(rs);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
-        // TODO: 03.07.2022 throw some exception instead?
+
         return cargo;
     }
 
@@ -109,12 +105,10 @@ public class CargoDAOImpl implements CargoDAO {
 
             Cargo fromBase = findById(cargo.getId());
             fromBase.setOwner(personDAO.update(cargo.getOwner()));
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
-        // TODO: 03.07.2022 throw some exception instead?
+
         return cargo;
     }
 
@@ -134,12 +128,10 @@ public class CargoDAOImpl implements CargoDAO {
 
                 cargoList.add(cargo);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
-        // TODO: 03.07.2022 throw some exception instead?
+
         return cargoList;
     }
 
@@ -152,10 +144,8 @@ public class CargoDAOImpl implements CargoDAO {
                          (CargoSql.SQL_QUERY_CARGO_DELETE)) {
                 statement.setObject(1, id);
                 statement.execute();
-            } catch (SQLException e) {
+            } catch (SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
-            } finally {
-                ConnectorDB.closeConnection();
             }
         }
     }
@@ -166,10 +156,8 @@ public class CargoDAOImpl implements CargoDAO {
              PreparedStatement statement = connection.prepareStatement
                      (CargoSql.SQL_QUERY_CARGO_DELETE_ALL)) {
             statement.execute();
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            ConnectorDB.closeConnection();
         }
     }
 }

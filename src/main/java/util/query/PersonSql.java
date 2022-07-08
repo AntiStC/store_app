@@ -11,14 +11,19 @@ public class PersonSql {
                     SELECT id,
                     login,
                     password
-                    FROM person WHERE id = (?)
+                    FROM person 
+                    INNER JOIN person_detail pd 
+                    on person.id = pd.person_fk
+                    WHERE id = (?) 
                     """;
     public static final String SQL_QUERY_PERSON_GET_ALL =
             """
                     SELECT id,
                     login,
                     password
-                    FROM person
+                    FROM person 
+                    INNER JOIN person_detail pd 
+                    on person.id = pd.person_fk
                     """;
     public static final String SQL_QUERY_PERSON_INSERT =
             """

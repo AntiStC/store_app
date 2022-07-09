@@ -3,14 +3,14 @@ package config.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ConnectorDB {
 
-
     public static Connection getConnection() throws SQLException, ClassNotFoundException {
-        Class.forName("db.driver");
-        ResourceBundle resource = ResourceBundle.getBundle("store_app");
+        ResourceBundle resource = ResourceBundle.getBundle("db");
+        Class.forName(resource.getString("db.driver"));
         String url = resource.getString("db.url");
         String user = resource.getString("db.user");
         String pass = resource.getString("db.password");

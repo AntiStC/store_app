@@ -7,7 +7,7 @@ import model.entity.CargoType;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class CargoDto {
+public final class CargoDto {
     private final UUID id;
     private final String name;
     private final String description;
@@ -75,18 +75,19 @@ public class CargoDto {
 
     @Override
     public String toString() {
-        return "CargoDTO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", type=" + type +
-                ", state=" + state +
-                ", weight=" + weight +
-                ", volume=" + volume +
-                ", createdAt=" + createdAt +
-                ", modifiedAt=" + modifiedAt +
-                ", owner=" + owner +
-                '}';
+        return """
+                {
+                    "id": "%s"
+                    "name": "%s",
+                    "description": "%s",
+                    "cargo_type": %s,
+                    "cargo_state": %s,
+                    "weight": %s,
+                    "volume": %s,
+                    "created_at": %s,
+                    "modified_at": %s
+                }
+                """.formatted(id, name, description, type, state, weight, volume, createdAt, modifiedAt);
     }
 
     public static class Builder {

@@ -8,23 +8,23 @@ import model.entity.Cargo;
 import model.entity.CargoState;
 import model.entity.CargoType;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 
 public class CargoDAOImpl implements CargoDAO {
-
-    // TODO: 03.07.2022 init? 
-    PersonDAO personDAO;
+    public CargoDAOImpl() {
+    }
 
     private Cargo createCargo(ResultSet rs) throws SQLException {
-      return new Cargo.Builder()
+        Timestamp createdAtTs = (Timestamp) rs.getObject("create_at");
+        Timestamp modifiedAtTs = (Timestamp) rs.getObject("modified_at");
+
+        return new Cargo.Builder()
                 .setId(rs.getObject("id", UUID.class))
                 .setName(rs.getString("name"))
                 .setDescription(rs.getString("description"))
@@ -32,23 +32,19 @@ public class CargoDAOImpl implements CargoDAO {
                 .setState(CargoState.valueOf(rs.getString("state")))
                 .setWeight(rs.getDouble("weight"))
                 .setVolume(rs.getDouble("volume"))
-                .setCreatedAt((LocalDateTime) rs.getObject("create_at"))
-                .setModifiedAt((LocalDateTime) rs.getObject("modified_at"))
-                .setOwner(personDAO.findById(rs.getObject("id", UUID.class)))
+                .setCreatedAt(LocalDateTime.ofInstant(createdAtTs.toInstant(), ZoneOffset.ofHours(0)))
+                .setModifiedAt(modifiedAtTs != null ? LocalDateTime.ofInstant(modifiedAtTs.toInstant(), ZoneOffset.ofHours(0)) : null)
                 .build();
     }
 
     private void executeStatement(Cargo cargo, PreparedStatement statement) throws SQLException {
-        statement.setObject(1, cargo.getId());
+        statement.setString(1, cargo.getName());
         statement.setString(2, cargo.getDescription());
-        statement.setString(3, cargo.getDescription());
-        statement.setString(4, String.valueOf(cargo.getType()));
-        statement.setString(5, String.valueOf(cargo.getState()));
-        statement.setDouble(6, cargo.getWeight());
-        statement.setDouble(7, cargo.getVolume());
-        statement.setObject(8, cargo.getCreatedAt());
-        statement.setObject(9, cargo.getModifiedAt());
-        statement.setObject(10, cargo.getOwner());
+        statement.setString(3, String.valueOf(cargo.getType()));
+        statement.setString(4, String.valueOf(cargo.getState()));
+        statement.setDouble(5, cargo.getWeight());
+        statement.setDouble(6, cargo.getVolume());
+        statement.setObject(7, cargo.getOwner().getId());
         statement.execute();
     }
 
@@ -94,6 +90,28 @@ public class CargoDAOImpl implements CargoDAO {
         return cargo;
     }
 
+    public List<Cargo> findByPersonId(UUID id) {
+       List<Cargo> cargoList = new ArrayList<>();
+        try (Connection connection = ConnectorDB.getConnection();
+             PreparedStatement statement = connection.prepareStatement
+                     (CargoSql.SQL_QUERY_CARGO_GET_BY_PERSON_ID)) {
+            statement.setObject(1, id);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+               Cargo cargo = createCargo(rs);
+               cargoList.add(cargo);
+            }
+
+            return cargoList;
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        // TODO: 08.07.2022 throw exception
+        return null;
+    }
+
 
     @Override
     public Cargo update(Cargo cargo) {
@@ -101,10 +119,6 @@ public class CargoDAOImpl implements CargoDAO {
              PreparedStatement statement = connection.prepareStatement
                      (CargoSql.SQL_QUERY_CARGO_UPDATE)) {
             executeStatement(cargo, statement);
-
-
-            Cargo fromBase = findById(cargo.getId());
-            fromBase.setOwner(personDAO.update(cargo.getOwner()));
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -124,7 +138,7 @@ public class CargoDAOImpl implements CargoDAO {
             cargoList = new ArrayList<>();
 
             while (rs.next()) {
-                Cargo cargo = createCargo( rs);
+                Cargo cargo = createCargo(rs);
 
                 cargoList.add(cargo);
             }

@@ -18,11 +18,10 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
 
     private void executeStatement(PersonDetails personDetails, PreparedStatement statement)
             throws SQLException {
-        statement.setObject(1, personDetails.getId());
-        statement.setString(2, personDetails.getFirstName());
-        statement.setString(3, personDetails.getLastName());
-        statement.setInt(4, personDetails.getPassportNum());
-        statement.setString(5, personDetails.getAddress());
+        statement.setString(1, personDetails.getFirstName());
+        statement.setString(2, personDetails.getLastName());
+        statement.setInt(3, personDetails.getPassportNum());
+        statement.setString(4, personDetails.getAddress());
         statement.execute();
     }
 
@@ -76,16 +75,21 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
     }
 
     @Override
-    public PersonDetails update(PersonDetails personDetailsDto) {
+    public PersonDetails update(PersonDetails personDetails) {
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_UPDATE)) {
-            executeStatement(personDetailsDto, statement);
+            statement.setString(1, personDetails.getFirstName());
+            statement.setString(2, personDetails.getLastName());
+            statement.setInt(3, personDetails.getPassportNum());
+            statement.setString(4, personDetails.getAddress());
+            statement.setObject(5, personDetails.getId());
+            statement.execute();
 
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return personDetailsDto;
+        return personDetails;
     }
 
     @Override

@@ -34,22 +34,22 @@ Simple CRUD API application example.
     {
       "name": "name_placeholder_1",
       "description": "description_placeholder_1",
-      "cargo_type": "cargo_type_1",
-      "cargo_state": "cargo_state_1",
+      "cargo_type": "ROUND",
+      "cargo_state": "NOT_READY",
       "weight": 11.2,
       "volume": 0.5,
-      "created_at": "01-01-1970:00:00:00",
-      "modified_at": "01-01-1970:00:00:00"
+      "created_at": "1986-04-08 12:30",
+      "modified_at": "1986-04-08 12:30"
     },
     {
       "name": "name_placeholder_2",
       "description": "description_placeholder_2",
-      "cargo_type": "cargo_type_2",
-      "cargo_state": "cargo_state_2",
+      "cargo_type": "ROUND",
+      "cargo_state": "READY",
       "weight": 0.5,
       "volume": 0.1,
-      "created_at": "01-01-1970:00:00:00",
-      "modified_at": "01-01-1970:00:00:00"
+      "created_at": "1986-04-08 12:32",
+      "modified_at": "1986-04-08 12:32"
     }
   ]
 }

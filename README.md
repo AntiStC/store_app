@@ -19,7 +19,7 @@ Simple CRUD API application example.
 ## Versioning
 ## Configuration
 ## API request example 
-### User
+### Create User 
 ```
 {
   "login": "login_placeholder",

@@ -33,7 +33,7 @@ public class PersonDetailSql {
                     last_name,
                     passport_num,
                     address)
-                    VALUES(uuid_generate_v4(),(?),(?),(?))
+                    VALUES(uuid_generate_v4(),(?),(?),(?),(?))
                     RETURNING id
                     """;
     public static final String SQL_QUERY_PERSON_DETAIL_DELETE =

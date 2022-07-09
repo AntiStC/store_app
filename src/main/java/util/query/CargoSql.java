@@ -5,6 +5,20 @@ public class CargoSql {
     private CargoSql() {
         throw new AssertionError(String.format("Class %s cannot be instantiated", this.getClass().getSimpleName()));
     }
+    public static final String SQL_QUERY_CARGO_GET_BY_PERSON_ID =
+            """
+                    SELECT id,
+                    name,
+                    description,
+                    type,
+                    state,
+                    weight,
+                    volume,
+                    create_at,
+                    modified_at,
+                    person_id FROM
+                    cargo WHERE person_id = (?)
+                    """;
 
     public static final String SQL_QUERY_CARGO_GET =
             """
@@ -17,7 +31,7 @@ public class CargoSql {
                     volume,
                     create_at,
                     modified_at,
-                    person_fk FROM
+                    person_id FROM
                     cargo WHERE id = (?)
                     """;
     public static final String SQL_QUERY_CARGO_GET_ALL =
@@ -31,7 +45,7 @@ public class CargoSql {
                     volume,
                     create_at,
                     modified_at,
-                    person_fk FROM
+                    person_id FROM
                     cargo
                     """;
     public static final String SQL_QUERY_CARGO_INSERT =
@@ -44,10 +58,8 @@ public class CargoSql {
                     state,
                     weight,
                     volume,
-                    create_at,
-                    modified_at,
-                    person_fk)
-                    VALUES(uuid_generate_v4(),(?),(?),(?))
+                    person_id)
+                    VALUES(uuid_generate_v4(),(?),(?),(?),(?),(?),(?),(?))
                     RETURNING id
                     """;
     public static final String SQL_QUERY_CARGO_DELETE =

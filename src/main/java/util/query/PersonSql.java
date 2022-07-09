@@ -8,16 +8,23 @@ public class PersonSql {
 
     public static final String SQL_QUERY_PERSON_GET =
             """
-                    SELECT id,
-                    login,
-                    password
-                    FROM person WHERE id = (?)
+                    SELECT p.id,
+                    p.login,
+                    p.password,
+                    pd.id as pd_id,
+                    pd.first_name,
+                    pd.last_name,
+                    pd.passport_num,
+                    pd.address
+                    FROM person p, person_detail pd
+                    WHERE p.id = (?) AND person_detail_id = pd.id
                     """;
     public static final String SQL_QUERY_PERSON_GET_ALL =
             """
                     SELECT id,
                     login,
-                    password
+                    password,
+                    person_detail_id
                     FROM person
                     """;
     public static final String SQL_QUERY_PERSON_INSERT =
@@ -25,7 +32,8 @@ public class PersonSql {
                     INSERT INTO person(
                     id,
                     login,
-                    password)
+                    password,
+                    person_detail_id)
                     VALUES(uuid_generate_v4(),(?),(?),(?))
                     RETURNING id
                     """;

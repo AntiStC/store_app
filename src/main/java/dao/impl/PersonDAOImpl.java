@@ -46,7 +46,7 @@ public class PersonDAOImpl implements PersonDAO {
 
     @Override
     public Person findById(UUID id) {
-        Person person = null;
+        Person person;
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonSql.SQL_QUERY_PERSON_GET)) {
@@ -59,11 +59,12 @@ public class PersonDAOImpl implements PersonDAO {
                 person.setLogin(rs.getString("login"));
                 person.setPassword(rs.getString("password"));
                 person.setDetails(personDetailDAO.findById(rs.getObject("id", UUID.class)));
+                return person;
             }
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return person;
+        return null;
     }
 
     @Override

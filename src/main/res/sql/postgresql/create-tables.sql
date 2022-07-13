@@ -25,8 +25,8 @@ CREATE TABLE IF NOT EXISTS cargo
     weight      DOUBLE PRECISION NOT NULL,
     volume      DOUBLE PRECISION NOT NULL,
     create_at   TIMESTAMP        NOT NULL DEFAULT NOW(),
-    modified_at TIMESTAMP,
-    person_fk   UUID
+    modified_at TIMESTAMP
+
 );
 
 CREATE TABLE IF NOT EXISTS cargo_list
@@ -43,7 +43,5 @@ ALTER TABLE cargo_list
 ALTER TABLE person
     ADD FOREIGN KEY (person_detail_fk) REFERENCES person_detail (person_detail_id);
 
-ALTER TABLE cargo
-    ADD FOREIGN KEY (person_fk) REFERENCES cargo_list (person_fk);
 
 

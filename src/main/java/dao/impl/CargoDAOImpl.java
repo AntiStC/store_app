@@ -8,6 +8,7 @@ import model.entity.Cargo;
 import model.entity.CargoState;
 import model.entity.CargoType;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,10 +22,10 @@ import java.util.UUID;
 public class CargoDAOImpl implements CargoDAO {
 
     // TODO: 03.07.2022 init? 
-    PersonDAO personDAO;
+    public PersonDAO personDAO;
 
     private Cargo createCargo(ResultSet rs) throws SQLException {
-      return new Cargo.Builder()
+        return new Cargo.Builder()
                 .setId(rs.getObject("id", UUID.class))
                 .setName(rs.getString("name"))
                 .setDescription(rs.getString("description"))
@@ -55,7 +56,7 @@ public class CargoDAOImpl implements CargoDAO {
 
     @Override
     public Cargo create(Cargo cargo) {
-        try (Connection connection = ConnectorDB.getConnection();
+        try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (CargoSql.SQL_QUERY_CARGO_INSERT,
                              PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -67,7 +68,7 @@ public class CargoDAOImpl implements CargoDAO {
                 cargo.setId(rs.getObject("id", UUID.class));
                 return cargo;
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
 
@@ -78,7 +79,7 @@ public class CargoDAOImpl implements CargoDAO {
     @Override
     public Cargo findById(UUID id) {
         Cargo cargo = null;
-        try (Connection connection = ConnectorDB.getConnection();
+        try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (CargoSql.SQL_QUERY_CARGO_GET)) {
             statement.setObject(1, id);
@@ -87,7 +88,7 @@ public class CargoDAOImpl implements CargoDAO {
             if (rs.next()) {
                 cargo = createCargo(rs);
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
 
@@ -97,7 +98,7 @@ public class CargoDAOImpl implements CargoDAO {
 
     @Override
     public Cargo update(Cargo cargo) {
-        try (Connection connection = ConnectorDB.getConnection();
+        try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (CargoSql.SQL_QUERY_CARGO_UPDATE)) {
             executeStatement(cargo, statement);
@@ -105,7 +106,7 @@ public class CargoDAOImpl implements CargoDAO {
 
             Cargo fromBase = findById(cargo.getId());
             fromBase.setOwner(personDAO.update(cargo.getOwner()));
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
 
@@ -115,7 +116,7 @@ public class CargoDAOImpl implements CargoDAO {
     @Override
     public List<Cargo> findAll() {
         List<Cargo> cargoList = null;
-        try (Connection connection = ConnectorDB.getConnection();
+        try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (CargoSql.SQL_QUERY_CARGO_GET_ALL)) {
 
@@ -124,11 +125,11 @@ public class CargoDAOImpl implements CargoDAO {
             cargoList = new ArrayList<>();
 
             while (rs.next()) {
-                Cargo cargo = createCargo( rs);
+                Cargo cargo = createCargo(rs);
 
                 cargoList.add(cargo);
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
 
@@ -139,12 +140,12 @@ public class CargoDAOImpl implements CargoDAO {
     @Override
     public void delete(UUID id) {
         if (findById(id) != null) {
-            try (Connection connection = ConnectorDB.getConnection();
+            try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
                  PreparedStatement statement = connection.prepareStatement
                          (CargoSql.SQL_QUERY_CARGO_DELETE)) {
                 statement.setObject(1, id);
                 statement.execute();
-            } catch (SQLException | ClassNotFoundException e) {
+            } catch (SQLException | IOException e) {
                 e.printStackTrace();
             }
         }
@@ -152,11 +153,11 @@ public class CargoDAOImpl implements CargoDAO {
 
     @Override
     public void deleteAll() {
-        try (Connection connection = ConnectorDB.getConnection();
+        try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (CargoSql.SQL_QUERY_CARGO_DELETE_ALL)) {
             statement.execute();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }

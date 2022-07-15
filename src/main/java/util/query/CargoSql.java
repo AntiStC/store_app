@@ -70,7 +70,7 @@ public class CargoSql {
                         volume      = (?),
                         create_at   = (?),
                         modified_at = (?)
-                    WHERE cargo_id = (?)
+                    WHERE cargo_id  = (?)
                     RETURNING cargo_id
                     """;
 

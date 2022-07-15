@@ -1,19 +1,27 @@
 package config.database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.ResourceBundle;
+import org.postgresql.ds.PGConnectionPoolDataSource;
+import org.postgresql.ds.common.BaseDataSource;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 
 public class ConnectorDB {
-    public static Connection getConnection() throws SQLException, ClassNotFoundException {
-        ResourceBundle resource = ResourceBundle.getBundle("database");
-        Class.forName("db.driver");
-        String url = resource.getString("db.url");
-        String user = resource.getString("db.user");
-        String pass = resource.getString("db.password");
-        String dbName = resource.getString("db.name");
+    public static BaseDataSource getPGDataSource() throws IOException {
+        Properties props = new Properties();
+        FileInputStream fis = null;
+        BaseDataSource ds = null;
 
-        return DriverManager.getConnection(url + dbName, user, pass);
+        fis = new FileInputStream("src/res/database.properties");
+        props.load(fis);
+
+        ds = new PGConnectionPoolDataSource();
+        ds.setURL(props.getProperty("postgresql.url"));
+        ds.setUser(props.getProperty("postgresql.user"));
+        ds.setPassword(props.getProperty("postgresql.password"));
+
+        return ds;
     }
 }

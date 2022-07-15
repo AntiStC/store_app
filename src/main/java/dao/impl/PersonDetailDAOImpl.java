@@ -5,6 +5,7 @@ import util.query.PersonDetailSql;
 import dao.PersonDetailDAO;
 import model.entity.PersonDetails;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,7 +39,7 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
 
     @Override
     public PersonDetails create(PersonDetails personDetails) {
-        try (Connection connection = ConnectorDB.getConnection();
+        try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_INSERT,
                              PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -50,7 +51,7 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
                 personDetails.setId(rs.getObject("id", UUID.class));
                 return personDetails;
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
         return personDetails;
@@ -60,7 +61,7 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
     @Override
     public PersonDetails findById(UUID id) {
         PersonDetails personDetails = null;
-        try (Connection connection = ConnectorDB.getConnection();
+        try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_GET)) {
             statement.setObject(1, id);
@@ -69,7 +70,7 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
             if (rs.next()) {
                 personDetails = createPersonDetails(rs);
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
         return personDetails;
@@ -77,12 +78,12 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
 
     @Override
     public PersonDetails update(PersonDetails personDetailsDto) {
-        try (Connection connection = ConnectorDB.getConnection();
+        try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_UPDATE)) {
             executeStatement(personDetailsDto, statement);
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
         return personDetailsDto;
@@ -91,7 +92,7 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
     @Override
     public List<PersonDetails> findAll() {
         List<PersonDetails> personDetailsList = null;
-        try (Connection connection = ConnectorDB.getConnection();
+        try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_GET_ALL)) {
 
@@ -102,7 +103,7 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
             while (rs.next()) {
                 personDetailsList.add(createPersonDetails(rs));
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
         return personDetailsList;
@@ -112,12 +113,12 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
     @Override
     public void delete(UUID id) {
         if (findById(id) != null) {
-            try (Connection connection = ConnectorDB.getConnection();
+            try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
                  PreparedStatement statement = connection.prepareStatement
                          (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_DELETE)) {
                 statement.setObject(1, id);
                 statement.execute();
-            } catch (SQLException | ClassNotFoundException e) {
+            } catch (SQLException | IOException e) {
                 e.printStackTrace();
             }
         }
@@ -125,11 +126,11 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
 
     @Override
     public void deleteAll() {
-        try (Connection connection = ConnectorDB.getConnection();
+        try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_DELETE_ALL)) {
             statement.execute();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }

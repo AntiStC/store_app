@@ -72,7 +72,7 @@ public class CargoDAOImpl implements CargoDAO {
             e.printStackTrace();
         }
 
-        return cargo;
+        return null;
     }
 
 
@@ -87,12 +87,13 @@ public class CargoDAOImpl implements CargoDAO {
 
             if (rs.next()) {
                 cargo = createCargo(rs);
+                return cargo;
             }
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
 
-        return cargo;
+        return null;
     }
 
 
@@ -138,7 +139,7 @@ public class CargoDAOImpl implements CargoDAO {
 
 
     @Override
-    public void delete(UUID id) {
+    public boolean delete(UUID id) {
         if (findById(id) != null) {
             try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
                  PreparedStatement statement = connection.prepareStatement
@@ -149,10 +150,11 @@ public class CargoDAOImpl implements CargoDAO {
                 e.printStackTrace();
             }
         }
+        return true;
     }
 
     @Override
-    public void deleteAll() {
+    public boolean deleteAll() {
         try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (CargoSql.SQL_QUERY_CARGO_DELETE_ALL)) {
@@ -160,5 +162,6 @@ public class CargoDAOImpl implements CargoDAO {
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
+        return true;
     }
 }

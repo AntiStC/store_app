@@ -54,7 +54,7 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
-        return personDetails;
+        return null;
     }
 
 
@@ -69,11 +69,12 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
 
             if (rs.next()) {
                 personDetails = createPersonDetails(rs);
+                return personDetails;
             }
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
-        return personDetails;
+        return null;
     }
 
     @Override
@@ -111,7 +112,7 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
 
 
     @Override
-    public void delete(UUID id) {
+    public boolean delete(UUID id) {
         if (findById(id) != null) {
             try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
                  PreparedStatement statement = connection.prepareStatement
@@ -122,10 +123,11 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
                 e.printStackTrace();
             }
         }
+        return true;
     }
 
     @Override
-    public void deleteAll() {
+    public boolean deleteAll() {
         try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_DELETE_ALL)) {
@@ -133,5 +135,6 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
+        return true;
     }
 }

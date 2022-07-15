@@ -12,7 +12,7 @@ public interface DAOService <Entity, ID> {
 
     List<Entity> findAll();
 
-    void delete(ID id);
+    boolean delete(ID id);
 
-    void deleteAll();
+    boolean deleteAll();
 }

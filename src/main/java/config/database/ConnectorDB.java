@@ -11,13 +11,11 @@ import java.util.Properties;
 public class ConnectorDB {
     public static BaseDataSource getPGDataSource() throws IOException {
         Properties props = new Properties();
-        FileInputStream fis = null;
-        BaseDataSource ds = null;
 
-        fis = new FileInputStream("src/res/database.properties");
+        FileInputStream fis = new FileInputStream("src/res/database.properties");
         props.load(fis);
 
-        ds = new PGConnectionPoolDataSource();
+        BaseDataSource ds = new PGConnectionPoolDataSource();
         ds.setURL(props.getProperty("postgresql.url"));
         ds.setUser(props.getProperty("postgresql.user"));
         ds.setPassword(props.getProperty("postgresql.password"));

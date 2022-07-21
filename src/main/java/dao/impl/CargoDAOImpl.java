@@ -3,6 +3,7 @@ package dao.impl;
 import config.database.ConnectorDB;
 import dao.CargoDAO;
 import dao.PersonDAO;
+import exception.EntityNotCreateException;
 import exception.EntityNotFoundException;
 import model.entity.Cargo;
 import model.entity.CargoState;
@@ -21,8 +22,6 @@ import java.util.UUID;
 
 public class CargoDAOImpl implements CargoDAO {
 
-    private Cargo entityNotFoundException;
-    private Cargo entityNotCreateException;
     private PersonDAO personDAO;
 
     public CargoDAOImpl() {
@@ -60,7 +59,7 @@ public class CargoDAOImpl implements CargoDAO {
 
 
     @Override
-    public Cargo create(Cargo cargo) {
+    public Cargo create(Cargo cargo) throws EntityNotCreateException {
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (CargoSql.SQL_QUERY_CARGO_INSERT,
@@ -76,13 +75,13 @@ public class CargoDAOImpl implements CargoDAO {
         } catch (SQLException e) {
         }
 
-        return entityNotCreateException;
+        throw new EntityNotCreateException("Cargo not create!");
     }
 
 
     @Override
     public Cargo findById(UUID id) {
-        Cargo cargo = null;
+        Cargo cargo;
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (CargoSql.SQL_QUERY_CARGO_GET)) {
@@ -96,12 +95,12 @@ public class CargoDAOImpl implements CargoDAO {
         } catch (SQLException e) {
         }
 
-        return entityNotFoundException;
+        throw new EntityNotFoundException("Entity cargo not found!");
     }
 
 
     @Override
-    public Cargo update(Cargo cargo) throws EntityNotFoundException {
+    public Cargo update(Cargo cargo) throws EntityNotCreateException {
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (CargoSql.SQL_QUERY_CARGO_UPDATE)) {
@@ -116,7 +115,7 @@ public class CargoDAOImpl implements CargoDAO {
         } catch (SQLException e) {
         }
 
-        return entityNotFoundException;
+        throw new EntityNotCreateException("Cargo not update!");
     }
 
     @Override
@@ -154,7 +153,7 @@ public class CargoDAOImpl implements CargoDAO {
             } catch (SQLException e) {
             }
         }
-        return false;
+        throw new EntityNotFoundException("Cargo not found!");
     }
 
     @Override
@@ -166,6 +165,6 @@ public class CargoDAOImpl implements CargoDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return true;
+        throw new EntityNotFoundException("NOT!");
     }
 }

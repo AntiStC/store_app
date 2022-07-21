@@ -6,26 +6,19 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ConnectorDB {
-    //todo ???
-    public static Connection getConnection() throws SQLException {
+    public static Connection getConnection(){
         ResourceBundle resource = ResourceBundle.getBundle("database");
-        String url = resource.getString("db.url");
-        String user = resource.getString("db.user");
-        String pass = resource.getString("db.password");
-        String dbName = resource.getString("db.name");
+        try {
+            Class.forName("db.driver");
+
+            String url = resource.getString("db.url");
+            String user = resource.getString("db.user");
+            String pass = resource.getString("db.password");
+            String dbName = resource.getString("db.name");
 
         return DriverManager.getConnection(url + dbName, user, pass);
-    }
-
-    public static void closeConnection() {
-        //todo ???
-        Connection connection = null;
-        if (connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+    }catch (SQLException | ClassNotFoundException e) {
         }
+        return null;
     }
 }

@@ -51,7 +51,7 @@ public class CargoDAOImpl implements CargoDAO {
         statement.setDouble(7, cargo.getVolume());
         statement.setObject(8, cargo.getCreatedAt());
         statement.setObject(9, cargo.getModifiedAt());
-        statement.execute();
+        statement.executeUpdate();
     }
 
 

@@ -11,9 +11,9 @@ public interface DAOService <Entity, ID> {
 
     Entity findById(ID id) throws EntityNotFoundException;
 
-    Entity update(Entity entity)throws EntityNotFoundException;
+    Entity update(Entity entity) throws EntityNotCreateException;
 
-    List<Entity> findAll() throws EntityNotFoundException;
+    List<Entity> findAll();
 
     boolean delete(ID id) throws EntityNotFoundException;
 

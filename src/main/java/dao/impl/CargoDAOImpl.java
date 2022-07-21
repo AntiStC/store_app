@@ -137,7 +137,7 @@ public class CargoDAOImpl implements CargoDAO {
 
 
     @Override
-    public boolean delete(UUID id){
+    public boolean delete(UUID id) {
         if (findById(id) != null) {
             try (Connection connection = ConnectorDB.getConnection();
                  PreparedStatement statement = connection.prepareStatement

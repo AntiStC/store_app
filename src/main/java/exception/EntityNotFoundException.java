@@ -1,5 +1,7 @@
 package exception;
 
-public class EntityNotFoundException {
-    //todo implement custom exception
+public class EntityNotFoundException extends RuntimeException {
+    public EntityNotFoundException(String message) {
+        super(message);
+    }
 }

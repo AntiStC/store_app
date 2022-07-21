@@ -1,10 +1,14 @@
 package dao.impl;
 
 import config.database.ConnectorDB;
+import exception.EntityNotCreateException;
+import exception.EntityNotFoundException;
+import model.entity.Cargo;
 import util.query.PersonDetailSql;
 import dao.PersonDetailDAO;
 import model.entity.PersonDetails;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,6 +20,9 @@ import java.util.UUID;
 
 public class PersonDetailDAOImpl implements PersonDetailDAO {
 
+    public PersonDetailDAOImpl() {
+    }
+
     private void executeStatement(PersonDetails personDetails, PreparedStatement statement)
             throws SQLException {
         statement.setObject(1, personDetails.getId());
@@ -23,7 +30,7 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
         statement.setString(3, personDetails.getLastName());
         statement.setInt(4, personDetails.getPassportNum());
         statement.setString(5, personDetails.getAddress());
-        statement.execute();
+        statement.executeUpdate();
     }
 
     private PersonDetails createPersonDetails(ResultSet rs) throws SQLException {
@@ -37,7 +44,7 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
     }
 
     @Override
-    public PersonDetails create(PersonDetails personDetails) {
+    public PersonDetails create(PersonDetails personDetails) throws EntityNotCreateException {
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_INSERT,
@@ -50,16 +57,15 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
                 personDetails.setId(rs.getObject("id", UUID.class));
                 return personDetails;
             }
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
         }
-        return personDetails;
+        throw new EntityNotCreateException("Person detail not create!");
     }
 
 
     @Override
     public PersonDetails findById(UUID id) {
-        PersonDetails personDetails = null;
+        PersonDetails personDetails;
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_GET)) {
@@ -68,24 +74,28 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
 
             if (rs.next()) {
                 personDetails = createPersonDetails(rs);
+                return personDetails;
             }
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
         }
-        return personDetails;
+        throw new EntityNotFoundException("Person detail not found!");
     }
 
     @Override
-    public PersonDetails update(PersonDetails personDetailsDto) {
+    public PersonDetails update(PersonDetails personDetails) throws EntityNotCreateException {
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_UPDATE)) {
-            executeStatement(personDetailsDto, statement);
+            executeStatement(personDetails, statement);
 
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+            PersonDetails fromBasePD = findById(personDetails.getId());
+            if (fromBasePD != null) {
+                return fromBasePD;
+            }
+
+        } catch (SQLException e) {
         }
-        return personDetailsDto;
+        throw new EntityNotCreateException("Person detail not create!");
     }
 
     @Override
@@ -100,37 +110,37 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
             personDetailsList = new ArrayList<>();
 
             while (rs.next()) {
-                personDetailsList.add(createPersonDetails(rs));
+                PersonDetails personDetails = createPersonDetails(rs);
+                personDetailsList.add(personDetails);
             }
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
         }
         return personDetailsList;
     }
 
 
     @Override
-    public void delete(UUID id) {
+    public boolean delete(UUID id) {
         if (findById(id) != null) {
             try (Connection connection = ConnectorDB.getConnection();
                  PreparedStatement statement = connection.prepareStatement
                          (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_DELETE)) {
                 statement.setObject(1, id);
-                statement.execute();
-            } catch (SQLException | ClassNotFoundException e) {
-                e.printStackTrace();
+                statement.executeUpdate();
+            } catch (SQLException e) {
             }
         }
+        throw new EntityNotFoundException("Person detail not found!");
     }
 
     @Override
-    public void deleteAll() {
+    public boolean deleteAll() {
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_DELETE_ALL)) {
-            statement.execute();
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+            statement.executeUpdate();
+        } catch (SQLException e) {
         }
+        throw new EntityNotFoundException("NOT!");
     }
 }

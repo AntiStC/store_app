@@ -42,6 +42,3 @@ ALTER TABLE cargo_list
 
 ALTER TABLE person
     ADD FOREIGN KEY (person_detail_fk) REFERENCES person_detail (person_detail_id);
-
-
-

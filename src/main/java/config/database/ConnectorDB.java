@@ -1,25 +1,31 @@
 package config.database;
 
-import org.postgresql.ds.PGConnectionPoolDataSource;
-import org.postgresql.ds.common.BaseDataSource;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 public class ConnectorDB {
-    public static BaseDataSource getPGDataSource() throws IOException {
-        Properties props = new Properties();
+    //todo ???
+    public static Connection getConnection() throws SQLException {
+        ResourceBundle resource = ResourceBundle.getBundle("database");
+        String url = resource.getString("db.url");
+        String user = resource.getString("db.user");
+        String pass = resource.getString("db.password");
+        String dbName = resource.getString("db.name");
 
-        FileInputStream fis = new FileInputStream("src/res/database.properties");
-        props.load(fis);
+        return DriverManager.getConnection(url + dbName, user, pass);
+    }
 
-        BaseDataSource ds = new PGConnectionPoolDataSource();
-        ds.setURL(props.getProperty("postgresql.url"));
-        ds.setUser(props.getProperty("postgresql.user"));
-        ds.setPassword(props.getProperty("postgresql.password"));
-
-        return ds;
+    public static void closeConnection() {
+        //todo ???
+        Connection connection = null;
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

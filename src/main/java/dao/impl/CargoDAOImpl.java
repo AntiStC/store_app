@@ -22,7 +22,6 @@ import java.util.UUID;
 
 public class CargoDAOImpl implements CargoDAO {
 
-    private PersonDAO personDAO;
 
     public CargoDAOImpl() {
     }
@@ -39,7 +38,6 @@ public class CargoDAOImpl implements CargoDAO {
                 .setVolume(rs.getDouble("volume"))
                 .setCreatedAt((LocalDateTime) rs.getObject("create_at"))
                 .setModifiedAt((LocalDateTime) rs.getObject("modified_at"))
-                .setOwner(personDAO.findById(rs.getObject("id", UUID.class)))
                 .build();
     }
 
@@ -53,7 +51,6 @@ public class CargoDAOImpl implements CargoDAO {
         statement.setDouble(7, cargo.getVolume());
         statement.setObject(8, cargo.getCreatedAt());
         statement.setObject(9, cargo.getModifiedAt());
-        statement.setObject(10, cargo.getOwner());
         statement.execute();
     }
 
@@ -106,10 +103,8 @@ public class CargoDAOImpl implements CargoDAO {
                      (CargoSql.SQL_QUERY_CARGO_UPDATE)) {
             executeStatement(cargo, statement);
 
-
             Cargo fromBase = findById(cargo.getId());
             if (fromBase != null) {
-                fromBase.setOwner(personDAO.update(cargo.getOwner()));
                 return fromBase;
             }
         } catch (SQLException e) {
@@ -148,7 +143,7 @@ public class CargoDAOImpl implements CargoDAO {
                  PreparedStatement statement = connection.prepareStatement
                          (CargoSql.SQL_QUERY_CARGO_DELETE)) {
                 statement.setObject(1, id);
-                statement.execute();
+                statement.executeUpdate();
                 return true;
             } catch (SQLException e) {
             }
@@ -161,7 +156,7 @@ public class CargoDAOImpl implements CargoDAO {
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (CargoSql.SQL_QUERY_CARGO_DELETE_ALL)) {
-            statement.execute();
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -1,18 +1,21 @@
 package dao;
 
+import exception.EntityNotCreateException;
+import exception.EntityNotFoundException;
+
 import java.util.List;
 
 public interface DAOService <Entity, ID> {
 
-    Entity create(Entity entity);
+    Entity create(Entity entity) throws EntityNotCreateException;
 
-    Entity findById(ID id);
+    Entity findById(ID id) throws EntityNotFoundException;
 
-    Entity update(Entity entity);
+    Entity update(Entity entity)throws EntityNotFoundException;
 
-    List<Entity> findAll();
+    List<Entity> findAll() throws EntityNotFoundException;
 
-    boolean delete(ID id);
+    boolean delete(ID id) throws EntityNotFoundException;
 
-    boolean deleteAll();
+    boolean deleteAll() throws EntityNotFoundException;
 }

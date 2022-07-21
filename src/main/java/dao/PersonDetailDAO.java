@@ -8,21 +8,6 @@ import java.util.UUID;
 public interface PersonDetailDAO extends DAOService<PersonDetails, UUID>{
 
     @Override
-    default PersonDetails create(PersonDetails personDetails) {
-        return null;
-    }
-
-    @Override
-    default PersonDetails findById(UUID uuid) {
-        return null;
-    }
-
-    @Override
-    default PersonDetails update(PersonDetails personDetails) {
-        return null;
-    }
-
-    @Override
     default List<PersonDetails> findAll() {
         return null;
     }

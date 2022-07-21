@@ -1,6 +1,9 @@
 package dao.impl;
 
 import config.database.ConnectorDB;
+import exception.EntityNotCreateException;
+import exception.EntityNotFoundException;
+import model.entity.Cargo;
 import util.query.PersonDetailSql;
 import dao.PersonDetailDAO;
 import model.entity.PersonDetails;
@@ -17,6 +20,9 @@ import java.util.UUID;
 
 public class PersonDetailDAOImpl implements PersonDetailDAO {
 
+    public PersonDetailDAOImpl() {
+    }
+
     private void executeStatement(PersonDetails personDetails, PreparedStatement statement)
             throws SQLException {
         statement.setObject(1, personDetails.getId());
@@ -24,7 +30,7 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
         statement.setString(3, personDetails.getLastName());
         statement.setInt(4, personDetails.getPassportNum());
         statement.setString(5, personDetails.getAddress());
-        statement.execute();
+        statement.executeUpdate();
     }
 
     private PersonDetails createPersonDetails(ResultSet rs) throws SQLException {
@@ -38,8 +44,8 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
     }
 
     @Override
-    public PersonDetails create(PersonDetails personDetails) {
-        try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
+    public PersonDetails create(PersonDetails personDetails) throws EntityNotCreateException {
+        try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_INSERT,
                              PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -51,17 +57,16 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
                 personDetails.setId(rs.getObject("id", UUID.class));
                 return personDetails;
             }
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
         }
-        return null;
+        throw new EntityNotCreateException("Person detail not create!");
     }
 
 
     @Override
     public PersonDetails findById(UUID id) {
-        PersonDetails personDetails = null;
-        try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
+        PersonDetails personDetails;
+        try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_GET)) {
             statement.setObject(1, id);
@@ -71,29 +76,32 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
                 personDetails = createPersonDetails(rs);
                 return personDetails;
             }
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
         }
-        return null;
+        throw new EntityNotFoundException("Person detail not found!");
     }
 
     @Override
-    public PersonDetails update(PersonDetails personDetailsDto) {
-        try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
+    public PersonDetails update(PersonDetails personDetails) throws EntityNotCreateException {
+        try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_UPDATE)) {
-            executeStatement(personDetailsDto, statement);
+            executeStatement(personDetails, statement);
 
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
+            PersonDetails fromBasePD = findById(personDetails.getId());
+            if (fromBasePD != null) {
+                return fromBasePD;
+            }
+
+        } catch (SQLException e) {
         }
-        return personDetailsDto;
+        throw new EntityNotCreateException("Person detail not create!");
     }
 
     @Override
     public List<PersonDetails> findAll() {
         List<PersonDetails> personDetailsList = null;
-        try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
+        try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_GET_ALL)) {
 
@@ -102,10 +110,10 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
             personDetailsList = new ArrayList<>();
 
             while (rs.next()) {
-                personDetailsList.add(createPersonDetails(rs));
+                PersonDetails personDetails = createPersonDetails(rs);
+                personDetailsList.add(personDetails);
             }
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
         }
         return personDetailsList;
     }
@@ -114,27 +122,25 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
     @Override
     public boolean delete(UUID id) {
         if (findById(id) != null) {
-            try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
+            try (Connection connection = ConnectorDB.getConnection();
                  PreparedStatement statement = connection.prepareStatement
                          (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_DELETE)) {
                 statement.setObject(1, id);
-                statement.execute();
-            } catch (SQLException | IOException e) {
-                e.printStackTrace();
+                statement.executeUpdate();
+            } catch (SQLException e) {
             }
         }
-        return true;
+        throw new EntityNotFoundException("Person detail not found!");
     }
 
     @Override
     public boolean deleteAll() {
-        try (Connection connection = ConnectorDB.getPGDataSource().getConnection();
+        try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_DELETE_ALL)) {
-            statement.execute();
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
+            statement.executeUpdate();
+        } catch (SQLException e) {
         }
-        return true;
+        throw new EntityNotFoundException("NOT!");
     }
 }

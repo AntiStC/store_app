@@ -9,15 +9,15 @@ public class ConnectorDB {
     public static Connection getConnection(){
         ResourceBundle resource = ResourceBundle.getBundle("database");
         try {
-            Class.forName("db.driver");
+            Class.forName(resource.getString("db.driver"));
 
             String url = resource.getString("db.url");
             String user = resource.getString("db.user");
             String pass = resource.getString("db.password");
-            String dbName = resource.getString("db.name");
 
-        return DriverManager.getConnection(url + dbName, user, pass);
+        return DriverManager.getConnection(url, user, pass);
     }catch (SQLException | ClassNotFoundException e) {
+        e.printStackTrace();
         }
         return null;
     }

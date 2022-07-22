@@ -18,9 +18,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 
 public class CargoDAOImpl implements CargoDAO {
+    private final Logger logger = Logger.getLogger(CargoDAOImpl.class.getSimpleName());
 
 
     public CargoDAOImpl() {
@@ -70,6 +72,7 @@ public class CargoDAOImpl implements CargoDAO {
                 return cargo;
             }
         } catch (SQLException e) {
+            logger.warning(e.getMessage());
         }
 
         throw new EntityNotCreateException("Cargo not create!");
@@ -90,6 +93,7 @@ public class CargoDAOImpl implements CargoDAO {
                 return cargo;
             }
         } catch (SQLException e) {
+            logger.warning(e.getMessage());
         }
 
         throw new EntityNotFoundException("Entity cargo not found!");
@@ -108,6 +112,7 @@ public class CargoDAOImpl implements CargoDAO {
                 return fromBase;
             }
         } catch (SQLException e) {
+            logger.warning(e.getMessage());
         }
 
         throw new EntityNotCreateException("Cargo not update!");
@@ -130,6 +135,7 @@ public class CargoDAOImpl implements CargoDAO {
                 cargoList.add(cargo);
             }
         } catch (SQLException e) {
+            logger.warning(e.getMessage());
         }
 
         return cargoList;
@@ -146,6 +152,7 @@ public class CargoDAOImpl implements CargoDAO {
                 statement.executeUpdate();
                 return true;
             } catch (SQLException e) {
+                logger.warning(e.getMessage());
             }
         }
         throw new EntityNotFoundException("Cargo not found!");
@@ -158,7 +165,7 @@ public class CargoDAOImpl implements CargoDAO {
                      (CargoSql.SQL_QUERY_CARGO_DELETE_ALL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning(e.getMessage());
         }
         throw new EntityNotFoundException("NOT!");
     }

@@ -16,9 +16,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 
 public class PersonDetailDAOImpl implements PersonDetailDAO {
+    private final Logger logger = Logger.getLogger(PersonDetailDAOImpl.class.getSimpleName());
 
     public PersonDetailDAOImpl() {
     }
@@ -60,6 +62,7 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
                 }
             }
         } catch (SQLException e) {
+            logger.warning(e.getMessage());
         }
         throw new EntityNotCreateException("Person detail not create!");
     }
@@ -79,6 +82,7 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
                 return personDetails;
             }
         } catch (SQLException e) {
+            logger.warning(e.getMessage());
         }
         throw new EntityNotFoundException("Person detail not found!");
     }
@@ -96,6 +100,7 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
             }
 
         } catch (SQLException e) {
+            logger.warning(e.getMessage());
         }
         throw new EntityNotCreateException("Person detail not create!");
     }
@@ -116,6 +121,7 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
                 personDetailsList.add(personDetails);
             }
         } catch (SQLException e) {
+            logger.warning(e.getMessage());
         }
         return personDetailsList;
     }
@@ -130,6 +136,7 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
                 statement.setObject(1, id);
                 statement.executeUpdate();
             } catch (SQLException e) {
+                logger.warning(e.getMessage());
             }
         }
         throw new EntityNotFoundException("Person detail not found!");
@@ -142,6 +149,7 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
                      (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_DELETE_ALL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
+            logger.warning(e.getMessage());
         }
         throw new EntityNotFoundException("NOT!");
     }

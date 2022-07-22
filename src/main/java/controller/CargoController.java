@@ -1,6 +1,6 @@
 package controller;
 
-import service.PersonService;
+import service.CargoService;
 import util.query.Parser;
 
 import javax.servlet.ServletException;
@@ -12,32 +12,27 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.UUID;
 
-@WebServlet(name = "PersonController", value = "/persons/*")
-public class PersonController extends HttpServlet {
-    private PersonService personService;
+@WebServlet(name = "CargoController", value = "/cargos/*")
+public class CargoController extends HttpServlet {
+    private CargoService cargoService;
 
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        personService = new PersonService();
-    }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("UTF8");
-
+        System.out.println("CargoController");
         try (PrintWriter pw = response.getWriter()) {
             UUID id = Parser.getIdFromPath(request.getRequestURI());
             if (id != null) {
-                pw.println(personService.read(id));
+                pw.println(cargoService.findByPersonId(id));
             } else {
-                pw.println(personService.getAll());
+                pw.println(cargoService.getAll());
             }
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        personService.create(Parser.parseEntry(request.getReader()));
+    protected void doPost(HttpServletRequest request, HttpServletResponse resp) {
+
     }
 
     @Override
@@ -48,5 +43,11 @@ public class PersonController extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
 
+    }
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        cargoService = new CargoService();
     }
 }

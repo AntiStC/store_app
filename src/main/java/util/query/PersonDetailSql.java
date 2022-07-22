@@ -28,11 +28,13 @@ public class PersonDetailSql {
     public static final String SQL_QUERY_PERSON_DETAIL_INSERT =
             """
                     INSERT INTO person_detail(
+
                                 id,
                                 first_name,
                                 last_name,
                                 passport_num,
                                 address)
+
                     VALUES(uuid_generate_v4(),(?),(?),(?),(?))
                     RETURNING id
                     """;

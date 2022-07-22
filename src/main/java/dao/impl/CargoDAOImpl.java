@@ -10,11 +10,9 @@ import model.entity.CargoState;
 import model.entity.CargoType;
 import util.query.CargoSql;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -23,11 +21,13 @@ import java.util.UUID;
 public class CargoDAOImpl implements CargoDAO {
 
 
+
     public CargoDAOImpl() {
     }
 
 
     private Cargo createCargo(ResultSet rs) throws SQLException {
+
         return new Cargo.Builder()
                 .setId(rs.getObject("id", UUID.class))
                 .setName(rs.getString("name"))
@@ -36,14 +36,17 @@ public class CargoDAOImpl implements CargoDAO {
                 .setState(CargoState.valueOf(rs.getString("state")))
                 .setWeight(rs.getDouble("weight"))
                 .setVolume(rs.getDouble("volume"))
+
                 .setCreatedAt((LocalDateTime) rs.getObject("create_at"))
                 .setModifiedAt((LocalDateTime) rs.getObject("modified_at"))
+
                 .build();
     }
 
     private void executeStatement(Cargo cargo, PreparedStatement statement) throws SQLException {
-        statement.setObject(1, cargo.getId());
+        statement.setString(1, cargo.getName());
         statement.setString(2, cargo.getDescription());
+
         statement.setString(3, cargo.getDescription());
         statement.setString(4, String.valueOf(cargo.getType()));
         statement.setString(5, String.valueOf(cargo.getState()));
@@ -52,6 +55,7 @@ public class CargoDAOImpl implements CargoDAO {
         statement.setObject(8, cargo.getCreatedAt());
         statement.setObject(9, cargo.getModifiedAt());
         statement.executeUpdate();
+
     }
 
 
@@ -95,6 +99,28 @@ public class CargoDAOImpl implements CargoDAO {
         throw new EntityNotFoundException("Entity cargo not found!");
     }
 
+    public List<Cargo> findByPersonId(UUID id) {
+       List<Cargo> cargoList = new ArrayList<>();
+        try (Connection connection = ConnectorDB.getConnection();
+             PreparedStatement statement = connection.prepareStatement
+                     (CargoSql.SQL_QUERY_CARGO_GET_BY_PERSON_ID)) {
+            statement.setObject(1, id);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+               Cargo cargo = createCargo(rs);
+               cargoList.add(cargo);
+            }
+
+            return cargoList;
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        // TODO: 08.07.2022 throw exception
+        return null;
+    }
+
 
     @Override
     public Cargo update(Cargo cargo) throws EntityNotCreateException {
@@ -102,12 +128,12 @@ public class CargoDAOImpl implements CargoDAO {
              PreparedStatement statement = connection.prepareStatement
                      (CargoSql.SQL_QUERY_CARGO_UPDATE)) {
             executeStatement(cargo, statement);
-
             Cargo fromBase = findById(cargo.getId());
             if (fromBase != null) {
                 return fromBase;
             }
         } catch (SQLException e) {
+
         }
 
         throw new EntityNotCreateException("Cargo not update!");

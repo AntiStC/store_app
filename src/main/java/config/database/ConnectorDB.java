@@ -3,6 +3,7 @@ package config.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ConnectorDB {
@@ -10,6 +11,7 @@ public class ConnectorDB {
         ResourceBundle resource = ResourceBundle.getBundle("database");
         try {
             Class.forName(resource.getString("db.driver"));
+
 
             String url = resource.getString("db.url");
             String user = resource.getString("db.user");
@@ -20,5 +22,6 @@ public class ConnectorDB {
         e.printStackTrace();
         }
         return null;
+
     }
 }

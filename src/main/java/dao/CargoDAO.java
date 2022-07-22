@@ -7,6 +7,7 @@ import java.util.UUID;
 
 
 public interface CargoDAO extends DAOService<Cargo, UUID> {
+    public List<Cargo> findByPersonId(UUID id);
 
     @Override
     default List<Cargo> findAll() {

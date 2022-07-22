@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class PersonDto {
+public final class PersonDto {
 
     private final UUID id;
 
@@ -45,11 +45,15 @@ public class PersonDto {
 
     @Override
     public String toString() {
-        return "PersonDto{" +
-                "id=" + id +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        return """
+                {
+                    "id": %s,
+                    "login": "%s",
+                    "password": "%s",
+                    "user_details": %s,
+                    "cargo_list": %s
+                }
+                """.formatted(id, login, password, details, cargoList);
     }
 
     public static class Builder {

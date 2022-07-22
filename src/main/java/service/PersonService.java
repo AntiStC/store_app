@@ -1,6 +1,7 @@
 package service;
 
 import dao.PersonDAO;
+import dao.impl.PersonDAOImpl;
 import mapper.PersonMapper;
 import model.dto.PersonDto;
 
@@ -11,20 +12,12 @@ import java.util.stream.Collectors;
 
 public class PersonService {
     private final PersonDAO personDAO;
-    private final PersonDetailsService personDetailsService;
 
-    private final CargoService cargoService;
-
-    public PersonService(PersonDAO personDAO, PersonDetailsService personDetailsService, CargoService cargoService) {
-        this.personDAO = personDAO;
-        this.personDetailsService = personDetailsService;
-        this.cargoService = cargoService;
+    public PersonService() {
+        this.personDAO = new PersonDAOImpl();
     }
 
     public PersonDto create(PersonDto personDto) {
-        personDetailsService.create(personDto.getDetails());
-        personDto.getCargoList().forEach(cargoService::create);
-
         return PersonMapper.toDto(personDAO.create(PersonMapper.toEntity(personDto)));
     }
 
@@ -39,12 +32,12 @@ public class PersonService {
     }
 
     public PersonDto update(PersonDto person) {
-        personDetailsService.update(person.getDetails());
         return PersonMapper.toDto(personDAO.update(PersonMapper.toEntity(person)));
     }
 
-    public void delete(UUID id) {
+    public boolean delete(UUID id) {
         personDAO.delete(id);
+        return false;
     }
 
     public void deleteAll() {

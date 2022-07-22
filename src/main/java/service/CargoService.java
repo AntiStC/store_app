@@ -1,6 +1,7 @@
 package service;
 
 import dao.CargoDAO;
+import dao.impl.CargoDAOImpl;
 import mapper.CargoMapper;
 import model.dto.CargoDto;
 
@@ -12,8 +13,8 @@ import java.util.stream.Collectors;
 public class CargoService {
     private final CargoDAO cargoDAO;
 
-    public CargoService(CargoDAO cargoDAO) {
-        this.cargoDAO = cargoDAO;
+    public CargoService() {
+        this.cargoDAO = new CargoDAOImpl();
     }
 
     public CargoDto create(CargoDto cargoDto) {
@@ -22,6 +23,12 @@ public class CargoService {
 
     public CargoDto read(UUID id) {
         return CargoMapper.toDto(cargoDAO.findById(id));
+    }
+
+    public List<CargoDto> findByPersonId(UUID id) {
+        return cargoDAO.findByPersonId(id).stream()
+                .map(CargoMapper::toDto)
+                .collect(Collectors.toList());
     }
 
 

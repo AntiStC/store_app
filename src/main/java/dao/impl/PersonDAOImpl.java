@@ -1,12 +1,12 @@
 package dao.impl;
 
 import config.database.ConnectorDB;
-import exception.EntityNotCreateException;
-import exception.EntityNotFoundException;
-import util.query.PersonSql;
+
 import dao.PersonDAO;
 import dao.PersonDetailDAO;
 import model.entity.Person;
+import model.entity.PersonDetails;
+import util.query.PersonSql;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +20,14 @@ import java.util.UUID;
 public class PersonDAOImpl implements PersonDAO {
 
     // TODO: 03.07.2022 init?
-    PersonDetailDAO personDetailDAO;
+    private final PersonDetailDAO personDetailDAO;
+    private final CargoDAO cargoDAO;
+
+    // TODO: 06.07.2022 DI init
+    public PersonDAOImpl() {
+        this.cargoDAO = new CargoDAOImpl();
+        this.personDetailDAO = new PersonDetailDAOImpl();
+    }
 
     @Override
     public Person create(Person person) throws EntityNotCreateException {
@@ -28,15 +35,19 @@ public class PersonDAOImpl implements PersonDAO {
              PreparedStatement statement = connection.prepareStatement
                      (PersonSql.SQL_QUERY_PERSON_INSERT,
                              PreparedStatement.RETURN_GENERATED_KEYS)) {
-            statement.setObject(1, person.getId());
-            statement.setString(2, person.getLogin());
-            statement.setString(3, person.getPassword());
+            statement.setString(1, person.getLogin());
+            statement.setString(2, person.getPassword());
+            statement.setObject(3, personDetailDAO.create(person.getDetails()).getId());
             statement.execute();
 
             ResultSet rs = statement.getGeneratedKeys();
 
             if (rs.next()) {
                 person.setId(rs.getObject("id", UUID.class));
+                person.getCargoList().forEach(cargo -> {
+                    cargo.setOwner(person);
+                    cargoDAO.create(cargo);
+                });
                 return person;
             }
         } catch (SQLException e) {
@@ -58,8 +69,10 @@ public class PersonDAOImpl implements PersonDAO {
                 person.setId(rs.getObject("id", UUID.class));
                 person.setLogin(rs.getString("login"));
                 person.setPassword(rs.getString("password"));
+
                 person.setDetails(personDetailDAO.findById(rs.getObject("id", UUID.class)));
                 return person;
+
             }
         } catch (SQLException e) {
         }
@@ -71,13 +84,14 @@ public class PersonDAOImpl implements PersonDAO {
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonSql.SQL_QUERY_PERSON_UPDATE)) {
-            statement.setObject(1, person.getId());
-            statement.setObject(2, person.getDetails());
-            statement.setObject(3, person.getCargoList());
+            statement.setObject(1, person.getLogin());
+            statement.setObject(2, person.getPassword());
+            statement.setObject(3, person.getId());
             statement.execute();
 
             //todo use loop or stream
         } catch (SQLException e) {
+
         }
         throw new EntityNotCreateException("Person not create!");
     }
@@ -96,7 +110,9 @@ public class PersonDAOImpl implements PersonDAO {
             while (rs.next()) {
                 Person person = new Person();
                 person.setId(rs.getObject("id", UUID.class));
-                person.setDetails(personDetailDAO.findById(rs.getObject("id", UUID.class)));
+                person.setLogin(rs.getString("login"));
+                person.setPassword(rs.getString("password"));
+                person.setDetails(personDetailDAO.findById(rs.getObject("person_detail_id", UUID.class)));
 
                 personList.add(person);
             }

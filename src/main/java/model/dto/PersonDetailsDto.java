@@ -3,7 +3,7 @@ package model.dto;
 
 import java.util.UUID;
 
-public class PersonDetailsDto {
+public final class PersonDetailsDto {
 
     private final UUID id;
     private final String firstName;
@@ -41,13 +41,14 @@ public class PersonDetailsDto {
 
     @Override
     public String toString() {
-        return "PersonDetailsDto{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", passportNum=" + passportNum +
-                ", address='" + address + '\'' +
-                '}';
+        return """
+               {
+                   "first_name": "%s",
+                   "last_name": "%s",
+                   "passport_no": %s,
+                   "address": "%s"
+                                    }
+                """.formatted(firstName, lastName, passportNum, address);
     }
 
     public static class Builder {

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class Person {
+    // todo добавить поля логин пароль
     private UUID id;
 
     // TODO: 02.07.2022 add UNIQUE constraint in DB

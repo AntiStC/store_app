@@ -7,15 +7,21 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ConnectorDB {
+    public static Connection getConnection(){
+        ResourceBundle resource = ResourceBundle.getBundle("database");
+        try {
+            Class.forName(resource.getString("db.driver"));
 
-    public static Connection getConnection() throws SQLException, ClassNotFoundException {
-        ResourceBundle resource = ResourceBundle.getBundle("db");
-        Class.forName(resource.getString("db.driver"));
-        String url = resource.getString("db.url");
-        String user = resource.getString("db.user");
-        String pass = resource.getString("db.password");
-        String dbName = resource.getString("db.name");
 
-        return DriverManager.getConnection(url + dbName, user, pass);
+            String url = resource.getString("db.url");
+            String user = resource.getString("db.user");
+            String pass = resource.getString("db.password");
+
+        return DriverManager.getConnection(url, user, pass);
+    }catch (SQLException | ClassNotFoundException e) {
+        e.printStackTrace();
+        }
+        return null;
+
     }
 }

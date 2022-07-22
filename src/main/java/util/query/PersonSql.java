@@ -8,33 +8,34 @@ public class PersonSql {
 
     public static final String SQL_QUERY_PERSON_GET =
             """
-                    SELECT p.id,
-                    p.login,
-                    p.password,
-                    pd.id as pd_id,
-                    pd.first_name,
-                    pd.last_name,
-                    pd.passport_num,
-                    pd.address
-                    FROM person p, person_detail pd
-                    WHERE p.id = (?) AND person_detail_id = pd.id
+                    SELECT id,
+                           login,
+                           password
+                    FROM person
+                            INNER JOIN person_detail pd
+                                       ON person.person_detail_fk = pd.person_detail_id
+                            INNER JOIN cargo_list cl
+                                       ON person.person_id = cl.person_list_fk
+                    WHERE id = (?)
                     """;
     public static final String SQL_QUERY_PERSON_GET_ALL =
             """
-                    SELECT id,
-                    login,
-                    password,
-                    person_detail_id
+                   SELECT id,
+                           login,
+                           password
                     FROM person
+                            INNER JOIN person_detail pd
+                                       ON person.person_detail_fk = pd.person_detail_id
+                            INNER JOIN cargo_list cl
+                                       ON person.person_id = cl.person_list_fk
                     """;
     public static final String SQL_QUERY_PERSON_INSERT =
             """
                     INSERT INTO person(
                     id,
                     login,
-                    password,
-                    person_detail_id)
-                    VALUES(uuid_generate_v4(),(?),(?),(?))
+                    password)
+                    VALUES(uuid_generate_v4(),(?),(?))
                     RETURNING id
                     """;
     public static final String SQL_QUERY_PERSON_DELETE =

@@ -1,7 +1,7 @@
 package dao.impl;
 
 import config.database.ConnectorDB;
-import dao.CargoDAO;
+
 import dao.PersonDAO;
 import dao.PersonDetailDAO;
 import model.entity.Person;
@@ -30,7 +30,7 @@ public class PersonDAOImpl implements PersonDAO {
     }
 
     @Override
-    public Person create(Person person) {
+    public Person create(Person person) throws EntityNotCreateException {
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonSql.SQL_QUERY_PERSON_INSERT,
@@ -50,15 +50,14 @@ public class PersonDAOImpl implements PersonDAO {
                 });
                 return person;
             }
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
         }
-        return person;
+        throw new EntityNotCreateException("Person not create!");
     }
 
     @Override
     public Person findById(UUID id) {
-        Person person = null;
+        Person person;
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonSql.SQL_QUERY_PERSON_GET)) {
@@ -70,23 +69,18 @@ public class PersonDAOImpl implements PersonDAO {
                 person.setId(rs.getObject("id", UUID.class));
                 person.setLogin(rs.getString("login"));
                 person.setPassword(rs.getString("password"));
-                PersonDetails personDetails = new PersonDetails.Builder()
-                        .setId(rs.getObject("pd_id", UUID.class))
-                        .setFirstName(rs.getString("first_name"))
-                        .setLastName(rs.getString("last_name"))
-                        .setPassportNum(rs.getInt("passport_num"))
-                        .setAddress(rs.getString("address"))
-                        .build();
-                person.setDetails(personDetails);
+
+                person.setDetails(personDetailDAO.findById(rs.getObject("id", UUID.class)));
+                return person;
+
             }
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
         }
-        return person;
+        throw new EntityNotFoundException("Person not found!");
     }
 
     @Override
-    public Person update(Person person) {
+    public Person update(Person person) throws EntityNotCreateException {
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonSql.SQL_QUERY_PERSON_UPDATE)) {
@@ -95,11 +89,11 @@ public class PersonDAOImpl implements PersonDAO {
             statement.setObject(3, person.getId());
             statement.execute();
 
-            personDetailDAO.update(person.getDetails());
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+            //todo use loop or stream
+        } catch (SQLException e) {
+
         }
-        return person;
+        throw new EntityNotCreateException("Person not create!");
     }
 
     @Override
@@ -122,35 +116,34 @@ public class PersonDAOImpl implements PersonDAO {
 
                 personList.add(person);
             }
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
         }
         return personList;
     }
 
 
     @Override
-    public void delete(UUID id) {
+    public boolean delete(UUID id) {
         if (findById(id) != null) {
             try (Connection connection = ConnectorDB.getConnection();
                  PreparedStatement statement = connection.prepareStatement
                          (PersonSql.SQL_QUERY_PERSON_DELETE)) {
                 statement.setObject(1, id);
                 statement.execute();
-            } catch (SQLException | ClassNotFoundException e) {
-                e.printStackTrace();
+            } catch (SQLException e) {
             }
         }
+        throw new EntityNotFoundException("Person not found!");
     }
 
     @Override
-    public void deleteAll() {
+    public boolean deleteAll() {
         try (Connection connection = ConnectorDB.getConnection();
              PreparedStatement statement = connection.prepareStatement
                      (PersonSql.SQL_QUERY_PERSON_DELETE_ALL)) {
             statement.execute();
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
         }
+        throw new EntityNotFoundException("NOT!");
     }
 }

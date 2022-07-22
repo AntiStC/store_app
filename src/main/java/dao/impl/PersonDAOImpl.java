@@ -15,9 +15,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 
 public class PersonDAOImpl implements PersonDAO {
+    private final Logger logger = Logger.getLogger(PersonDAOImpl.class.getSimpleName());
 
     // TODO: 03.07.2022 init?
     PersonDetailDAO personDetailDAO;
@@ -40,6 +42,7 @@ public class PersonDAOImpl implements PersonDAO {
                 return person;
             }
         } catch (SQLException e) {
+            logger.warning(e.getMessage());
         }
         throw new EntityNotCreateException("Person not create!");
     }
@@ -62,6 +65,7 @@ public class PersonDAOImpl implements PersonDAO {
                 return person;
             }
         } catch (SQLException e) {
+            logger.warning(e.getMessage());
         }
         throw new EntityNotFoundException("Person not found!");
     }
@@ -78,6 +82,7 @@ public class PersonDAOImpl implements PersonDAO {
 
             //todo use loop or stream
         } catch (SQLException e) {
+            logger.warning(e.getMessage());
         }
         throw new EntityNotCreateException("Person not create!");
     }
@@ -101,6 +106,7 @@ public class PersonDAOImpl implements PersonDAO {
                 personList.add(person);
             }
         } catch (SQLException e) {
+            logger.warning(e.getMessage());
         }
         return personList;
     }
@@ -115,6 +121,7 @@ public class PersonDAOImpl implements PersonDAO {
                 statement.setObject(1, id);
                 statement.execute();
             } catch (SQLException e) {
+                logger.warning(e.getMessage());
             }
         }
         throw new EntityNotFoundException("Person not found!");
@@ -127,6 +134,7 @@ public class PersonDAOImpl implements PersonDAO {
                      (PersonSql.SQL_QUERY_PERSON_DELETE_ALL)) {
             statement.execute();
         } catch (SQLException e) {
+            logger.warning(e.getMessage());
         }
         throw new EntityNotFoundException("NOT!");
     }

@@ -25,12 +25,14 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
 
     private void executeStatement(PersonDetails personDetails, PreparedStatement statement)
             throws SQLException {
+
         statement.setObject(1, personDetails.getId());
         statement.setString(2, personDetails.getFirstName());
         statement.setString(3, personDetails.getLastName());
         statement.setInt(4, personDetails.getPassportNum());
         statement.setString(5, personDetails.getAddress());
         statement.executeUpdate();
+
     }
 
     private PersonDetails createPersonDetails(ResultSet rs) throws SQLException {
@@ -94,7 +96,6 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
             if (fromBasePD != null) {
                 return fromBasePD;
             }
-
         } catch (SQLException e) {
         }
         throw new EntityNotCreateException("Person detail not create!");

@@ -1,6 +1,7 @@
 package service;
 
 import dao.PersonDetailDAO;
+import dao.impl.PersonDetailDAOImpl;
 import mapper.PersonDetailsMapper;
 import model.dto.PersonDetailsDto;
 
@@ -12,10 +13,9 @@ import java.util.stream.Collectors;
 public class PersonDetailsService {
     private final PersonDetailDAO personDetailDAO;
 
-    public PersonDetailsService(PersonDetailDAO personDetailDAO) {
-        this.personDetailDAO = personDetailDAO;
+    public PersonDetailsService() {
+        this.personDetailDAO = new PersonDetailDAOImpl();
     }
-
 
     public PersonDetailsDto create(PersonDetailsDto personDetailsDto) {
         return PersonDetailsMapper.toDto(personDetailDAO.create(PersonDetailsMapper.toEntity(personDetailsDto)));

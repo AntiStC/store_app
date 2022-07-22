@@ -45,17 +45,19 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
 
     @Override
     public PersonDetails create(PersonDetails personDetails) throws EntityNotCreateException {
-        try (Connection connection = ConnectorDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement
-                     (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_INSERT,
-                             PreparedStatement.RETURN_GENERATED_KEYS)) {
-            executeStatement(personDetails, statement);
+        try (Connection connection = ConnectorDB.getConnection()) {
+            if (connection == null) throw new AssertionError();
+            try (PreparedStatement statement = connection.prepareStatement
+                         (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_INSERT,
+                                 PreparedStatement.RETURN_GENERATED_KEYS)) {
+                executeStatement(personDetails, statement);
 
-            ResultSet rs = statement.getGeneratedKeys();
+                ResultSet rs = statement.getGeneratedKeys();
 
-            if (rs.next()) {
-                personDetails.setId(rs.getObject("id", UUID.class));
-                return personDetails;
+                if (rs.next()) {
+                    personDetails.setId(rs.getObject("id", UUID.class));
+                    return personDetails;
+                }
             }
         } catch (SQLException e) {
         }

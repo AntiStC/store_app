@@ -1,14 +1,12 @@
 package dao.impl;
 
 import config.database.ConnectorDB;
+import dao.PersonDetailDAO;
 import exception.EntityNotCreateException;
 import exception.EntityNotFoundException;
-import model.entity.Cargo;
-import util.query.PersonDetailSql;
-import dao.PersonDetailDAO;
 import model.entity.PersonDetails;
+import util.query.PersonDetailSql;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,7 +35,7 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
 
     private PersonDetails createPersonDetails(ResultSet rs) throws SQLException {
         return new PersonDetails.Builder()
-                .setId(rs.getObject("id", UUID.class))
+                .setId(rs.getObject("person_detail_id", UUID.class))
                 .setFirstName(rs.getString("first_name"))
                 .setLastName(rs.getString("last_name"))
                 .setPassportNum(rs.getInt("passport_num"))
@@ -50,14 +48,14 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
         try (Connection connection = ConnectorDB.getConnection()) {
             if (connection == null) throw new AssertionError();
             try (PreparedStatement statement = connection.prepareStatement
-                         (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_INSERT,
-                                 PreparedStatement.RETURN_GENERATED_KEYS)) {
+                    (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_INSERT,
+                            PreparedStatement.RETURN_GENERATED_KEYS)) {
                 executeStatement(personDetails, statement);
 
                 ResultSet rs = statement.getGeneratedKeys();
 
                 if (rs.next()) {
-                    personDetails.setId(rs.getObject("id", UUID.class));
+                    personDetails.setId(rs.getObject("person_detail_id", UUID.class));
                     return personDetails;
                 }
             }
@@ -72,8 +70,9 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
     public PersonDetails findById(UUID id) {
         PersonDetails personDetails;
         try (Connection connection = ConnectorDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement
-                     (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_GET)) {
+             PreparedStatement statement = connection != null ? connection.prepareStatement
+                     (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_GET) : null) {
+            assert statement != null;
             statement.setObject(1, id);
             ResultSet rs = statement.executeQuery();
 
@@ -90,8 +89,9 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
     @Override
     public PersonDetails update(PersonDetails personDetails) throws EntityNotCreateException {
         try (Connection connection = ConnectorDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement
-                     (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_UPDATE)) {
+             PreparedStatement statement = connection != null ? connection.prepareStatement
+                     (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_UPDATE) : null) {
+            assert statement != null;
             executeStatement(personDetails, statement);
 
             PersonDetails fromBasePD = findById(personDetails.getId());
@@ -109,9 +109,10 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
     public List<PersonDetails> findAll() {
         List<PersonDetails> personDetailsList = null;
         try (Connection connection = ConnectorDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement
-                     (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_GET_ALL)) {
+             PreparedStatement statement = connection != null ? connection.prepareStatement
+                     (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_GET_ALL) : null) {
 
+            assert statement != null;
             ResultSet rs = statement.executeQuery();
 
             personDetailsList = new ArrayList<>();
@@ -131,8 +132,9 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
     public boolean delete(UUID id) {
         if (findById(id) != null) {
             try (Connection connection = ConnectorDB.getConnection();
-                 PreparedStatement statement = connection.prepareStatement
-                         (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_DELETE)) {
+                 PreparedStatement statement = connection != null ? connection.prepareStatement
+                         (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_DELETE) : null) {
+                assert statement != null;
                 statement.setObject(1, id);
                 statement.executeUpdate();
             } catch (SQLException e) {
@@ -145,8 +147,9 @@ public class PersonDetailDAOImpl implements PersonDetailDAO {
     @Override
     public boolean deleteAll() {
         try (Connection connection = ConnectorDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement
-                     (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_DELETE_ALL)) {
+             PreparedStatement statement = connection != null ? connection.prepareStatement
+                     (PersonDetailSql.SQL_QUERY_PERSON_DETAIL_DELETE_ALL) : null) {
+            assert statement != null;
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.warning(e.getMessage());

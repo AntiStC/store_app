@@ -2,12 +2,12 @@ package dao.impl;
 
 import config.database.ConnectorDB;
 import dao.CargoDAO;
-import dao.PersonDAO;
 import exception.EntityNotCreateException;
 import exception.EntityNotFoundException;
 import model.entity.Cargo;
 import model.entity.CargoState;
 import model.entity.CargoType;
+import model.entity.Person;
 import util.query.CargoSql;
 
 import java.sql.Connection;
@@ -29,6 +29,12 @@ public class CargoDAOImpl implements CargoDAO {
     }
 
 
+    private PersonDAOImpl personDAO;
+
+    public CargoDAOImpl(PersonDAOImpl personDAO) {
+        this.personDAO = personDAO;
+    }
+
     private Cargo createCargo(ResultSet rs) throws SQLException {
         return new Cargo.Builder()
                 .setId(rs.getObject("id", UUID.class))
@@ -40,6 +46,7 @@ public class CargoDAOImpl implements CargoDAO {
                 .setVolume(rs.getDouble("volume"))
                 .setCreatedAt((LocalDateTime) rs.getObject("create_at"))
                 .setModifiedAt((LocalDateTime) rs.getObject("modified_at"))
+                .setOwner((Person) rs.getObject("person_fk"))
                 .build();
     }
 
@@ -53,6 +60,7 @@ public class CargoDAOImpl implements CargoDAO {
         statement.setDouble(7, cargo.getVolume());
         statement.setObject(8, cargo.getCreatedAt());
         statement.setObject(9, cargo.getModifiedAt());
+        statement.setObject(10, cargo.getOwner());
         statement.executeUpdate();
     }
 
@@ -60,9 +68,10 @@ public class CargoDAOImpl implements CargoDAO {
     @Override
     public Cargo create(Cargo cargo) throws EntityNotCreateException {
         try (Connection connection = ConnectorDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement
+             PreparedStatement statement = connection != null ? connection.prepareStatement
                      (CargoSql.SQL_QUERY_CARGO_INSERT,
-                             PreparedStatement.RETURN_GENERATED_KEYS)) {
+                             PreparedStatement.RETURN_GENERATED_KEYS) : null) {
+            assert statement != null;
             executeStatement(cargo, statement);
 
             ResultSet rs = statement.getGeneratedKeys();
@@ -83,8 +92,9 @@ public class CargoDAOImpl implements CargoDAO {
     public Cargo findById(UUID id) {
         Cargo cargo;
         try (Connection connection = ConnectorDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement
-                     (CargoSql.SQL_QUERY_CARGO_GET)) {
+             PreparedStatement statement = connection != null ? connection.prepareStatement
+                     (CargoSql.SQL_QUERY_CARGO_GET) : null) {
+            assert statement != null;
             statement.setObject(1, id);
             ResultSet rs = statement.executeQuery();
 
@@ -103,8 +113,9 @@ public class CargoDAOImpl implements CargoDAO {
     @Override
     public Cargo update(Cargo cargo) throws EntityNotCreateException {
         try (Connection connection = ConnectorDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement
-                     (CargoSql.SQL_QUERY_CARGO_UPDATE)) {
+             PreparedStatement statement = connection != null ? connection.prepareStatement
+                     (CargoSql.SQL_QUERY_CARGO_UPDATE) : null) {
+            assert statement != null;
             executeStatement(cargo, statement);
 
             Cargo fromBase = findById(cargo.getId());
@@ -121,18 +132,20 @@ public class CargoDAOImpl implements CargoDAO {
     @Override
     public List<Cargo> findAll() {
         List<Cargo> cargoList = null;
-        try (Connection connection = ConnectorDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement
-                     (CargoSql.SQL_QUERY_CARGO_GET_ALL)) {
+        try (Connection connection = ConnectorDB.getConnection()) {
+            assert connection != null;
+            try (PreparedStatement statement = connection.prepareStatement
+                    (CargoSql.SQL_QUERY_CARGO_GET_ALL)) {
 
-            ResultSet rs = statement.executeQuery();
+                ResultSet rs = statement.executeQuery();
 
-            cargoList = new ArrayList<>();
+                cargoList = new ArrayList<>();
 
-            while (rs.next()) {
-                Cargo cargo = createCargo(rs);
+                while (rs.next()) {
+                    Cargo cargo = createCargo(rs);
 
-                cargoList.add(cargo);
+                    cargoList.add(cargo);
+                }
             }
         } catch (SQLException e) {
             logger.warning(e.getMessage());
@@ -146,8 +159,9 @@ public class CargoDAOImpl implements CargoDAO {
     public boolean delete(UUID id) {
         if (findById(id) != null) {
             try (Connection connection = ConnectorDB.getConnection();
-                 PreparedStatement statement = connection.prepareStatement
-                         (CargoSql.SQL_QUERY_CARGO_DELETE)) {
+                 PreparedStatement statement = connection != null ? connection.prepareStatement
+                         (CargoSql.SQL_QUERY_CARGO_DELETE) : null) {
+                assert statement != null;
                 statement.setObject(1, id);
                 statement.executeUpdate();
                 return true;
@@ -161,8 +175,9 @@ public class CargoDAOImpl implements CargoDAO {
     @Override
     public boolean deleteAll() {
         try (Connection connection = ConnectorDB.getConnection();
-             PreparedStatement statement = connection.prepareStatement
-                     (CargoSql.SQL_QUERY_CARGO_DELETE_ALL)) {
+             PreparedStatement statement = connection != null ? connection.prepareStatement
+                     (CargoSql.SQL_QUERY_CARGO_DELETE_ALL) : null) {
+            assert statement != null;
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.warning(e.getMessage());

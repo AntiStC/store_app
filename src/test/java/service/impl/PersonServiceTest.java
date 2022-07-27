@@ -37,9 +37,9 @@ class PersonServiceTest {
 
     @BeforeAll
     static void setUp() {
-        personDAO = new PersonDAOImpl();
         personDetailDAO = new PersonDetailDAOImpl();
-        cargoDAO = new CargoDAOImpl();
+        personDAO = new PersonDAOImpl(personDetailDAO);
+        cargoDAO = new CargoDAOImpl(personDAO);
 
         personDetailsService = new PersonDetailsService(personDetailDAO);
         cargoService = new CargoService(cargoDAO);

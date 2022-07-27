@@ -2,6 +2,8 @@ package controller;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import dao.PersonDAO;
+import dao.PersonDetailDAO;
 import dao.impl.CargoDAOImpl;
 import dao.impl.PersonDAOImpl;
 import dao.impl.PersonDetailDAOImpl;
@@ -27,7 +29,9 @@ public class PersonController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        personService = new PersonService(new PersonDAOImpl(), new PersonDetailsService(new PersonDetailDAOImpl()), new CargoService(new CargoDAOImpl()));
+        PersonDetailDAO personDetailDAO = new PersonDetailDAOImpl();
+        PersonDAO personDAO = new PersonDAOImpl(personDetailDAO);
+        personService = new PersonService(personDAO, new PersonDetailsService(personDetailDAO), new CargoService(new CargoDAOImpl(personDAO)));
         PrintWriter pw = response.getWriter();
 
         try {
@@ -42,7 +46,9 @@ public class PersonController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        personService = new PersonService(new PersonDAOImpl(), new PersonDetailsService(new PersonDetailDAOImpl()), new CargoService(new CargoDAOImpl()));
+        PersonDetailDAO personDetailDAO = new PersonDetailDAOImpl();
+        PersonDAO personDAO = new PersonDAOImpl(personDetailDAO);
+        personService = new PersonService(personDAO, new PersonDetailsService(personDetailDAO), new CargoService(new CargoDAOImpl(personDAO)));
         out.println("POST");
 
         BufferedReader reader = request.getReader();

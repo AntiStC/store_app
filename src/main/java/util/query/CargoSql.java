@@ -16,7 +16,8 @@ public class CargoSql {
                            weight,
                            volume,
                            create_at,
-                           modified_at
+                           modified_at,
+                           person_fk
                     FROM cargo
                            INNER JOIN cargo_list cl on cargo.cargo_id = cl.cargo_fk
                     WHERE cargo_id = (?)
@@ -31,7 +32,8 @@ public class CargoSql {
                            weight,
                            volume,
                            create_at,
-                           modified_at
+                           modified_at,
+                           person_fk
                     FROM cargo
                            INNER JOIN cargo_list cl on cargo.cargo_id = cl.cargo_fk
                     """;
@@ -45,7 +47,8 @@ public class CargoSql {
                                       weight,
                                       volume,
                                       create_at,
-                                      modified_at)
+                                      modified_at,
+                                      person_fk)
                     VALUES (uuid_generate_v4(), (?), (?), (?), (?), (?), (?), (?), (?))
                     RETURNING cargo_id
                     """;
@@ -69,7 +72,8 @@ public class CargoSql {
                         weight      = (?),
                         volume      = (?),
                         create_at   = (?),
-                        modified_at = (?)
+                        modified_at = (?),
+                        person_fk   = (?)
                     WHERE cargo_id  = (?)
                     RETURNING cargo_id
                     """;

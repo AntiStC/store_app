@@ -8,7 +8,7 @@ public class PersonSql {
 
     public static final String SQL_QUERY_PERSON_GET =
             """
-                    SELECT id,
+                    SELECT person_id,
                            login,
                            password
                     FROM person
@@ -16,11 +16,11 @@ public class PersonSql {
                                        ON person.person_detail_fk = pd.person_detail_id
                             INNER JOIN cargo_list cl
                                        ON person.person_id = cl.person_list_fk
-                    WHERE id = (?)
+                    WHERE person_id = (?)
                     """;
     public static final String SQL_QUERY_PERSON_GET_ALL =
             """
-                   SELECT id,
+                   SELECT person_id,
                            login,
                            password
                     FROM person
@@ -32,16 +32,16 @@ public class PersonSql {
     public static final String SQL_QUERY_PERSON_INSERT =
             """
                     INSERT INTO person(
-                    id,
+                    person_id,
                     login,
                     password)
                     VALUES(uuid_generate_v4(),(?),(?))
-                    RETURNING id
+                    RETURNING person_id
                     """;
     public static final String SQL_QUERY_PERSON_DELETE =
             """
                     DELETE FROM person
-                    WHERE id = (?)
+                    WHERE person_id = (?)
                     """;
     public static final String SQL_QUERY_PERSON_DELETE_ALL =
             """
@@ -52,7 +52,7 @@ public class PersonSql {
                     UPDATE person
                     SET login = (?),
                     password = (?)
-                    WHERE id = (?)
-                    RETURNING id
+                    WHERE person_id = (?)
+                    RETURNING person_id
                     """;
 }

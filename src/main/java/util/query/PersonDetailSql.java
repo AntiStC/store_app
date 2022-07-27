@@ -8,13 +8,13 @@ public class PersonDetailSql {
 
     public static final String SQL_QUERY_PERSON_DETAIL_GET =
             """
-                    SELECT id,
+                    SELECT person_detail_id,
                            first_name,
                            last_name,
                            passport_num,
                            address
                     FROM person_detail
-                    WHERE id = (?)
+                    WHERE person_detail_id = (?)
                     """;
     public static final String SQL_QUERY_PERSON_DETAIL_GET_ALL =
             """
@@ -28,19 +28,19 @@ public class PersonDetailSql {
     public static final String SQL_QUERY_PERSON_DETAIL_INSERT =
             """
                     INSERT INTO person_detail(
-                                id,
+                                person_detail_id,
                                 first_name,
                                 last_name,
                                 passport_num,
                                 address)
                     VALUES(uuid_generate_v4(),(?),(?),(?),(?))
-                    RETURNING id
+                    RETURNING person_detail_id
                     """;
     public static final String SQL_QUERY_PERSON_DETAIL_DELETE =
             """
                     DELETE 
                     FROM person_detail
-                    WHERE id = (?)
+                    WHERE person_detail_id = (?)
                     """;
     public static final String SQL_QUERY_PERSON_DETAIL_DELETE_ALL =
             """
@@ -50,11 +50,11 @@ public class PersonDetailSql {
             """
                     UPDATE
                         person_detail
-                    SET first_name      = (?),
-                        last_name       = (?),
-                        passport_num    = (?),
-                        address         = (?)
-                    WHERE id            = (?)
-                    RETURNING id
+                    SET first_name          = (?),
+                        last_name           = (?),
+                        passport_num        = (?),
+                        address             = (?)
+                    WHERE person_detail_id  = (?)
+                    RETURNING person_detail_id
                     """;
 }

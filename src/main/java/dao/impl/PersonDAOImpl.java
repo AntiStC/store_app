@@ -20,10 +20,14 @@ public class PersonDAOImpl implements PersonDAO {
 
     private final Logger logger = Logger.getLogger(PersonDAOImpl.class.getSimpleName());
 
-    private final PersonDetailDAO personDetailDAO; //todo use interface instead
+    private PersonDetailDAO personDetailDAO;
 
     public PersonDAOImpl(PersonDetailDAO personDetailDAO) {
         this.personDetailDAO = personDetailDAO;
+    }
+
+    public PersonDAOImpl() {
+
     }
 
 
@@ -37,8 +41,6 @@ public class PersonDAOImpl implements PersonDAO {
             statement.setObject(1, person.getId());
             statement.setString(2, person.getLogin());
             statement.setString(3, person.getPassword());
-            //todo query have no field for PersonDetails id
-            // !!!  statement.setObject(4, personDetailDAO.create(person.getDetails()).getId());
             statement.setObject(4, person.getDetails());
             statement.execute();
 
@@ -69,7 +71,6 @@ public class PersonDAOImpl implements PersonDAO {
                 person.setId(rs.getObject("person_id", UUID.class));
                 person.setLogin(rs.getString("login"));
                 person.setPassword(rs.getString("password"));
-                //todo ??? UUID != PersonDetails, !!! person.setDetails(personDetailDAO.findById(rs.getObject("person_details_fk", UUID.class)));
                 person.setDetails((PersonDetails) rs.getObject("person_details_fk"));
                 return person;
             }
@@ -88,7 +89,6 @@ public class PersonDAOImpl implements PersonDAO {
             statement.setObject(1, person.getId());
             statement.setString(2, person.getLogin());
             statement.setString(3,person.getPassword());
-            //todo wrong param
             statement.setObject(4, person.getDetails());
             statement.execute();
 
@@ -115,7 +115,6 @@ public class PersonDAOImpl implements PersonDAO {
                 person.setId(rs.getObject("person_id", UUID.class));
                 person.setLogin(rs.getString("login"));
                 person.setPassword(rs.getString("password"));
-                //todo findById example
                 person.setDetails((PersonDetails) rs.getObject("person_detail_fk"));
 
                 personList.add(person);

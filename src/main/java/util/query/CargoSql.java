@@ -39,18 +39,27 @@ public class CargoSql {
                     """;
     public static final String SQL_QUERY_CARGO_INSERT =
             """
-                    INSERT INTO cargo(cargo_id,
-                                      name,
-                                      description,
-                                      type,
-                                      state,
-                                      weight,
-                                      volume,
-                                      create_at,
-                                      modified_at,
-                                      person_fk)
-                    VALUES (uuid_generate_v4(), (?), (?), (?), (?), (?), (?), (?), (?))
-                    RETURNING cargo_id
+                    DO
+                    $$
+                        DECLARE
+                            tableId uuid;
+                        BEGIN
+                            INSERT INTO public.cargo(cargo_id,
+                                                    name,
+                                                    description,
+                                                    type,
+                                                    state,
+                                                    weight,
+                                                    volume,
+                                                    create_at,
+                                                    modified_at,
+                                                    person_fk)
+                            VALUES (uuid_generate_v4(), (?), (?), (?), (?), (?), (?), (?), (?), (?))
+                            RETURNING person_fk INTO tableId;
+                            INSERT INTO public.cargo_list(person_list_fk) VALUES (tableId);
+                            COMMIT;
+                        END
+                    $$;
                     """;
     public static final String SQL_QUERY_CARGO_DELETE =
             """

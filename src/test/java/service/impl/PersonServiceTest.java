@@ -6,6 +6,7 @@ import dao.PersonDetailDAO;
 import dao.impl.CargoDAOImpl;
 import dao.impl.PersonDAOImpl;
 import dao.impl.PersonDetailDAOImpl;
+import exception.EntityNotCreateException;
 import model.dto.CargoDto;
 import model.dto.PersonDetailsDto;
 import model.dto.PersonDto;
@@ -82,12 +83,12 @@ class PersonServiceTest {
     }
 
     @Test
-    void create() {
+    void create() throws EntityNotCreateException {
         Assertions.assertEquals(personService.create(person).getDetails().getFirstName(), "firstName");
     }
 
     @Test
-    void read() {
+    void read() throws EntityNotCreateException {
         UUID id = personService.create(person).getId();
 
         Assertions.assertEquals(personService.read(id).getDetails().getFirstName(), "firstName");

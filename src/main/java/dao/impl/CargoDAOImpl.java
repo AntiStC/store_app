@@ -2,6 +2,7 @@ package dao.impl;
 
 import config.database.ConnectorDB;
 import dao.CargoDAO;
+import dao.PersonDAO;
 import exception.EntityNotCreateException;
 import exception.EntityNotFoundException;
 import model.entity.Cargo;
@@ -24,16 +25,7 @@ import java.util.logging.Logger;
 public class CargoDAOImpl implements CargoDAO {
     private final Logger logger = Logger.getLogger(CargoDAOImpl.class.getSimpleName());
 
-
-    public CargoDAOImpl() {
-    }
-
-
-    private PersonDAOImpl personDAO;
-
-    public CargoDAOImpl(PersonDAOImpl personDAO) {
-        this.personDAO = personDAO;
-    }
+    private PersonDAO personDAO;
 
     private Cargo createCargo(ResultSet rs) throws SQLException {
         return new Cargo.Builder()
@@ -60,7 +52,7 @@ public class CargoDAOImpl implements CargoDAO {
         statement.setDouble(7, cargo.getVolume());
         statement.setObject(8, cargo.getCreatedAt());
         statement.setObject(9, cargo.getModifiedAt());
-        statement.setObject(10, cargo.getOwner());
+        statement.setObject(10, cargo.getOwner().getId());
         statement.executeUpdate();
     }
 

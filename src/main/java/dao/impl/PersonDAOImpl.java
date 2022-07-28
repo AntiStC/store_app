@@ -3,7 +3,6 @@ package dao.impl;
 import config.database.ConnectorDB;
 import exception.EntityNotCreateException;
 import exception.EntityNotFoundException;
-import model.entity.PersonDetails;
 import util.query.PersonSql;
 import dao.PersonDAO;
 import dao.PersonDetailDAO;
@@ -20,16 +19,7 @@ public class PersonDAOImpl implements PersonDAO {
 
     private final Logger logger = Logger.getLogger(PersonDAOImpl.class.getSimpleName());
 
-    private PersonDetailDAO personDetailDAO;
-
-    public PersonDAOImpl(PersonDetailDAO personDetailDAO) {
-        this.personDetailDAO = personDetailDAO;
-    }
-
-    public PersonDAOImpl() {
-
-    }
-
+    private PersonDetailDAO personDetailDAO; //todo use interface instead
 
     @Override
     public Person create(Person person) throws EntityNotCreateException {
@@ -41,7 +31,7 @@ public class PersonDAOImpl implements PersonDAO {
             statement.setObject(1, person.getId());
             statement.setString(2, person.getLogin());
             statement.setString(3, person.getPassword());
-            statement.setObject(4, person.getDetails());
+            statement.setObject(4, personDetailDAO.create(person.getDetails()).getId());
             statement.execute();
 
             ResultSet rs = statement.getGeneratedKeys();
@@ -71,7 +61,7 @@ public class PersonDAOImpl implements PersonDAO {
                 person.setId(rs.getObject("person_id", UUID.class));
                 person.setLogin(rs.getString("login"));
                 person.setPassword(rs.getString("password"));
-                person.setDetails((PersonDetails) rs.getObject("person_details_fk"));
+                person.setDetails(personDetailDAO.findById(rs.getObject("person_details_fk", UUID.class)));
                 return person;
             }
         } catch (SQLException e) {
@@ -89,7 +79,7 @@ public class PersonDAOImpl implements PersonDAO {
             statement.setObject(1, person.getId());
             statement.setString(2, person.getLogin());
             statement.setString(3,person.getPassword());
-            statement.setObject(4, person.getDetails());
+            statement.setObject(4, personDetailDAO.create(person.getDetails()).getId());
             statement.execute();
 
         } catch (SQLException e) {
@@ -115,7 +105,7 @@ public class PersonDAOImpl implements PersonDAO {
                 person.setId(rs.getObject("person_id", UUID.class));
                 person.setLogin(rs.getString("login"));
                 person.setPassword(rs.getString("password"));
-                person.setDetails((PersonDetails) rs.getObject("person_detail_fk"));
+                person.setDetails(personDetailDAO.findById(rs.getObject("person_details_fk", UUID.class)));
 
                 personList.add(person);
             }

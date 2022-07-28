@@ -46,26 +46,3 @@ ALTER TABLE cargo
     ADD FOREIGN KEY (person_fk) REFERENCES cargo_list (person_list_fk);
 
 SET TIMEZONE = 'Europe/Moscow';
-
-DO
-$$
-    DECLARE
-        tableId uuid;
-    BEGIN
-        INSERT INTO public.cargo(cargo_id,
-                                 name,
-                                 description,
-                                 type,
-                                 state,
-                                 weight,
-                                 volume,
-                                 create_at,
-                                 modified_at,
-                                 person_fk)
-        VALUES (uuid_generate_v4(), (?), (?), (?), (?), (?), (?), (?), (?), (?))
-        RETURNING person_fk INTO tableId;
-        INSERT INTO public.cargo_list(person_list_fk) VALUES (tableId);
-        COMMIT;
-    END
-$$;
-

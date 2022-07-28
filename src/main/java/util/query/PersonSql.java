@@ -10,7 +10,8 @@ public class PersonSql {
             """
                     SELECT person_id,
                            login,
-                           password
+                           password,
+                           person_detail_fk
                     FROM person
                             INNER JOIN person_detail pd
                                        ON person.person_detail_fk = pd.person_detail_id
@@ -22,7 +23,8 @@ public class PersonSql {
             """
                    SELECT person_id,
                            login,
-                           password
+                           password,
+                           person_detail_fk
                     FROM person
                             INNER JOIN person_detail pd
                                        ON person.person_detail_fk = pd.person_detail_id
@@ -31,12 +33,23 @@ public class PersonSql {
                     """;
     public static final String SQL_QUERY_PERSON_INSERT =
             """
-                    INSERT INTO person(
-                    person_id,
-                    login,
-                    password)
-                    VALUES(uuid_generate_v4(),(?),(?))
-                    RETURNING person_id
+                    DO $$
+                    DECLARE tableId uuid;
+                    BEGIN
+                    INSERT INTO public.person 
+                           (person_id, 
+                           login, 
+                           password, 
+                           person_detail_fk) 
+                    VALUES 
+                           (uuid_generate_v4(), (?), (?), (?)) 
+                    RETURNING person_detail_fk 
+                    INTO tableId;
+                    INSERT INTO public.person_detail
+                           (person_detail_id) 
+                    VALUES (tableId);
+                    COMMIT;
+                    END $$;
                     """;
     public static final String SQL_QUERY_PERSON_DELETE =
             """
@@ -51,8 +64,10 @@ public class PersonSql {
             """
                     UPDATE person
                     SET login = (?),
-                    password = (?)
+                    password = (?),
+                    person_detail_fk = (?)
                     WHERE person_id = (?)
                     RETURNING person_id
                     """;
 }
+

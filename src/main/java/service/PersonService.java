@@ -1,6 +1,7 @@
 package service;
 
 import dao.PersonDAO;
+import exception.EntityNotCreateException;
 import mapper.PersonMapper;
 import model.dto.PersonDto;
 
@@ -13,17 +14,13 @@ public class PersonService {
     private final PersonDAO personDAO;
     private final PersonDetailsService personDetailsService;
 
-    private final CargoService cargoService;
-
-    public PersonService(PersonDAO personDAO, PersonDetailsService personDetailsService, CargoService cargoService) {
+    public PersonService(PersonDAO personDAO, PersonDetailsService personDetailsService) {
         this.personDAO = personDAO;
         this.personDetailsService = personDetailsService;
-        this.cargoService = cargoService;
     }
 
-    public PersonDto create(PersonDto personDto) {
+    public PersonDto create(PersonDto personDto) throws EntityNotCreateException {
         personDetailsService.create(personDto.getDetails());
-        personDto.getCargoList().forEach(cargoService::create);
 
         return PersonMapper.toDto(personDAO.create(PersonMapper.toEntity(personDto)));
     }
@@ -38,7 +35,7 @@ public class PersonService {
                 .collect(Collectors.toList());
     }
 
-    public PersonDto update(PersonDto person) {
+    public PersonDto update(PersonDto person) throws EntityNotCreateException {
         personDetailsService.update(person.getDetails());
         return PersonMapper.toDto(personDAO.update(PersonMapper.toEntity(person)));
     }

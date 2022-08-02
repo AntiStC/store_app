@@ -45,4 +45,3 @@ ALTER TABLE person
 ALTER TABLE cargo
     ADD FOREIGN KEY (person_fk) REFERENCES cargo_list (person_list_fk);
 
-SET TIMEZONE = 'Europe/Moscow';

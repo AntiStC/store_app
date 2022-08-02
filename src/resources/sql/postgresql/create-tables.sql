@@ -24,8 +24,8 @@ CREATE TABLE IF NOT EXISTS cargo
     state       VARCHAR          NOT NULL,
     weight      DOUBLE PRECISION NOT NULL,
     volume      DOUBLE PRECISION NOT NULL,
-    create_at   TIMESTAMPTZ      NOT NULL DEFAULT NOW(),
-    modified_at TIMESTAMPTZ      NOT NULL DEFAULT NOW(),
+    create_at   TIMESTAMPTZ      NOT NULL,
+    modified_at TIMESTAMPTZ      NOT NULL,
     person_fk   UUID
 );
 
@@ -45,4 +45,3 @@ ALTER TABLE person
 ALTER TABLE cargo
     ADD FOREIGN KEY (person_fk) REFERENCES cargo_list (person_list_fk);
 
-SET TIMEZONE = 'Europe/Moscow';
